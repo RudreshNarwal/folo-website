@@ -1,8 +1,8 @@
 import type {Metadata} from 'next';
 import {Geist, Geist_Mono} from 'next/font/google';
 import './globals.css';
-import Header from '@/components/layout/header'; // Added import
-import { Toaster } from "@/components/ui/toaster"; // Added import for Toaster
+import Header from '@/components/layout/header';
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'FoloGenZ - Smart Banking for GenZ',
-  description: 'Manage Your Finances Seamlessly with FoloGenZ. Digital wallet, credit score monitoring, bill payments, and global money transfers—all in one place.',
+  title: 'FoloMoney - Your Money, Your Way',
+  description: 'Manage Your Finances Seamlessly with FoloMoney. Digital wallet, credit score monitoring, bill payments, and zero-fee global money transfers—all in one place.',
 };
 
 export default function RootLayout({

@@ -1,4 +1,4 @@
-# Firebase Studio
+# FoloMoney
 
 This is a NextJS starter in Firebase Studio.
 

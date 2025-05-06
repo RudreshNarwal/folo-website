@@ -38,7 +38,7 @@ const Header = () => {
         <Link href="/" className="flex items-center space-x-2 group">
           <Zap className={cn("h-8 w-8", isScrolled ? "text-primary" : "text-primary-foreground group-hover:text-accent")} />
           <span className={cn("text-2xl font-bold", isScrolled ? "text-foreground" : "text-primary-foreground group-hover:text-foreground")}>
-            FoloGenZ
+            FoloMoney
           </span>
         </Link>
 
@@ -80,7 +80,7 @@ const Header = () => {
               <div className="flex flex-col space-y-6">
                 <Link href="/" className="flex items-center space-x-2 mb-6" onClick={() => setMobileMenuOpen(false)}>
                   <Zap className="h-7 w-7 text-primary" />
-                  <span className="text-xl font-bold text-foreground">FoloGenZ</span>
+                  <span className="text-xl font-bold text-foreground">FoloMoney</span>
                 </Link>
                 {navItems.map((item) => (
                   <Link
