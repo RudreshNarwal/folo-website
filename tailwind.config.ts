@@ -64,7 +64,11 @@ export default {
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
+  			sm: 'calc(var(--radius) - 4px)',
+        xl: 'calc(var(--radius) + 4px)', // Added for larger rounding
+        '2xl': 'calc(var(--radius) + 8px)',
+        '3xl': 'calc(var(--radius) + 16px)',
+        'full_to_flat_bottom': '50% 50% 0 0 / 100px 100px 0 0',
   		},
   		keyframes: {
   			'accordion-down': {
@@ -82,13 +86,26 @@ export default {
   				to: {
   					height: '0'
   				}
-  			}
+  			},
+        'pulse-slow': {
+          '0%, 100%': { opacity: '0.3' , transform: 'scale(0.95)'},
+          '50%': { opacity: '0.5', transform: 'scale(1.05)' },
+        },
+        'pulse-slower': {
+          '0%, 100%': { opacity: '0.2' , transform: 'scale(0.9)'},
+          '50%': { opacity: '0.4', transform: 'scale(1)' },
+        }
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
+  			'accordion-up': 'accordion-up 0.2s ease-out',
+        'pulse-slow': 'pulse-slow 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'pulse-slower': 'pulse-slower 7s cubic-bezier(0.4, 0, 0.6, 1) infinite',
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require('tailwind-scrollbar')({ nocompatible: true }),
+  ],
 } satisfies Config;
