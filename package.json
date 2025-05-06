@@ -1,7 +1,8 @@
 {
-  "name": "nextn",
+  "name": "fologenz",
   "version": "0.1.0",
   "private": true,
+  "description": "FoloGenZ - Smart Banking for GenZ. Manage Your Finances Seamlessly with FoloGenZ. Digital wallet, credit score monitoring, bill payments, and global money transfers—all in one place.",
   "scripts": {
     "dev": "next dev --turbopack -p 9002",
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",

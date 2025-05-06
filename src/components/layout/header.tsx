@@ -22,9 +22,9 @@ const Header = () => {
 
   const navItems = [
     { name: 'Features', href: '#features' },
-    { name: 'Pricing', href: '#pricing' },
+    { name: 'Pricing', href: '#pricing' }, // Assuming testimonials act as pricing/value
     { name: 'Support', href: '#faq' },
-    { name: 'Company', href: '#about' },
+    { name: 'Company', href: '#about' }, // Assuming footer acts as about
   ];
 
   return (
@@ -35,10 +35,10 @@ const Header = () => {
       )}
     >
       <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center space-x-2">
-          <Zap className={cn("h-8 w-8", isScrolled ? "text-primary" : "text-primary-foreground group-hover:text-primary")} />
+        <Link href="/" className="flex items-center space-x-2 group">
+          <Zap className={cn("h-8 w-8", isScrolled ? "text-primary" : "text-primary-foreground group-hover:text-accent")} />
           <span className={cn("text-2xl font-bold", isScrolled ? "text-foreground" : "text-primary-foreground group-hover:text-foreground")}>
-            folomoney
+            FoloGenZ
           </span>
         </Link>
 
@@ -49,8 +49,8 @@ const Header = () => {
               key={item.name}
               href={item.href}
               className={cn(
-                'text-sm font-medium transition-colors hover:text-primary',
-                isScrolled ? 'text-muted-foreground' : 'text-primary-foreground/80 hover:text-accent'
+                'text-sm font-medium transition-colors',
+                isScrolled ? 'text-muted-foreground hover:text-primary' : 'text-primary-foreground/80 hover:text-accent'
               )}
             >
               {item.name}
@@ -59,10 +59,10 @@ const Header = () => {
         </nav>
 
         <div className="hidden md:flex items-center space-x-3">
-          <Button variant={isScrolled ? "outline" : "ghost"} className={cn(isScrolled ? "border-primary text-primary" : "text-primary-foreground hover:bg-primary-foreground/10 hover:text-accent")}>
+          <Button variant={isScrolled ? "outline" : "ghost"} className={cn(isScrolled ? "border-primary text-primary hover:bg-primary/10" : "text-primary-foreground hover:bg-primary-foreground/10 hover:text-accent")}>
             Log In
           </Button>
-          <Button className={cn(isScrolled ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground hover:bg-accent/90")}>
+          <Button className={cn(isScrolled ? "bg-accent text-accent-foreground hover:bg-accent/90" : "bg-accent text-accent-foreground hover:bg-accent/90")}>
             Sign Up
           </Button>
         </div>
@@ -80,7 +80,7 @@ const Header = () => {
               <div className="flex flex-col space-y-6">
                 <Link href="/" className="flex items-center space-x-2 mb-6" onClick={() => setMobileMenuOpen(false)}>
                   <Zap className="h-7 w-7 text-primary" />
-                  <span className="text-xl font-bold text-foreground">folomoney</span>
+                  <span className="text-xl font-bold text-foreground">FoloGenZ</span>
                 </Link>
                 {navItems.map((item) => (
                   <Link
@@ -93,8 +93,8 @@ const Header = () => {
                   </Link>
                 ))}
                 <div className="border-t border-border pt-6 space-y-4">
-                  <Button variant="outline" className="w-full">Log In</Button>
-                  <Button className="w-full bg-primary text-primary-foreground">Sign Up</Button>
+                  <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary/10">Log In</Button>
+                  <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Sign Up</Button>
                 </div>
               </div>
             </SheetContent>

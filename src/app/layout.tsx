@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'folomoney - Modern Neo Banking',
-  description: 'Manage Your Finances Seamlessly with folomoney. Access your wallet, pay bills, send money globally, and monitor your credit score—all in one place.',
+  title: 'FoloGenZ - Smart Banking for GenZ',
+  description: 'Manage Your Finances Seamlessly with FoloGenZ. Digital wallet, credit score monitoring, bill payments, and global money transfers—all in one place.',
 };
 
 export default function RootLayout({
@@ -26,7 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body 
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning={true}
+      >
         <Header />
         <main>{children}</main>
         <Toaster />

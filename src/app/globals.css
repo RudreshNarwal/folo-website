@@ -13,28 +13,28 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 250 85% 60%; /* Vibrant Violet */
+    --primary: 208 100% 38%; /* Vibrant Green - #005BC0 */
     --primary-foreground: 0 0% 98%; /* Almost White */
 
-    --secondary: 180 70% 45%; /* Cool Teal */
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 269 61% 51%; /* Deep Purple/Violet (from #7B36CE, described as deep teal) */
+    --secondary-foreground: 0 0% 98%; /* Almost White */
 
     --muted: 240 4.8% 95.9%; /* Light Gray */
     --muted-foreground: 240 3.8% 46.1%; /* Medium Gray */
 
-    --accent: 340 90% 65%; /* Playful Pink/Coral */
-    --accent-foreground: 0 0% 98%;
+    --accent: 36 100% 50%; /* Bright Orange - #FF9800 */
+    --accent-foreground: 240 10% 3.9%; /* Dark Gray for contrast on orange */
 
     --destructive: 0 72.2% 50.6%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 250 85% 60%; /* Ring matches primary */
+    --ring: 208 100% 38%; /* Ring matches primary (Vibrant Green) */
 
-    --chart-1: 250 85% 60%;
-    --chart-2: 180 70% 45%;
-    --chart-3: 340 90% 65%;
+    --chart-1: 208 100% 38%; /* Primary */
+    --chart-2: 269 61% 51%; /* Secondary */
+    --chart-3: 36 100% 50%; /* Accent */
     --chart-4: 40 90% 60%; /* Sunny Yellow */
     --chart-5: 210 80% 55%; /* Sky Blue */
 
@@ -47,7 +47,7 @@
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 208 100% 38%; /* Matches primary */
   }
 
   .dark {
@@ -60,39 +60,39 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 250 85% 70%; /* Lighter Vibrant Violet */
-    --primary-foreground: 240 5% 96.1%;
+    --primary: 208 100% 48%; /* Lighter Vibrant Green */
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 180 70% 55%; /* Lighter Cool Teal */
+    --secondary: 269 61% 61%; /* Lighter Deep Purple/Violet */
     --secondary-foreground: 0 0% 98%;
 
     --muted: 240 3.7% 15.9%; /* Darker Gray */
     --muted-foreground: 240 5% 64.9%; /* Lighter Medium Gray */
 
-    --accent: 340 90% 75%; /* Lighter Playful Pink/Coral */
-    --accent-foreground: 0 0% 98%;
+    --accent: 36 100% 60%; /* Lighter Bright Orange */
+    --accent-foreground: 240 10% 3.9%; /* Dark Gray for contrast */
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 250 85% 70%;
+    --ring: 208 100% 48%; /* Ring matches primary */
 
-    --chart-1: 250 85% 70%;
-    --chart-2: 180 70% 55%;
-    --chart-3: 340 90% 75%;
+    --chart-1: 208 100% 48%;
+    --chart-2: 269 61% 61%;
+    --chart-3: 36 100% 60%;
     --chart-4: 40 90% 70%;
     --chart-5: 210 80% 65%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-primary: 208 100% 48%; /* Matches primary */
+    --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 208 100% 48%; /* Matches primary */
   }
 }
 
