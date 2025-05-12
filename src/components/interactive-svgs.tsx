@@ -17,7 +17,7 @@ export const InteractiveAppShowcaseSVG = (props: SVGProps<SVGSVGElement>) => (
         </feMerge>
       </filter>
     </defs>
-    
+
     {/* Phone Body */}
     <rect x="10" y="10" width="280" height="430" rx="30" fill="hsl(var(--card))" stroke="hsl(var(--border))" strokeWidth="2" />
     <rect x="25" y="25" width="250" height="380" rx="15" fill="url(#app-gradient)" />
@@ -82,7 +82,7 @@ export const InteractiveCreditScoreSVG = (props: SVGProps<SVGSVGElement>) => (
     </defs>
 
     <rect width="300" height="300" rx="20" fill="url(#credit-bg-gradient)" />
-    
+
     {/* Score Circle */}
     <circle cx="150" cy="130" r="80" fill="hsl(var(--card))" stroke="hsl(var(--secondary))" strokeWidth="5" style={{filter: "url(#subtle-glow)"}}/>
     <circle cx="150" cy="130" r="70" fill="none" stroke="hsl(var(--border))" strokeWidth="8" strokeDasharray="440" strokeDashoffset="0" />
@@ -175,5 +175,3 @@ export const InteractiveGlobalTransferSVG = (props: SVGProps<SVGSVGElement>) => 
     `}</style>
   </svg>
 );
-
-```
