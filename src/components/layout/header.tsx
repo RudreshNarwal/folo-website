@@ -37,11 +37,8 @@ const Header = () => {
     >
       <div className="container mx-auto px-6 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2 group">
-          {/* Replace Zap with FoloLogoIcon */}
-          <FoloLogoIcon className={cn("h-8 w-8", isScrolled ? "text-primary" : "text-primary-foreground group-hover:text-accent")} />
-          <span className={cn("text-2xl font-bold", isScrolled ? "text-foreground" : "text-primary-foreground group-hover:text-foreground")}>
-            FoloMoney
-          </span>
+          <FoloLogoIcon className={cn("h-10 w-10", isScrolled ? "text-primary" : "text-primary-foreground group-hover:text-accent")} />
+          {/* The text "FoloMoney" was removed as "folo" is inside the icon */}
         </Link>
 
         {/* Desktop Navigation */}
@@ -81,9 +78,8 @@ const Header = () => {
             <SheetContent side="right" className="w-[280px] bg-background p-6">
               <div className="flex flex-col space-y-6">
                 <Link href="/" className="flex items-center space-x-2 mb-6" onClick={() => setMobileMenuOpen(false)}>
-                   {/* Replace Zap with FoloLogoIcon in mobile menu */}
-                  <FoloLogoIcon className="h-7 w-7 text-primary" />
-                  <span className="text-xl font-bold text-foreground">FoloMoney</span>
+                  <FoloLogoIcon className="h-8 w-8 text-primary" />
+                   {/* The text "FoloMoney" was removed as "folo" is inside the icon */}
                 </Link>
                 {navItems.map((item) => (
                   <Link
