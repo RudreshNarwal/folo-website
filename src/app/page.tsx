@@ -1,3 +1,4 @@
+// src/app/page.tsx
 'use client';
 
 import {Button} from '@/components/ui/button';
@@ -25,10 +26,17 @@ import {
   Wallet,
   Zap,
   ArrowRight,
-  BarChart3, 
-  ShieldCheck, 
+  BarChart3,
+  ShieldCheck,
   Gift,
   MessageSquare,
+  Lock,
+  Banknote,
+  FileText,
+  Clock,
+  Sparkles,
+  Gauge,
+  Receipt,
 } from 'lucide-react';
 import {cn} from '@/lib/utils';
 import {getExchangeRate} from '@/services/exchange-rate';
@@ -62,7 +70,7 @@ const TestimonialCard = ({userName, userRole, testimonialText, rating, imageUrl,
 
 const FAQItem = ({question, answer}: { question: string, answer: string}) => (
   <AccordionItem value={question} className="border-b border-border/50">
-    <AccordionTrigger className="py-5 text-lg font-medium hover:text-primary transition-colors">{question}</AccordionTrigger>
+    <AccordionTrigger className="py-5 text-lg font-medium hover:text-primary transition-colors text-left">{question}</AccordionTrigger>
     <AccordionContent className="pb-5 text-muted-foreground leading-relaxed">{answer}</AccordionContent>
   </AccordionItem>
 );
@@ -81,6 +89,20 @@ const FeatureCard = ({ icon, title, description, dataAiHint }: { icon: React.Rea
   </Card>
 );
 
+// Simplified Quick Boost Card for the "Coming Soon" section
+const ComingSoonCard = ({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) => (
+ <Card className="bg-gradient-to-br from-secondary/10 to-primary/10 shadow-lg rounded-xl p-6 border border-primary/20 flex flex-col items-center text-center h-full">
+    <div className="bg-gradient-to-br from-secondary to-primary text-primary-foreground p-3 rounded-full mb-4 w-fit">
+      {icon}
+    </div>
+    <CardTitle className="text-xl font-semibold text-foreground mb-2">{title}</CardTitle>
+    <CardDescription className="text-muted-foreground leading-relaxed flex-grow">{description}</CardDescription>
+    <Button variant="outline" className="mt-4 w-full border-primary text-primary hover:bg-primary/10 cursor-not-allowed">
+      Join Waitlist
+    </Button>
+  </Card>
+);
+
 
 export default function Home() {
   const [exchangeRate, setExchangeRate] = useState<number | null>(null);
@@ -90,6 +112,19 @@ export default function Home() {
   const [amountToSend, setAmountToSend] = useState('100');
   const [financialTips, setFinancialTips] = useState('');
 
+  // Example spending data (replace with actual user data fetching if applicable)
+  const spendingData = `
+    Date: 2024-05-15, Category: Transport, Amount: KES 500
+    Date: 2024-05-18, Category: Food & Drinks, Amount: KES 1200
+    Date: 2024-05-20, Category: Airtime, Amount: KES 300
+    Date: 2024-05-22, Category: Entertainment, Amount: KES 800
+    Date: 2024-05-25, Category: Groceries, Amount: KES 2500
+    Date: 2024-05-28, Category: Bills, Amount: KES 3000
+    Date: 2024-06-01, Category: Food & Drinks, Amount: KES 1500
+    Date: 2024-06-03, Category: Shopping, Amount: KES 1800
+  `;
+
+  // Fetch exchange rate (simplified example)
   useEffect(() => {
     const fetchExchangeRate = async () => {
       try {
@@ -97,64 +132,70 @@ export default function Home() {
         setExchangeRate(rateData.rate);
       } catch (error) {
         console.error("Failed to fetch exchange rate:", error);
-        setExchangeRate(null); // Handle error state
+        setExchangeRate(0.85); // Fallback rate
       }
     };
-
     fetchExchangeRate();
   }, [fromCurrency, toCurrency]);
 
+  // Calculate received amount when dependencies change
+   useEffect(() => {
+    handleCalculate();
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [amountToSend, exchangeRate]);
+
+
   const handleCalculate = () => {
     if (exchangeRate && amountToSend) {
-      setCalculatedAmount(parseFloat(amountToSend) * exchangeRate);
+      const amount = parseFloat(amountToSend);
+      if (!isNaN(amount) && amount > 0) {
+        setCalculatedAmount(amount * exchangeRate);
+      } else {
+        setCalculatedAmount(null);
+      }
     } else {
       setCalculatedAmount(null);
     }
   };
 
-  const spendingData = `
-    Date: 2024-01-15, Category: Groceries, Amount: $200
-    Date: 2024-01-20, Category: Dining, Amount: $150
-    Date: 2024-01-25, Category: Entertainment, Amount: $100
-    Date: 2024-01-30, Category: Utilities, Amount: $250
-    Date: 2024-02-05, Category: Shopping, Amount: $300
-    Date: 2024-02-10, Category: Transportation, Amount: $120
-    Date: 2024-02-15, Category: Groceries, Amount: $180
-    Date: 2024-02-20, Category: Dining, Amount: $130
-    Date: 2024-02-25, Category: Entertainment, Amount: $90
-    Date: 2024-02-29, Category: Utilities, Amount: $240
-  `;
 
+  // Fetch personalized financial tips
   useEffect(() => {
     const fetchFinancialTips = async () => {
       try {
-        const tips = await getPersonalizedFinancialTips({spendingData});
-        setFinancialTips(tips.tips);
+        if (spendingData.trim()) {
+          const tips = await getPersonalizedFinancialTips({spendingData});
+          setFinancialTips(tips.tips);
+        } else {
+          setFinancialTips("Start transacting to get personalized financial tips!");
+        }
       } catch (error)
  {
         console.error("Failed to fetch financial tips:", error);
-        setFinancialTips("Could not load financial tips at this time."); 
+        setFinancialTips("Could not load financial tips at this time. Please try again later.");
       }
     };
     fetchFinancialTips();
-  }, [spendingData]); 
+    // No dependency array needed if spendingData is static within the component scope
+    // If spendingData were dynamic state, add it to dependency array: [spendingData]
+  }, [spendingData]); // Rerun if spendingData changes
 
   return (
     <div className="font-sans antialiased bg-background text-foreground">
       {/* Hero Section */}
       <section className="relative py-28 md:py-40 bg-gradient-to-br from-primary via-primary/90 to-secondary text-primary-foreground overflow-hidden">
         <div className="container mx-auto px-6 text-center relative z-10">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            Your Money, <span className="text-accent">Your Way</span>.
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-md">
+            Your Money, <span className="text-accent">Your Way.</span>
           </h1>
-          <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto">
-            Join FoloMoney and experience banking designed for your generation. Wallet, payments, ZERO-FEE global transfers, credit insights - all in one sleek app.
+          <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto opacity-90">
+            Manage your finances effortlessly with FoloMoney. Your secure digital wallet for instant payments, bill management, <span className="font-bold text-accent">ZERO-FEE</span> global transfers, and credit insights - all in one place.
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold rounded-lg px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-300">
-              Download App <ArrowRight className="ml-2 h-5 w-5" />
+            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold rounded-lg px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+              Get FoloMoney <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button size="lg" variant="outline" className="bg-transparent border-accent text-accent hover:bg-accent/10 font-semibold rounded-lg px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+            <Button size="lg" variant="outline" className="bg-transparent border-accent text-accent hover:bg-accent/10 font-semibold rounded-lg px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
               Learn More
             </Button>
           </div>
@@ -166,62 +207,64 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
+      {/* Why Choose Us / Key Offerings Section */}
       <section className="py-16 md:py-24" id="features">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12 md:mb-16">
-            <Badge variant="secondary" className="mb-3 text-sm px-4 py-1.5 rounded-full bg-secondary/10 text-secondary-foreground">Why FoloMoney?</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Banking That Gets You</h2>
-            <p className="text-muted-foreground md:text-lg max-w-xl mx-auto">We&apos;re not your parents&apos; bank. We&apos;re building finance tools for today&apos;s world with ZERO transfer fees.</p>
+            <Badge variant="secondary" className="mb-3 text-sm px-4 py-1.5 rounded-full bg-secondary/10 text-secondary font-medium">Why FoloMoney?</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Your All-In-One Financial Hub</h2>
+            <p className="text-muted-foreground md:text-lg max-w-xl mx-auto">Simplify your life. FoloMoney brings your essential financial tools together with transparency and <span className="font-semibold text-accent">ZERO transfer fees</span>.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <FeatureCard icon={<Zap className="h-7 w-7" />} title="Instant Transactions" description="Send and receive money in seconds, not days." dataAiHint="fast payment" />
-            <FeatureCard icon={<Globe className="h-7 w-7" />} title="Zero-Fee Global Reach" description="Transfer funds worldwide with absolutely NO fees." dataAiHint="international finance" />
-            <FeatureCard icon={<BarChart3 className="h-7 w-7" />} title="Credit Insights" description="Understand and build your credit score effortlessly." dataAiHint="credit report" />
-            <FeatureCard icon={<ShieldCheck className="h-7 w-7" />} title="Fort Knox Security" description="Your funds and data are protected with top-tier security." dataAiHint="data security" />
+            <FeatureCard icon={<Wallet className="h-7 w-7" />} title="Smart Digital Wallet" description="Securely store funds, top-up easily, and send money instantly to other users." dataAiHint="digital payment" />
+            <FeatureCard icon={<Receipt className="h-7 w-7" />} title="Effortless Bill Pay" description="Manage and pay bills from utilities to airtime in one place. Schedule payments & get reminders." dataAiHint="utility payment" />
+            <FeatureCard icon={<Globe className="h-7 w-7" />} title="Zero-Fee Global Reach" description="Send money worldwide with competitive rates and absolutely NO transfer fees." dataAiHint="international money" />
+            <FeatureCard icon={<Gauge className="h-7 w-7" />} title="Credit Score Insights" description="Monitor your score, understand key factors, and get tips to improve your financial health." dataAiHint="credit check" />
           </div>
         </div>
       </section>
 
-      {/* Features Overview Section */}
+      {/* Detailed Features Overview Section */}
       <section className="py-16 md:py-24 bg-muted">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <Badge variant="outline" className="mb-3 text-sm px-3 py-1 rounded-full border-primary text-primary bg-primary/10">Core Features</Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">All Your Finances, Perfectly Organized</h2>
+              <Badge variant="outline" className="mb-3 text-sm px-3 py-1 rounded-full border-primary text-primary bg-primary/10 font-medium">Core Features</Badge>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">Manage Everything Seamlessly</h2>
               <p className="text-muted-foreground md:text-lg mb-8">
-                FoloMoney combines everything you need into one intuitive platform. Say goodbye to juggling multiple apps and hidden fees.
+                FoloMoney integrates your financial life. Top up, transfer, pay bills, and track your credit – all with intuitive design and zero friction.
               </p>
               <div className="space-y-5">
                 <div className="flex items-start gap-4">
-                  <div className="bg-primary text-primary-foreground p-2 rounded-full mt-1"><Wallet className="h-5 w-5" /></div>
+                  <div className="bg-primary text-primary-foreground p-2 rounded-full mt-1 flex-shrink-0"><Wallet className="h-5 w-5" /></div>
                   <div>
-                    <h3 className="font-semibold text-lg text-foreground">Smart Digital Wallet</h3>
-                    <p className="text-muted-foreground text-sm">Store, send, and receive funds with ease. Track your spending habits and get personalized insights.</p>
+                    <h3 className="font-semibold text-lg text-foreground">Your Secure Wallet</h3>
+                    <p className="text-muted-foreground text-sm">Store funds safely. Top-up via DTB bank accounts or mobile money. Send instant P2P transfers to friends on FoloMoney. View detailed transaction history.</p>
+                  </div>
+                </div>
+                 <div className="flex items-start gap-4">
+                   <div className="bg-primary text-primary-foreground p-2 rounded-full mt-1 flex-shrink-0"><FileText className="h-5 w-5" /></div>
+                  <div>
+                    <h3 className="font-semibold text-lg text-foreground">Simplified Bill Payments</h3>
+                    <p className="text-muted-foreground text-sm">Pay utilities, airtime, and more from our growing list of billers. Schedule payments, get reminders, and track payment history easily.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="bg-primary text-primary-foreground p-2 rounded-full mt-1"><CreditCard className="h-5 w-5" /></div>
+                  <div className="bg-primary text-primary-foreground p-2 rounded-full mt-1 flex-shrink-0"><Send className="h-5 w-5" /></div>
                   <div>
-                    <h3 className="font-semibold text-lg text-foreground">Effortless Bill Payments</h3>
-                    <p className="text-muted-foreground text-sm">Automate your bills, avoid late fees, and manage all your recurring payments in one spot.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="bg-primary text-primary-foreground p-2 rounded-full mt-1"><Send className="h-5 w-5" /></div>
-                  <div>
-                    <h3 className="font-semibold text-lg text-foreground">Zero-Fee Global Transfers</h3>
-                    <p className="text-muted-foreground text-sm">Send money to friends or businesses globally with competitive rates and absolutely ZERO transfer fees.</p>
+                    <h3 className="font-semibold text-lg text-foreground">Truly Free Global Transfers</h3>
+                    <p className="text-muted-foreground text-sm">Send money internationally with competitive exchange rates and absolutely ZERO transfer fees. Fast, secure, and transparent.</p>
                   </div>
                 </div>
               </div>
-              <Button className="mt-10 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-7 py-3">
-                Explore All Features <ArrowRight className="ml-2 h-5 w-5" />
+              <Button className="mt-10 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-7 py-3 transform hover:scale-105 transition-transform">
+                Explore FoloMoney <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
             <div className="relative h-[400px] md:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center bg-card">
+              {/* Placeholder for Interactive SVG showing Wallet & Bill Pay */}
               <InteractiveAppShowcaseSVG className="w-full h-full" />
+               {/* Consider creating a combined SVG or cycling between Wallet/Bill Pay views */}
             </div>
           </div>
         </div>
@@ -234,35 +277,36 @@ export default function Home() {
             <InteractiveCreditScoreSVG className="w-full h-full" />
           </div>
           <div className="md:pl-8">
-            <Badge variant="outline" className="mb-3 text-sm px-3 py-1 rounded-full border-secondary text-secondary bg-secondary/10">Boost Your Score</Badge>
+            <Badge variant="outline" className="mb-3 text-sm px-3 py-1 rounded-full border-secondary text-secondary bg-secondary/10 font-medium">Boost Your Score</Badge>
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">Unlock Your Credit Potential</h2>
             <p className="text-muted-foreground md:text-lg mb-8">
-              Monitor your credit score, understand the factors affecting it, and get personalized tips to improve your financial standing with FoloMoney.
+             Stay informed with regular credit score updates. Understand the factors impacting your score and get actionable tips to improve your financial standing with FoloMoney.
             </p>
-            <Card className="shadow-xl rounded-xl bg-card">
+            <Card className="shadow-xl rounded-xl bg-card border border-border/50">
               <CardHeader>
                 <CardTitle className="flex items-center text-xl text-foreground">
                   <TrendingUp className="mr-2 h-6 w-6 text-secondary" /> Your Credit Journey
                 </CardTitle>
+                <CardDescription>Monitor, understand, and improve.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Label className="text-sm text-muted-foreground">Current Score</Label>
-                <div className="text-5xl font-bold text-secondary mb-3">750</div>
-                <Progress value={75} className="mb-4 h-3 rounded-full [&>div]:bg-secondary" />
+                <Label className="text-sm text-muted-foreground">Your Current Score</Label>
+                <div className="text-5xl font-bold text-secondary mb-3">750</div> {/* Example Score */}
+                <Progress value={75} aria-label="Credit score progress indicator: 75%" className="mb-4 h-3 rounded-full [&>div]:bg-gradient-to-r [&>div]:from-secondary [&>div]:to-purple-400" />
                 <div className="flex justify-between text-xs text-muted-foreground mb-4">
-                  <span>Poor</span>
+                  <span>Needs Work</span>
                   <span>Fair</span>
                   <span>Good</span>
                   <span>Excellent</span>
                 </div>
                 <ul className="space-y-2 text-sm">
-                  <li className="flex items-center text-muted-foreground"><CheckCircle className="h-4 w-4 mr-2 text-secondary" /> Regular score updates</li>
-                  <li className="flex items-center text-muted-foreground"><CheckCircle className="h-4 w-4 mr-2 text-secondary" /> Personalized improvement tips</li>
-                  <li className="flex items-center text-muted-foreground"><CheckCircle className="h-4 w-4 mr-2 text-secondary" /> Credit factor analysis</li>
+                  <li className="flex items-center text-muted-foreground"><CheckCircle className="h-4 w-4 mr-2 text-secondary flex-shrink-0" /> Regular score updates & alerts</li>
+                  <li className="flex items-center text-muted-foreground"><CheckCircle className="h-4 w-4 mr-2 text-secondary flex-shrink-0" /> Personalized improvement tips</li>
+                  <li className="flex items-center text-muted-foreground"><CheckCircle className="h-4 w-4 mr-2 text-secondary flex-shrink-0" /> Clear credit factor analysis</li>
                 </ul>
               </CardContent>
               <CardFooter>
-                <Button className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-lg">Check Your Score Now</Button>
+                <Button className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-lg transform hover:scale-105 transition-transform">Check Your Score Now</Button>
               </CardFooter>
             </Card>
           </div>
@@ -273,65 +317,77 @@ export default function Home() {
       <section className="py-16 md:py-24 bg-muted">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <Badge variant="outline" className="mb-3 text-sm px-3 py-1 rounded-full border-accent text-accent bg-accent/10">Go Global For Free</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">Send Money Without Borders or Fees</h2>
+             <Badge variant="outline" className="mb-3 text-sm px-3 py-1 rounded-full border-accent text-accent bg-accent/10 font-medium">Go Global - Fee Free!</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">Send Money Worldwide, <span className="text-accent">Zero Fees</span></h2>
             <p className="text-muted-foreground md:text-lg mb-8">
-              Transfer funds internationally with competitive exchange rates, lightning-fast processing, and best of all: <span className="font-semibold text-accent">ZERO transfer fees!</span> Connect to the world with FoloMoney.
+              Why pay fees to send money abroad? FoloMoney offers fast, secure international transfers with competitive rates and <span className="font-semibold text-accent uppercase">absolutely no transfer fees!</span> Use our calculator to see how much you save.
             </p>
-            <Card className="shadow-xl rounded-xl bg-card">
+            <Card className="shadow-xl rounded-xl bg-card border border-border/50">
               <CardHeader>
                 <CardTitle className="flex items-center text-xl text-foreground">
                   <Globe className="mr-2 h-6 w-6 text-accent" /> Quick Transfer Calculator
                 </CardTitle>
+                <CardDescription>Estimate your transfer instantly.</CardDescription>
               </CardHeader>
               <CardContent className="grid gap-5">
                 <div>
-                  <Label htmlFor="amount" className="text-sm font-medium text-foreground">Amount to Send</Label>
-                  <Input type="number" id="amount" value={amountToSend} onChange={(e) => setAmountToSend(e.target.value)} placeholder="e.g., 100" className="mt-1 text-base" />
+                  <Label htmlFor="amount" className="text-sm font-medium text-foreground">You Send</Label>
+                  <Input type="number" id="amount" value={amountToSend} onChange={(e) => setAmountToSend(e.target.value)} placeholder="e.g., 10000" className="mt-1 text-base" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="fromCurrency" className="text-sm font-medium text-foreground">From</Label>
                     <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                      <SelectTrigger className="mt-1 text-base"><SelectValue /></SelectTrigger>
+                      <SelectTrigger id="fromCurrency" className="mt-1 text-base"><SelectValue /></SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="USD">USD 🇺🇸</SelectItem>
                         <SelectItem value="KES">KES 🇰🇪</SelectItem>
+                        <SelectItem value="USD">USD 🇺🇸</SelectItem>
                         <SelectItem value="GBP">GBP 🇬🇧</SelectItem>
+                         <SelectItem value="UGX">UGX 🇺🇬</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
                     <Label htmlFor="toCurrency" className="text-sm font-medium text-foreground">To</Label>
                     <Select value={toCurrency} onValueChange={setToCurrency}>
-                      <SelectTrigger className="mt-1 text-base"><SelectValue /></SelectTrigger>
+                      <SelectTrigger id="toCurrency" className="mt-1 text-base"><SelectValue /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="EUR">EUR 🇪🇺</SelectItem>
-                        <SelectItem value="UGX">UGX 🇺🇬</SelectItem>
+                        <SelectItem value="USD">USD 🇺🇸</SelectItem>
                         <SelectItem value="CAD">CAD 🇨🇦</SelectItem>
+                        <SelectItem value="GBP">GBP 🇬🇧</SelectItem>
+                         <SelectItem value="KES">KES 🇰🇪</SelectItem>
+                         <SelectItem value="UGX">UGX 🇺🇬</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
                 {exchangeRate !== null && (
                   <div className="p-3 bg-muted/50 rounded-md text-sm text-muted-foreground">
-                    <p>Exchange Rate: <span className="font-semibold text-foreground">1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}</span></p>
-                    <p>Transfer Fee: <span className="font-semibold text-accent">FREE!</span></p>
+                    <p>Exchange Rate: <span className="font-semibold text-foreground">1 {fromCurrency} ≈ {exchangeRate.toFixed(4)} {toCurrency}</span></p>
+                    <p>Transfer Fee: <span className="font-semibold text-accent">KES 0.00 (FREE!)</span></p>
                   </div>
                 )}
-                {calculatedAmount !== null && amountToSend && (
-                  <Alert variant="default" className="border-accent bg-accent/5">
+                {calculatedAmount !== null && amountToSend && parseFloat(amountToSend) > 0 ? (
+                   <Alert variant="default" className="border-accent bg-accent/5">
                     <DollarSign className="h-5 w-5 text-accent" />
                     <AlertTitle className="font-semibold text-accent">Recipient Gets (Approx.)</AlertTitle>
                     <AlertDescription className="text-xl font-bold text-accent-foreground">
                       {calculatedAmount.toFixed(2)} {toCurrency}
                     </AlertDescription>
                   </Alert>
-                )}
+                ) : amountToSend && parseFloat(amountToSend) <= 0 ? (
+                   <Alert variant="destructive" className="border-destructive/50 bg-destructive/5">
+                     <AlertDescription className="text-sm text-destructive">
+                      Please enter a positive amount to send.
+                    </AlertDescription>
+                   </Alert>
+                ) : null}
               </CardContent>
               <CardFooter>
-                <Button onClick={handleCalculate} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg py-3">
-                  Calculate Transfer
+                 {/* Button is now primarily for display/interaction trigger, calculation happens onChange */}
+                <Button disabled={!calculatedAmount} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg py-3 transform hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed">
+                 {calculatedAmount ? 'Initiate Transfer' : 'Enter Amount to Calculate'}
                 </Button>
               </CardFooter>
             </Card>
@@ -342,13 +398,49 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Security Section */}
+       <section className="py-16 md:py-24 bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-slate-900">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12 md:mb-16">
+            <Badge variant="outline" className="mb-3 text-sm px-4 py-1.5 rounded-full border-blue-500 text-blue-600 bg-blue-100/50 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700 font-medium">Bank-Grade Security</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Your Security, Our Priority</h2>
+            <p className="text-muted-foreground md:text-lg max-w-xl mx-auto">We employ robust security measures, powered by our partnership with DTB Bank, to keep your funds and data safe.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl shadow-lg border border-border/30">
+              <div className="bg-primary/10 text-primary p-4 rounded-full mb-4">
+                <Lock className="h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">End-to-End Encryption</h3>
+              <p className="text-muted-foreground text-sm">Your sensitive information is encrypted both in transit and at rest, protecting it from unauthorized access.</p>
+            </div>
+             <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl shadow-lg border border-border/30">
+              <div className="bg-primary/10 text-primary p-4 rounded-full mb-4">
+                <ShieldCheck className="h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">Banking Standards</h3>
+              <p className="text-muted-foreground text-sm">We adhere to strict banking security protocols and industry best practices to ensure the integrity of our platform.</p>
+            </div>
+             <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl shadow-lg border border-border/30">
+               <div className="flex items-center justify-center bg-primary/10 text-primary p-4 rounded-full mb-4">
+                {/* Simple representation for DTB Partnership */}
+                 <Banknote className="h-8 w-8" />
+               </div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">Powered by DTB Bank</h3>
+              <p className="text-muted-foreground text-sm">Our core infrastructure benefits from the reliability and established security framework of DTB Bank.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
       {/* Personalized Financial Tips Section */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-6 text-center">
-           <Badge variant="default" className="mb-3 text-sm bg-primary text-primary-foreground px-4 py-1.5 rounded-full">AI Powered Insights</Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">Your Personal Finance Guru</h2>
+           <Badge variant="default" className="mb-3 text-sm bg-primary text-primary-foreground px-4 py-1.5 rounded-full font-medium">AI-Powered Insights</Badge>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">Your Personal Finance Coach</h2>
           <p className="text-muted-foreground md:text-lg max-w-xl mx-auto mb-10">
-            Let FoloMoney&apos;s AI analyze your spending and provide tailored tips to help you save more and spend smarter.
+           FoloMoney's AI analyzes your spending habits (securely and privately) to offer smart, actionable tips for saving money and reaching your financial goals faster.
           </p>
           {financialTips ? (
             <Alert className="text-left max-w-2xl mx-auto shadow-lg rounded-xl p-6 bg-card border-primary/30">
@@ -361,97 +453,129 @@ export default function Home() {
           ) : (
             <Alert className="text-left max-w-2xl mx-auto shadow-lg rounded-xl p-6 bg-card border-primary/30">
               <Zap className="h-6 w-6 text-primary animate-pulse" />
-              <AlertTitle className="text-xl font-semibold text-primary mt-2">Crunching The Numbers...</AlertTitle>
+              <AlertTitle className="text-xl font-semibold text-primary mt-2">Generating Insights...</AlertTitle>
               <AlertDescription className="mt-3 text-muted-foreground">
-                Hang tight! Our AI is crafting personalized financial tips just for you. This might take a moment.
+                Our AI is analyzing your recent activity to provide personalized tips. This usually takes just a moment. If you're new, start transacting to unlock insights!
               </AlertDescription>
             </Alert>
           )}
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-16 md:py-24 bg-muted" id="pricing"> {/* Added ID for nav */}
+      {/* Coming Soon Section */}
+       <section className="py-16 md:py-24 bg-muted">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12 md:mb-16">
-             <Badge variant="secondary" className="mb-3 text-sm px-4 py-1.5 rounded-full bg-secondary/10 text-secondary-foreground">Community Love</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Loved by GenZ Users</h2>
-            <p className="text-muted-foreground md:text-lg max-w-xl mx-auto">Don&apos;t just take our word for it. Here&apos;s what our users are saying about FoloMoney.</p>
+             <Badge variant="outline" className="mb-3 text-sm px-3 py-1 rounded-full border-secondary text-secondary bg-secondary/10 font-medium">Coming Soon</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Exciting Features on the Horizon</h2>
+            <p className="text-muted-foreground md:text-lg max-w-xl mx-auto">We're always working to make FoloMoney even better. Here's a sneak peek at what's next!</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+             {/* Quick Boost Card */}
+            <ComingSoonCard
+              icon={<Sparkles className="h-8 w-8" />}
+              title="Quick Boost"
+              description="Need a small, short-term financial boost? Access funds quickly based on your activity. Transparent terms, easy repayment."
+            />
+             {/* Add other planned features here if needed */}
+            <ComingSoonCard
+              icon={<PiggyBank className="h-8 w-8" />}
+              title="Savings Goals"
+              description="Set and track your savings goals directly within the app. Visualize your progress and stay motivated."
+            />
+             <ComingSoonCard
+              icon={<FileText className="h-8 w-8" />}
+              title="Budgeting Tools"
+              description="Take control of your spending with intuitive budgeting features. Categorize expenses and monitor your cash flow."
+            />
+          </div>
+        </div>
+      </section>
+
+
+      {/* Testimonials Section */}
+      <section className="py-16 md:py-24" id="pricing"> {/* Assuming 'pricing' still relevant for navigation, though it's free */}
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12 md:mb-16">
+             <Badge variant="secondary" className="mb-3 text-sm px-4 py-1.5 rounded-full bg-secondary/10 text-secondary font-medium">Community Love</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Hear From Nairobi's GenZ</h2>
+            <p className="text-muted-foreground md:text-lg max-w-xl mx-auto">See why young Nairobians are choosing FoloMoney for smarter, simpler finance.</p>
           </div>
           <div className="flex overflow-x-auto space-x-6 pb-8 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-muted">
             <TestimonialCard
-              userName="Wanjiku M."
-              userRole="Design Student"
-              testimonialText="FoloMoney is a lifesaver! Managing my student budget and sending money home with ZERO fees is super easy. The interface is so clean too!"
+              userName="Wanjiru K."
+              userRole="Graphic Design Intern"
+              testimonialText="FoloMoney is perfect! Managing my small cash and sending money to family is so easy and FREE. Love the simple design."
               rating={5}
-              imageUrl="https://picsum.photos/seed/wanjiku/100/100"
-              imageAlt="Wanjiku M."
-              dataAiHint="young woman"
+              imageUrl="https://picsum.photos/seed/wanjiru/100/100"
+              imageAlt="Wanjiru K."
+              dataAiHint="young kenyan woman"
             />
             <TestimonialCard
-              userName="David O."
-              userRole="Junior Developer"
-              testimonialText="Finally, a banking app that doesn't feel ancient. The credit score tips actually helped me. Plus, global transfers are FREE!"
+              userName="Brian O."
+              userRole="Tech Support Analyst"
+              testimonialText="Finally, a finance app that gets it. The credit score feature actually makes sense. And zero fees on transfers? Unbeatable."
               rating={5}
-              imageUrl="https://picsum.photos/seed/david/100/100"
-              imageAlt="David O."
-              dataAiHint="young man"
+              imageUrl="https://picsum.photos/seed/brian/100/100"
+              imageAlt="Brian O."
+              dataAiHint="young kenyan man"
             />
             <TestimonialCard
-              userName="Aisha A."
-              userRole="Freelance Artist"
-              testimonialText="As a freelancer, getting paid from international clients used to be a nightmare. FoloMoney makes it seamless AND free. Love it!"
+              userName="Fatuma A."
+              userRole="Online Store Owner"
+              testimonialText="Getting payments from clients abroad used to cost me so much. FoloMoney is a game-changer - seamless and actually free!"
               rating={4}
-              imageUrl="https://picsum.photos/seed/aisha/100/100"
-              imageAlt="Aisha A."
-              dataAiHint="woman creative"
+              imageUrl="https://picsum.photos/seed/fatuma/100/100"
+              imageAlt="Fatuma A."
+              dataAiHint="woman entrepreneur"
             />
              <TestimonialCard
-              userName="Ken B."
-              userRole="Gamer & Streamer"
-              testimonialText="Managing my streaming income and paying for subs is way simpler with FoloMoney. The app is fast, and I dig the dark mode! Zero fees on transfers is a game changer."
+              userName="Sammy G."
+              userRole="Content Creator"
+              testimonialText="Easy to manage my earnings and pay for stuff online. The app is quick, looks cool, and the zero fees are clutch."
               rating={5}
-              imageUrl="https://picsum.photos/seed/ken/100/100"
-              imageAlt="Ken B."
-              dataAiHint="man technology"
+              imageUrl="https://picsum.photos/seed/sammy/100/100"
+              imageAlt="Sammy G."
+              dataAiHint="man creative"
             />
           </div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 md:py-24" id="faq">
+      <section className="py-16 md:py-24 bg-muted" id="faq">
         <div className="container mx-auto px-6 max-w-3xl">
            <div className="text-center mb-12 md:mb-16">
-            <Badge className="mb-3 text-sm bg-primary text-primary-foreground px-4 py-1.5 rounded-full">Got Questions?</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">We&apos;ve Got Answers</h2>
+            <Badge className="mb-3 text-sm bg-primary text-primary-foreground px-4 py-1.5 rounded-full font-medium">Got Questions?</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">We've Got Answers</h2>
             <p className="text-muted-foreground md:text-lg max-w-xl mx-auto">Find quick answers to common questions about FoloMoney.</p>
           </div>
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full bg-card p-4 md:p-6 rounded-xl shadow-md border border-border/30">
             <FAQItem
-              question="Is FoloMoney really secure?"
-              answer="Absolutely. We use bank-grade encryption, multi-factor authentication, and continuous security monitoring to keep your account and data safe. Your peace of mind is our top priority."
+              question="Is FoloMoney secure to use?"
+              answer="Yes! Security is fundamental. We use bank-grade encryption (like DTB Bank), secure protocols, and continuous monitoring to protect your account and data. Your trust is our priority."
+            />
+             <FAQItem
+              question="How do I add money (top-up) my wallet?"
+              answer="It's easy! You can securely link your DTB bank account for direct top-ups, or use popular mobile money services. We're always working on adding more convenient options."
             />
             <FAQItem
-              question="How fast can I open an account?"
-              answer="Super fast! You can sign up and get your digital wallet set up in minutes. Just download the app, follow a few simple steps, and you're good to go."
+              question="Are international money transfers really FREE?"
+              answer="Absolutely! FoloMoney charges ZERO transfer fees for sending money globally. You benefit from competitive exchange rates without hidden costs. It's that simple."
             />
             <FAQItem
-              question="Are international transfers really free?"
-              answer="Yes! FoloMoney offers ZERO transfer fees for international transactions. You get competitive exchange rates without any hidden costs. What you see is what you get."
+              question="How does the Credit Score Monitoring work?"
+              answer="We partner to provide regular updates to your credit score directly in the app. You'll see key factors influencing your score and get personalized, practical tips to help improve it over time."
             />
             <FAQItem
-              question="How does the credit score feature work?"
-              answer="We provide regular updates to your credit score and show you key factors influencing it. Plus, you get personalized, actionable tips to help you improve your score over time, all within the FoloMoney app."
+              question="Can I pay all my bills with FoloMoney?"
+              answer="We have a growing directory of billers, starting with DTB-related payments and expanding to include major utilities, airtime providers, and more. You can manage, pay, and even schedule payments all within the app."
             />
-            <FAQItem
-              question="Can I use FoloMoney for my side hustle?"
-              answer="Yes! FoloMoney is great for managing personal finances and earnings from side hustles or freelance work. Easily track income, expenses, and transfer funds (with zero fees!) as needed."
-            />
+
           </Accordion>
           <div className="mt-12 text-center">
-            <Button variant="outline" size="lg" className="rounded-lg border-primary text-primary hover:bg-primary/10">
-              <MessageSquare className="mr-2 h-5 w-5" /> Still Curious? Contact Support
+            <Button variant="outline" size="lg" className="rounded-lg border-primary text-primary hover:bg-primary/10 transform hover:scale-105 transition-transform">
+              <MessageSquare className="mr-2 h-5 w-5" /> Need More Help? Contact Support
             </Button>
           </div>
         </div>
@@ -460,62 +584,64 @@ export default function Home() {
       {/* Call to Action Section */}
       <section className="py-20 md:py-32 bg-gradient-to-br from-accent via-accent/90 to-primary">
         <div className="container mx-auto px-6 text-center text-accent-foreground">
-          <Smartphone className="h-16 w-16 mx-auto mb-6 opacity-80" />
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Ready to Revolutionize Your Finances?</h2>
+          <Smartphone className="h-16 w-16 mx-auto mb-6 opacity-80 drop-shadow-lg" />
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 drop-shadow-md">Ready to Simplify Your Finances?</h2>
           <p className="text-lg md:text-xl mb-10 max-w-xl mx-auto opacity-90">
-            Download FoloMoney today and join thousands of GenZ users managing their money the smart way – with zero transfer fees!
+            Download FoloMoney today and join the growing community managing their money the smart way – with zero transfer fees and powerful tools at their fingertips!
           </p>
-          <Button size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold rounded-lg px-10 py-4 text-xl shadow-2xl hover:shadow-none transition-shadow duration-300">
-            Get Started for Free
+          <Button size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold rounded-lg px-10 py-4 text-xl shadow-2xl hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+            Get Started - It's Free!
           </Button>
            <p className="mt-6 text-sm opacity-70">Available on iOS and Android.</p>
         </div>
       </section>
 
        {/* Footer */}
-      <footer className="py-12 bg-foreground text-background/70" id="about"> {/* Added ID for nav */}
+      <footer className="py-12 bg-foreground text-background/70" id="about">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
             <div>
               <h5 className="font-semibold text-background/90 mb-3">Product</h5>
               <ul className="space-y-2 text-sm">
-                <li><a href="#features" className="hover:text-primary">Features</a></li>
-                <li><a href="#pricing" className="hover:text-primary">Pricing (It's Free!)</a></li>
-                <li><a href="#features" className="hover:text-primary">Security</a></li> {/* Point to relevant section */}
-                <li><a href="#" className="hover:text-primary">Download</a></li>
+                <li><a href="#features" className="hover:text-primary transition-colors">Features</a></li>
+                <li><a href="#pricing" className="hover:text-primary transition-colors">Pricing (Free!)</a></li>
+                <li><a href="#security" className="hover:text-primary transition-colors">Security</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Download App</a></li>
               </ul>
             </div>
             <div>
               <h5 className="font-semibold text-background/90 mb-3">Company</h5>
               <ul className="space-y-2 text-sm">
-                <li><a href="#about" className="hover:text-primary">About Us</a></li>
-                <li><a href="#" className="hover:text-primary">Careers</a></li>
-                <li><a href="#" className="hover:text-primary">Press</a></li>
-                <li><a href="#" className="hover:text-primary">Blog</a></li>
+                <li><a href="#about" className="hover:text-primary transition-colors">About FoloMoney</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Careers</a></li>
+                {/* <li><a href="#" className="hover:text-primary transition-colors">Press</a></li> */}
+                <li><a href="#" className="hover:text-primary transition-colors">Blog</a></li>
               </ul>
             </div>
             <div>
               <h5 className="font-semibold text-background/90 mb-3">Support</h5>
               <ul className="space-y-2 text-sm">
-                <li><a href="#faq" className="hover:text-primary">Help Center</a></li>
-                <li><a href="#faq" className="hover:text-primary">Contact Us</a></li>
-                <li><a href="#faq" className="hover:text-primary">FAQs</a></li>
-                <li><a href="#" className="hover:text-primary">Status</a></li>
+                <li><a href="#faq" className="hover:text-primary transition-colors">Help Center</a></li>
+                <li><a href="#faq" className="hover:text-primary transition-colors">Contact Us</a></li>
+                <li><a href="#faq" className="hover:text-primary transition-colors">FAQs</a></li>
+                {/* <li><a href="#" className="hover:text-primary transition-colors">Status</a></li> */}
               </ul>
             </div>
             <div>
               <h5 className="font-semibold text-background/90 mb-3">Legal</h5>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-primary">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-primary">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-primary">Cookie Policy</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Terms of Service</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Cookie Policy</a></li>
               </ul>
             </div>
           </div>
           <div className="border-t border-background/20 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
-            <p>&copy; {new Date().getFullYear()} FoloMoney. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} FoloMoney Technologies Ltd. All rights reserved.</p>
+             <p className="mt-2 md:mt-0 text-xs opacity-80">Powered in partnership with DTB Bank.</p>
             <div className="flex space-x-4 mt-4 md:mt-0">
-              {/* Social media icons can be added here e.g. <Gift /> for X/Twitter if appropriate */}
+              {/* Add social media links here if available */}
+              {/* Example: <a href="#" aria-label="FoloMoney on Twitter" className="hover:text-primary transition-colors"><Gift className="h-5 w-5" /></a> */}
             </div>
           </div>
         </div>
