@@ -314,7 +314,7 @@ export default function Home() {
       </section>
 
       {/* International Transfers Section */}
-      <section className="py-16 md:py-24 bg-muted">
+      <section className="py-16 md:py-24 bg-muted" id="transfers">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <div>
              <Badge variant="outline" className="mb-3 text-sm px-3 py-1 rounded-full border-accent text-accent bg-accent/10 font-medium">Go Global - Fee Free!</Badge>
@@ -399,7 +399,7 @@ export default function Home() {
       </section>
 
       {/* Security Section */}
-       <section className="py-16 md:py-24 bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-slate-900">
+       <section className="py-16 md:py-24 bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-slate-900" id="security">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12 md:mb-16">
             <Badge variant="outline" className="mb-3 text-sm px-4 py-1.5 rounded-full border-blue-500 text-blue-600 bg-blue-100/50 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700 font-medium">Bank-Grade Security</Badge>
@@ -494,7 +494,7 @@ export default function Home() {
 
 
       {/* Testimonials Section */}
-      <section className="py-16 md:py-24" id="pricing"> {/* Assuming 'pricing' still relevant for navigation, though it's free */}
+      <section className="py-16 md:py-24" id="testimonials"> {/* Changed ID from pricing to testimonials */}
         <div className="container mx-auto px-6">
           <div className="text-center mb-12 md:mb-16">
              <Badge variant="secondary" className="mb-3 text-sm px-4 py-1.5 rounded-full bg-secondary/10 text-secondary font-medium">Community Love</Badge>
@@ -604,7 +604,7 @@ export default function Home() {
               <h5 className="font-semibold text-background/90 mb-3">Product</h5>
               <ul className="space-y-2 text-sm">
                 <li><a href="#features" className="hover:text-primary transition-colors">Features</a></li>
-                <li><a href="#pricing" className="hover:text-primary transition-colors">Pricing (Free!)</a></li>
+                <li><a href="#transfers" className="hover:text-primary transition-colors">Global Transfers</a></li> {/* Updated Link */}
                 <li><a href="#security" className="hover:text-primary transition-colors">Security</a></li>
                 <li><a href="#" className="hover:text-primary transition-colors">Download App</a></li>
               </ul>

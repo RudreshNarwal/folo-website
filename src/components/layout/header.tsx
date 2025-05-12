@@ -23,9 +23,10 @@ const Header = () => {
 
   const navItems = [
     { name: 'Features', href: '#features' },
-    { name: 'Pricing', href: '#pricing' }, // Assuming testimonials act as pricing/value
-    { name: 'Support', href: '#faq' },
-    { name: 'Company', href: '#about' }, // Assuming footer acts as about
+    { name: 'Transfers', href: '#transfers' }, // Updated link
+    { name: 'Security', href: '#security' }, // Updated link
+    { name: 'FAQ', href: '#faq' }, // Updated link (was Support)
+    // { name: 'Company', href: '#about' }, // Removed Company link for brevity, points to footer
   ];
 
   return (
