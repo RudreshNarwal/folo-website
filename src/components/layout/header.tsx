@@ -4,10 +4,10 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu } from 'lucide-react';
+import { Download, Menu } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { FoloLogoIcon } from '@/components/icons/folo-logo'; // Import the new logo
+import { FoloLogoIcon } from '@/components/icons/folo-logo';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -23,10 +23,9 @@ const Header = () => {
 
   const navItems = [
     { name: 'Features', href: '#features' },
-    { name: 'Transfers', href: '#transfers' }, // Updated link
-    { name: 'Security', href: '#security' }, // Updated link
-    { name: 'FAQ', href: '#faq' }, // Updated link (was Support)
-    // { name: 'Company', href: '#about' }, // Removed Company link for brevity, points to footer
+    { name: 'Transfers', href: '#transfers' },
+    { name: 'Security', href: '#security' },
+    { name: 'FAQ', href: '#faq' },
   ];
 
   return (
@@ -39,7 +38,6 @@ const Header = () => {
       <div className="container mx-auto px-6 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2 group">
           <FoloLogoIcon className={cn("h-10 w-10", isScrolled ? "text-primary" : "text-primary-foreground group-hover:text-accent")} />
-          {/* The text "FoloMoney" was removed as "folo" is inside the icon */}
         </Link>
 
         {/* Desktop Navigation */}
@@ -59,16 +57,16 @@ const Header = () => {
         </nav>
 
         <div className="hidden md:flex items-center space-x-3">
-          <Button variant={isScrolled ? "outline" : "ghost"} className={cn(isScrolled ? "border-primary text-primary hover:bg-primary/10" : "text-primary-foreground hover:bg-primary-foreground/10 hover:text-accent")}>
-            Log In
-          </Button>
           <Button className={cn(isScrolled ? "bg-accent text-accent-foreground hover:bg-accent/90" : "bg-accent text-accent-foreground hover:bg-accent/90")}>
-            Sign Up
+            <Download className="mr-2 h-4 w-4" /> Download App
           </Button>
         </div>
 
         {/* Mobile Navigation */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center">
+          <Button variant="ghost" size="sm" className={cn("mr-2", isScrolled ? "text-accent hover:bg-accent/10" : "text-accent hover:bg-primary-foreground/10 ")}>
+             <Download className="mr-1 h-4 w-4" /> App
+          </Button>
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className={cn(isScrolled ? "text-foreground" : "text-primary-foreground hover:bg-primary-foreground/10")}>
@@ -80,7 +78,6 @@ const Header = () => {
               <div className="flex flex-col space-y-6">
                 <Link href="/" className="flex items-center space-x-2 mb-6" onClick={() => setMobileMenuOpen(false)}>
                   <FoloLogoIcon className="h-8 w-8 text-primary" />
-                   {/* The text "FoloMoney" was removed as "folo" is inside the icon */}
                 </Link>
                 {navItems.map((item) => (
                   <Link
@@ -93,8 +90,9 @@ const Header = () => {
                   </Link>
                 ))}
                 <div className="border-t border-border pt-6 space-y-4">
-                  <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary/10">Log In</Button>
-                  <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Sign Up</Button>
+                  <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                     <Download className="mr-2 h-5 w-5" /> Download App
+                  </Button>
                 </div>
               </div>
             </SheetContent>
