@@ -44,6 +44,7 @@ import { InteractiveAppShowcaseSVG, InteractiveCreditScoreSVG, InteractiveGlobal
 import AppShowcaseLottie from '@/components/animations/AppShowcaseLottie';
 import CreditScoreLottie from '@/components/animations/CreditScoreLottie';
 import WorldTransferLottie from '@/components/animations/WorldTransferLottie';
+import Link from 'next/link';
 
 
 const TestimonialCard = ({userName, userRole, testimonialText, rating, imageUrl, imageAlt, dataAiHint}: {userName: string, userRole: string, testimonialText: string, rating: number, imageUrl: string, imageAlt: string, dataAiHint?: string }) => (
@@ -641,7 +642,7 @@ export default function Home() {
               <h5 className="font-semibold text-background/90 mb-3">Product</h5>
               <ul className="space-y-2 text-sm">
                 <li><a href="#features" className="hover:text-primary transition-colors">Features</a></li>
-                <li><a href="#transfers" className="hover:text-primary transition-colors">Global Transfers</a></li> {/* Updated Link */}
+                <li><a href="#transfers" className="hover:text-primary transition-colors">Global Transfers</a></li>
                 <li><a href="#security" className="hover:text-primary transition-colors">Security</a></li>
                 <li><a href="#" className="hover:text-primary transition-colors">Download App</a></li>
               </ul>
@@ -649,9 +650,8 @@ export default function Home() {
             <div>
               <h5 className="font-semibold text-background/90 mb-3">Company</h5>
               <ul className="space-y-2 text-sm">
-                <li><a href="#about" className="hover:text-primary transition-colors">About FoloMoney</a></li>
+                <li><Link href="/about" className="hover:text-primary transition-colors">About FoloMoney</Link></li>
                 <li><a href="#" className="hover:text-primary transition-colors">Careers</a></li>
-                {/* <li><a href="#" className="hover:text-primary transition-colors">Press</a></li> */}
                 <li><a href="#" className="hover:text-primary transition-colors">Blog</a></li>
               </ul>
             </div>
@@ -661,7 +661,6 @@ export default function Home() {
                 <li><a href="#faq" className="hover:text-primary transition-colors">Help Center</a></li>
                 <li><a href="#faq" className="hover:text-primary transition-colors">Contact Us</a></li>
                 <li><a href="#faq" className="hover:text-primary transition-colors">FAQs</a></li>
-                {/* <li><a href="#" className="hover:text-primary transition-colors">Status</a></li> */}
               </ul>
             </div>
             <div>
@@ -678,7 +677,6 @@ export default function Home() {
              <p className="mt-2 md:mt-0 text-xs opacity-80">Powered in partnership with DTB Bank.</p>
             <div className="flex space-x-4 mt-4 md:mt-0">
               {/* Add social media links here if available */}
-              {/* Example: <a href="#" aria-label="FoloMoney on Twitter" className="hover:text-primary transition-colors"><Gift className="h-5 w-5" /></a> */}
             </div>
           </div>
         </div>
