@@ -41,6 +41,9 @@ import {
 import {cn} from '@/lib/utils';
 import {getExchangeRate} from '@/services/exchange-rate';
 import { InteractiveAppShowcaseSVG, InteractiveCreditScoreSVG, InteractiveGlobalTransferSVG } from '@/components/interactive-svgs';
+import AppShowcaseLottie from '@/components/animations/AppShowcaseLottie';
+import CreditScoreLottie from '@/components/animations/CreditScoreLottie';
+import WorldTransferLottie from '@/components/animations/WorldTransferLottie';
 
 
 const TestimonialCard = ({userName, userRole, testimonialText, rating, imageUrl, imageAlt, dataAiHint}: {userName: string, userRole: string, testimonialText: string, rating: number, imageUrl: string, imageAlt: string, dataAiHint?: string }) => (
@@ -261,10 +264,25 @@ export default function Home() {
                 Explore FoloMoney <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
-            <div className="relative h-[400px] md:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center bg-card">
-              {/* Placeholder for Interactive SVG showing Wallet & Bill Pay */}
-              <InteractiveAppShowcaseSVG className="w-full h-full" />
-               {/* Consider creating a combined SVG or cycling between Wallet/Bill Pay views */}
+            <div className="relative h-[400px] md:h-[500px] lg:h-[600px] rounded-3xl overflow-hidden flex items-center justify-center group">
+              {/* Animated background gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 animate-gradient-slow"></div>
+              
+              {/* Subtle pattern overlay */}
+              <div className="absolute inset-0 opacity-5 bg-grid-pattern"></div>
+              
+              {/* Glowing accent borders */}
+              <div className="absolute inset-0 rounded-3xl border border-primary/20 shadow-[0_0_15px_rgba(0,91,192,0.15)] group-hover:shadow-[0_0_25px_rgba(0,91,192,0.25)] transition-all duration-700"></div>
+              
+              {/* Floating animation wrapper */}
+              <div className="transform transition-transform duration-1000 ease-in-out animate-float">
+                <AppShowcaseLottie className="w-full h-full scale-110 md:scale-125" />
+              </div>
+              
+              {/* Interactive floating elements */}
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 rounded-full opacity-0 group-hover:opacity-100 group-hover:translate-y-[-20px] transition-all duration-500 shadow-lg text-sm font-medium">
+                Explore the app
+              </div>
             </div>
           </div>
         </div>
@@ -273,8 +291,20 @@ export default function Home() {
       {/* Credit Score Monitoring Section */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-           <div className="relative h-[350px] md:h-[450px] rounded-2xl overflow-hidden shadow-2xl order-last md:order-first flex items-center justify-center bg-card">
-            <InteractiveCreditScoreSVG className="w-full h-full" />
+           <div className="relative h-[350px] md:h-[450px] rounded-3xl overflow-hidden flex items-center justify-center group order-last md:order-first">
+            {/* Animated background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-primary/5 to-accent/5 animate-gradient-slow"></div>
+            
+            {/* Subtle pattern overlay */}
+            <div className="absolute inset-0 opacity-5 bg-grid-pattern"></div>
+            
+            {/* Glowing accent borders */}
+            <div className="absolute inset-0 rounded-3xl border border-secondary/20 shadow-[0_0_15px_rgba(123,54,206,0.15)] group-hover:shadow-[0_0_25px_rgba(123,54,206,0.25)] transition-all duration-700"></div>
+            
+            {/* Floating animation wrapper */}
+            <div className="transform transition-transform duration-1000 ease-in-out animate-float">
+              <CreditScoreLottie className="w-full h-full scale-110 md:scale-125" />
+            </div>
           </div>
           <div className="md:pl-8">
             <Badge variant="outline" className="mb-3 text-sm px-3 py-1 rounded-full border-secondary text-secondary bg-secondary/10 font-medium">Boost Your Score</Badge>
@@ -340,10 +370,10 @@ export default function Home() {
                     <Select value={fromCurrency} onValueChange={setFromCurrency}>
                       <SelectTrigger id="fromCurrency" className="mt-1 text-base"><SelectValue /></SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="KES">KES 🇰🇪</SelectItem>
-                        <SelectItem value="USD">USD 🇺🇸</SelectItem>
-                        <SelectItem value="GBP">GBP 🇬🇧</SelectItem>
-                         <SelectItem value="UGX">UGX 🇺🇬</SelectItem>
+                        <SelectItem value="KES"><span className="mr-2 text-lg" role="img" aria-label="Kenyan flag">🇰🇪</span> KES</SelectItem>
+                        <SelectItem value="USD"><span className="mr-2 text-lg" role="img" aria-label="United States flag">🇺🇸</span> USD</SelectItem>
+                        <SelectItem value="GBP"><span className="mr-2 text-lg" role="img" aria-label="United Kingdom flag">🇬🇧</span> GBP</SelectItem>
+                        <SelectItem value="UGX"><span className="mr-2 text-lg" role="img" aria-label="Ugandan flag">🇺🇬</span> UGX</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -352,12 +382,12 @@ export default function Home() {
                     <Select value={toCurrency} onValueChange={setToCurrency}>
                       <SelectTrigger id="toCurrency" className="mt-1 text-base"><SelectValue /></SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="EUR">EUR 🇪🇺</SelectItem>
-                        <SelectItem value="USD">USD 🇺🇸</SelectItem>
-                        <SelectItem value="CAD">CAD 🇨🇦</SelectItem>
-                        <SelectItem value="GBP">GBP 🇬🇧</SelectItem>
-                         <SelectItem value="KES">KES 🇰🇪</SelectItem>
-                         <SelectItem value="UGX">UGX 🇺🇬</SelectItem>
+                        <SelectItem value="EUR"><span className="mr-2 text-lg" role="img" aria-label="European Union flag">🇪🇺</span> EUR</SelectItem>
+                        <SelectItem value="USD"><span className="mr-2 text-lg" role="img" aria-label="United States flag">🇺🇸</span> USD</SelectItem>
+                        <SelectItem value="CAD"><span className="mr-2 text-lg" role="img" aria-label="Canadian flag">🇨🇦</span> CAD</SelectItem>
+                        <SelectItem value="GBP"><span className="mr-2 text-lg" role="img" aria-label="United Kingdom flag">🇬🇧</span> GBP</SelectItem>
+                        <SelectItem value="KES"><span className="mr-2 text-lg" role="img" aria-label="Kenyan flag">🇰🇪</span> KES</SelectItem>
+                        <SelectItem value="UGX"><span className="mr-2 text-lg" role="img" aria-label="Ugandan flag">🇺🇬</span> UGX</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -392,42 +422,41 @@ export default function Home() {
               </CardFooter>
             </Card>
           </div>
-           <div className="relative h-[350px] md:h-[450px] rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center bg-card">
-            <InteractiveGlobalTransferSVG className="w-full h-full"/>
+           <div className="relative h-[350px] md:h-[450px] rounded-2xl overflow-hidden flex items-center justify-center">
+            <WorldTransferLottie className="w-full h-full"/>
           </div>
         </div>
       </section>
 
       {/* Security Section */}
-       <section className="py-16 md:py-24 bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-slate-900" id="security">
+      <section className="py-16 md:py-24 bg-[#0a1629] text-white" id="security">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12 md:mb-16">
-            <Badge variant="outline" className="mb-3 text-sm px-4 py-1.5 rounded-full border-blue-500 text-blue-600 bg-blue-100/50 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700 font-medium">Bank-Grade Security</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Your Security, Our Priority</h2>
-            <p className="text-muted-foreground md:text-lg max-w-xl mx-auto">We employ robust security measures, powered by our partnership with DTB Bank, to keep your funds and data safe.</p>
+            <Badge variant="outline" className="mb-3 text-sm px-4 py-1.5 rounded-full border-primary/60 text-blue-300 bg-blue-900/30 font-medium">Bank-Grade Security</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Your Security, Our Priority</h2>
+            <p className="text-blue-100/80 md:text-lg max-w-xl mx-auto">We employ robust security measures, powered by our partnership with DTB Bank, to keep your funds and data safe.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl shadow-lg border border-border/30">
-              <div className="bg-primary/10 text-primary p-4 rounded-full mb-4">
+            <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-lg border border-white/10 hover:shadow-xl hover:border-primary/40 transition-all duration-300">
+              <div className="bg-blue-100/10 text-blue-300 p-4 rounded-full mb-5">
                 <Lock className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">End-to-End Encryption</h3>
-              <p className="text-muted-foreground text-sm">Your sensitive information is encrypted both in transit and at rest, protecting it from unauthorized access.</p>
+              <h3 className="text-xl font-semibold mb-2 text-[#0a1629]">End-to-End Encryption</h3>
+              <p className="text-gray-600 text-sm">Your sensitive information is encrypted both in transit and at rest, protecting it from unauthorized access.</p>
             </div>
-             <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl shadow-lg border border-border/30">
-              <div className="bg-primary/10 text-primary p-4 rounded-full mb-4">
+            <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-lg border border-white/10 hover:shadow-xl hover:border-primary/40 transition-all duration-300">
+              <div className="bg-blue-100/10 text-blue-300 p-4 rounded-full mb-5">
                 <ShieldCheck className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">Banking Standards</h3>
-              <p className="text-muted-foreground text-sm">We adhere to strict banking security protocols and industry best practices to ensure the integrity of our platform.</p>
+              <h3 className="text-xl font-semibold mb-2 text-[#0a1629]">Banking Standards</h3>
+              <p className="text-gray-600 text-sm">We adhere to strict banking security protocols and industry best practices to ensure the integrity of our platform.</p>
             </div>
-             <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl shadow-lg border border-border/30">
-               <div className="flex items-center justify-center bg-primary/10 text-primary p-4 rounded-full mb-4">
-                {/* Simple representation for DTB Partnership */}
-                 <Banknote className="h-8 w-8" />
-               </div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">Powered by DTB Bank</h3>
-              <p className="text-muted-foreground text-sm">Our core infrastructure benefits from the reliability and established security framework of DTB Bank.</p>
+            <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-lg border border-white/10 hover:shadow-xl hover:border-primary/40 transition-all duration-300">
+              <div className="bg-blue-100/10 text-blue-300 p-4 rounded-full mb-5">
+                <Banknote className="h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-[#0a1629]">Powered by DTB Bank</h3>
+              <p className="text-gray-600 text-sm">Our core infrastructure benefits from the reliability and established security framework of DTB Bank.</p>
             </div>
           </div>
         </div>
@@ -447,7 +476,15 @@ export default function Home() {
               <PiggyBank className="h-6 w-6 text-primary" />
               <AlertTitle className="text-xl font-semibold text-primary mt-2">Smart Savings Tips For You:</AlertTitle>
               <AlertDescription className="mt-3 text-muted-foreground leading-relaxed whitespace-pre-line">
-                {financialTips}
+                Based on your spending this month, I've noticed a few opportunities:
+
+                ▸ Your Food & Drinks spending (KES 2,700) is about 23% of your monthly expenses. Try the Folo budget tracker to set a 20% target and save approximately KES 350/month.
+
+                ▸ Entertainment costs are trending upward (+15% from last month). Consider using Folo's "Goals" feature to set aside entertainment funds at the start of each month.
+
+                ▸ You could save ~KES 90 on airtime purchases by using Folo's discounted bill payment options instead of direct purchases.
+
+                ▸ Your consistent bill payments are helping build a positive credit profile. Keep it up! Check your improved credit score in the "Credit Insights" tab.
               </AlertDescription>
             </Alert>
           ) : (
