@@ -783,109 +783,104 @@ export default function Home() {
                     </div>
             
             <div className="order-1 md:order-2 relative mb-12 md:mb-0">
-              {/* Interactive features visualization */}
+              {/* Interactive features visualization - NEW IMPROVED VERSION */}
               <div className="relative max-w-[500px] mx-auto">
                 {/* Central hub element */}
-                <div className="relative z-20 w-28 h-28 mx-auto mb-8 rounded-full bg-gradient-to-br from-primary to-primary-dark shadow-xl flex items-center justify-center animate-subtle-pulse">
-                  <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center">
+                <div className="relative z-20 w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-primary to-primary-dark shadow-xl flex items-center justify-center">
+                  <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center">
                     <FoloLogo size="small" />
-                        </div>
+                  </div>
+                  <div className="absolute inset-0 rounded-full border-4 border-primary/30 animate-pulse opacity-70"></div>
                 </div>
                 
-                {/* Connected features */}
-                <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {[
-                    {
-                      icon: <Wallet className="h-6 w-6" />,
-                      title: "Smart Wallet",
-                      desc: "All your finances in one place",
-                      color: "bg-blue-50 border-blue-200",
-                      iconBg: "bg-blue-100",
-                      position: "sm:translate-x-8 sm:translate-y-3"
-                    },
-                    {
-                      icon: <Globe className="h-6 w-6" />,
-                      title: "Global Transfers",
-                      desc: "Send money worldwide with 0% fees",
-                      color: "bg-purple-50 border-purple-200",
-                      iconBg: "bg-purple-100",
-                      position: "sm:-translate-x-8 sm:translate-y-3"
-                    },
-                    {
-                      icon: <Receipt className="h-6 w-6" />,
-                      title: "Bill Payments",
-                      desc: "Manage all your bills automatically",
-                      color: "bg-green-50 border-green-200",
-                      iconBg: "bg-green-100",
-                      position: "sm:translate-x-8 sm:-translate-y-3"
-                    },
-                    {
-                      icon: <Gauge className="h-6 w-6" />,
-                      title: "Credit Insights",
-                      desc: "Monitor and improve your credit score",
-                      color: "bg-amber-50 border-amber-200",
-                      iconBg: "bg-amber-100",
-                      position: "sm:-translate-x-8 sm:-translate-y-3"
-                    }
-                  ].map((item, index) => (
-                    <div
-                      key={index}
-                      className={`p-5 rounded-2xl border shadow-md backdrop-blur-sm ${item.color} ${item.position} transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group animate-fade-in-up`}
-                      style={{ animationDelay: `${index * 0.15}s` }}
-                    >
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className={`w-12 h-12 rounded-xl ${item.iconBg} flex items-center justify-center text-primary`}>
-                          {item.icon}
+                {/* Feature icons in circular arrangement */}
+                <div className="relative mx-auto mt-8">
+                  <div className="relative h-[400px] w-[400px] mx-auto">
+                    {/* Circular connector line */}
+                    <div className="absolute top-1/2 left-1/2 w-[300px] h-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-primary/20"></div>
+                    
+                    {/* Feature icons positioned around circle */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 hover:scale-110">
+                      <div className="bg-blue-100 w-16 h-16 rounded-2xl shadow-lg flex items-center justify-center transform transition-all duration-300 hover:rotate-12 hover:shadow-xl group">
+                        <Wallet className="h-8 w-8 transition-transform duration-300 group-hover:scale-110 text-blue-600" />
+                        <div className="absolute top-full mt-2 bg-white px-3 py-1.5 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap font-medium text-slate-700 border border-slate-200">Smart Wallet</div>
+                      </div>
                     </div>
-                        <h4 className="font-bold text-lg">{item.title}</h4>
+                    
+                    <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 transition-all duration-500 hover:scale-110">
+                      <div className="bg-indigo-100 w-16 h-16 rounded-2xl shadow-lg flex items-center justify-center transform transition-all duration-300 hover:rotate-12 hover:shadow-xl group">
+                        <Globe className="h-8 w-8 transition-transform duration-300 group-hover:scale-110 text-indigo-600" />
+                        <div className="absolute left-auto right-full mr-2 bg-white px-3 py-1.5 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap font-medium text-slate-700 border border-slate-200">Global Transfers</div>
+                      </div>
+                    </div>
+                    
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 transition-all duration-500 hover:scale-110">
+                      <div className="bg-teal-100 w-16 h-16 rounded-2xl shadow-lg flex items-center justify-center transform transition-all duration-300 hover:rotate-12 hover:shadow-xl group">
+                        <Receipt className="h-8 w-8 transition-transform duration-300 group-hover:scale-110 text-teal-600" />
+                        <div className="absolute bottom-full mb-2 bg-white px-3 py-1.5 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap font-medium text-slate-700 border border-slate-200">Bill Payments</div>
+                      </div>
+                    </div>
+                    
+                    <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 hover:scale-110">
+                      <div className="bg-slate-100 w-16 h-16 rounded-2xl shadow-lg flex items-center justify-center transform transition-all duration-300 hover:rotate-12 hover:shadow-xl group">
+                        <Gauge className="h-8 w-8 transition-transform duration-300 group-hover:scale-110 text-slate-600" />
+                        <div className="absolute left-full ml-2 bg-white px-3 py-1.5 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap font-medium text-slate-700 border border-slate-200">Credit Insights</div>
+                      </div>
+                    </div>
+                    
+                    {/* Connector lines from center to each icon */}
+                    <div className="absolute top-1/2 left-1/2 w-[150px] h-1.5 -translate-y-1/2 bg-gradient-to-r from-blue-500 to-transparent"></div>
+                    <div className="absolute top-1/2 left-1/2 w-[150px] h-1.5 -translate-y-1/2 bg-gradient-to-l from-indigo-500 to-transparent rotate-180" style={{transformOrigin: 'left center'}}></div>
+                    <div className="absolute top-1/2 left-1/2 w-[150px] h-1.5 -translate-y-1/2 bg-gradient-to-r from-teal-500 to-transparent rotate-90" style={{transformOrigin: 'left center'}}></div>
+                    <div className="absolute top-1/2 left-1/2 w-[150px] h-1.5 -translate-y-1/2 bg-gradient-to-r from-slate-500 to-transparent -rotate-90" style={{transformOrigin: 'left center'}}></div>
+                    
+                    {/* Enhanced animated elements */}
+                    <div className="absolute top-1/2 left-1/2 w-32 h-32 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-slate-200 animate-spin-slow opacity-60" style={{animationDuration: '20s'}}></div>
+                    
+                    {/* Data flow dots */}
+                    <div className="absolute top-[25%] left-[65%] w-2 h-2 rounded-full bg-blue-500 animate-pulse" style={{animationDuration: '3s'}}></div>
+                    <div className="absolute top-[50%] right-[25%] w-2 h-2 rounded-full bg-indigo-500 animate-pulse" style={{animationDuration: '2.2s'}}></div>
+                    <div className="absolute bottom-[35%] right-[55%] w-2 h-2 rounded-full bg-teal-500 animate-pulse" style={{animationDuration: '2.8s'}}></div>
+                    <div className="absolute bottom-[50%] left-[25%] w-2 h-2 rounded-full bg-slate-500 animate-pulse" style={{animationDuration: '2.5s'}}></div>
+                    
+                    {/* Moving dots from center to features */}
+                    <div className="absolute top-1/2 left-1/2 animate-ping">
+                      <div className="w-2 h-2 -translate-x-1/2 -translate-y-1/2 bg-blue-500 rounded-full opacity-75" 
+                          style={{animationDuration: '3s'}}></div>
+                    </div>
+                    <div className="absolute top-1/2 left-1/2 animate-ping">
+                      <div className="w-2 h-2 -translate-x-1/2 -translate-y-1/2 bg-indigo-500 rounded-full opacity-75" 
+                          style={{animationDuration: '4s', animationDelay: '1s'}}></div>
+                    </div>
+                    <div className="absolute top-1/2 left-1/2 animate-ping">
+                      <div className="w-2 h-2 -translate-x-1/2 -translate-y-1/2 bg-teal-500 rounded-full opacity-75" 
+                          style={{animationDuration: '3.5s', animationDelay: '0.5s'}}></div>
+                    </div>
+                    <div className="absolute top-1/2 left-1/2 animate-ping">
+                      <div className="w-2 h-2 -translate-x-1/2 -translate-y-1/2 bg-slate-500 rounded-full opacity-75" 
+                          style={{animationDuration: '2.5s', animationDelay: '1.5s'}}></div>
+                    </div>
                   </div>
-                      <p className="text-foreground/70 text-sm">{item.desc}</p>
-                      
-                      {/* Interactive indicator */}
-                      <div className="mt-4 h-1.5 w-full bg-white/50 rounded-full overflow-hidden">
-                        <div className="h-full bg-primary/30 rounded-full animate-pulse-slow" style={{ width: `${60 + index * 10}%` }}></div>
-                  </div>
-                  </div>
-                  ))}
-                </div>
-                
-                {/* Connection lines */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-[450px] max-h-[450px] -z-10">
-                  {/* Animated pulse rings */}
-                  <div className="absolute inset-0 rounded-full border-4 border-primary/5 animate-pulse-slow"></div>
-                  <div className="absolute inset-[15%] rounded-full border-4 border-primary/10 animate-pulse-slower"></div>
                   
-                  {/* Connection nodes */}
-                  <div className="absolute top-1/2 left-0 w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
-                  <div className="absolute top-1/2 right-0 w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
-                  <div className="absolute top-0 left-1/2 w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
-                  <div className="absolute bottom-0 left-1/2 w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
-                  
-                  {/* Diagonal connections */}
-                  <div className="absolute top-[15%] left-[15%] w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
-                  <div className="absolute top-[15%] right-[15%] w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
-                  <div className="absolute bottom-[15%] left-[15%] w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
-                  <div className="absolute bottom-[15%] right-[15%] w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
-              </div>
-                
-                {/* Additional floating elements */}
-                <div className="absolute top-0 right-0 bg-white p-3 rounded-xl shadow-md animate-float z-30">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-amber-500" />
-                    <span className="text-sm font-medium">AI Powered</span>
-            </div>
-          </div>
-          
-                <div className="absolute -bottom-2 left-0 bg-white p-3 rounded-xl shadow-md animate-float z-30" style={{animationDelay: '1s'}}>
-                  <div className="flex items-center gap-2">
-                    <ShieldCheck className="h-5 w-5 text-green-500" />
-                    <span className="text-sm font-medium">Secure & Protected</span>
+                  {/* Info badges */}
+                  <div className="absolute top-0 right-0 bg-white border border-gray-200 p-3 rounded-xl shadow-md animate-bounce" style={{animationDuration: '3s'}}>
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="h-5 w-5 text-blue-500" />
+                      <span className="text-sm font-medium text-slate-800">AI Powered</span>
+                    </div>
                   </div>
-                </div>
-                
-                {/* Background decoration */}
-                <div className="absolute -z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px]">
-                  <div className="absolute inset-0 bg-primary/5 rounded-full blur-3xl"></div>
+                  
+                  <div className="absolute bottom-0 left-0 bg-white border border-gray-200 p-3 rounded-xl shadow-md animate-bounce" style={{animationDuration: '3s', animationDelay: '1.5s'}}>
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck className="h-5 w-5 text-teal-500" />
+                      <span className="text-sm font-medium text-slate-800">100% Secure</span>
+                    </div>
+                  </div>
+                  
+                  {/* Background decoration */}
+                  <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[430px] h-[430px] pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-100/80 via-indigo-100/50 to-slate-100/30 rounded-full blur-3xl"></div>
+                  </div>
                 </div>
               </div>
             </div>
