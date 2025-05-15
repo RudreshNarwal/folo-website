@@ -10,7 +10,7 @@ import {Label} from '@/components/ui/label';
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 import {Badge} from '@/components/ui/badge';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useRef} from 'react';
 import {getPersonalizedFinancialTips} from '@/ai/flows/personalized-financial-tips';
 import {Alert, AlertDescription, AlertTitle} from '@/components/ui/alert';
 import {
@@ -37,6 +37,8 @@ import {
   Sparkles,
   Gauge,
   Receipt,
+  ChevronRight,
+  ArrowUpRight,
 } from 'lucide-react';
 import {cn} from '@/lib/utils';
 import {getExchangeRate} from '@/services/exchange-rate';
@@ -63,7 +65,7 @@ const TestimonialCard = ({userName, userRole, testimonialText, rating, imageUrl,
       <p className="text-sm text-muted-foreground leading-relaxed">&quot;{testimonialText}&quot;</p>
       <div className="flex items-center mt-4">
         {Array.from({length: 5}, (_, i) => (
-          <svg key={i} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={i < rating ? "hsl(var(--accent))" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={cn("w-5 h-5", i < rating ? "text-accent" : "text-muted-foreground/50")}>
+          <svg key={i} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={i < rating ? "hsl(var(--primary))" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={cn("w-5 h-5", i < rating ? "text-primary" : "text-muted-foreground/50")}>
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
           </svg>
         ))}
@@ -107,6 +109,56 @@ const ComingSoonCard = ({ icon, title, description }: { icon: React.ReactNode, t
   </Card>
 );
 
+// Logo SVG Component
+const FoloLogo = ({ size = 'default' }: { size?: 'small' | 'default' | 'large' }) => {
+  const sizeClasses = {
+    small: 'w-10 h-10',
+    default: 'w-16 h-16',
+    large: 'w-32 h-32'
+  };
+  
+  return (
+    <svg 
+      width="100%" 
+      height="100%" 
+      viewBox="0 0 200 200" 
+      xmlns="http://www.w3.org/2000/svg"
+      className={sizeClasses[size]}
+    >
+      {/* Background Circle */}
+      <circle cx="100" cy="100" r="95" fill="white"/>
+      {/* Outer Ring */}
+      <circle cx="100" cy="100" r="90" fill="none" stroke="#007AFF" strokeWidth="10"/>
+
+      {/* Text "folo" */}
+      <text
+         x="50%"
+         y="46%" 
+         fontFamily="'Open Sans', Arial, sans-serif"
+         fontSize="72" 
+         fontWeight="700"
+         fill="#007AFF"
+         textAnchor="middle"
+         dominantBaseline="central"> 
+         folo
+      </text>
+
+      {/* Text "MONEY" */}
+      <text
+         x="50%"
+         y="68%" 
+         fontFamily="'Open Sans', Arial, sans-serif"
+         fontSize="22" 
+         fontWeight="400" 
+         fill="#007AFF"
+         textAnchor="middle"
+         letterSpacing="1.5" 
+         dominantBaseline="central">
+         MONEY
+      </text>
+    </svg>
+  );
+};
 
 export default function Home() {
   const [exchangeRate, setExchangeRate] = useState<number | null>(null);
@@ -115,6 +167,18 @@ export default function Home() {
   const [toCurrency, setToCurrency] = useState('EUR');
   const [amountToSend, setAmountToSend] = useState('100');
   const [financialTips, setFinancialTips] = useState('');
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // Handle scroll for header animation
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 30);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Example spending data (replace with actual user data fetching if applicable)
   const spendingData = `
@@ -186,103 +250,546 @@ export default function Home() {
 
   return (
     <div className="font-sans antialiased bg-background text-foreground">
-      {/* Hero Section */}
-      <section className="relative py-28 md:py-40 bg-gradient-to-br from-primary via-primary/90 to-secondary text-primary-foreground overflow-hidden">
-        <div className="container mx-auto px-6 text-center relative z-10">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-md">
-            Your Money, <span className="text-accent">Your Way.</span>
-          </h1>
-          <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto opacity-90">
-            Manage your finances effortlessly with FoloMoney. Your secure digital wallet for instant payments, bill management, <span className="font-bold text-accent">ZERO-FEE</span> global transfers, and credit insights - all in one place.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold rounded-lg px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-              Get FoloMoney <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button size="lg" variant="outline" className="bg-transparent border-accent text-accent hover:bg-accent/10 font-semibold rounded-lg px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-              Learn More
-            </Button>
+      {/* Modern Header */}
+      <header 
+        className={cn(
+          "fixed top-0 left-0 right-0 w-full z-[100] transition-all duration-300 will-change-transform",
+          isScrolled 
+            ? "py-3 bg-white/95 shadow-sm backdrop-blur-md border-b border-border/10" 
+            : "py-5 bg-transparent"
+        )}
+      >
+        <div className="container mx-auto px-6">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <div className="flex items-center transition-transform duration-300">
+              <div className={cn(
+                "transition-all duration-300 ease-in-out transform",
+                isScrolled ? "scale-75" : "scale-100"
+              )}>
+                <FoloLogo size={isScrolled ? "small" : "default"} />
+              </div>
+              <span className={cn(
+                "ml-3 font-semibold text-primary transition-all duration-300",
+                isScrolled ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-5"
+              )}>
+                FoloMoney
+              </span>
+            </div>
+            
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center">
+              <ul className="flex space-x-10">
+                {['Features', 'Transfers', 'Security', 'Testimonials', 'FAQ'].map((item) => (
+                  <li key={item}>
+                    <a 
+                      href={`#${item.toLowerCase()}`} 
+                      className={cn(
+                        "text-sm font-medium transition-colors relative px-1 py-2",
+                        isScrolled 
+                          ? "text-foreground hover:text-primary" 
+                          : "text-foreground/90 hover:text-primary",
+                        "after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
+                      )}
+                    >
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            
+            {/* CTA Button */}
+            <div className="flex items-center">
+              <Button 
+                className={cn(
+                  "rounded-full px-6 font-medium transition-all duration-300 shadow-sm",
+                  isScrolled 
+                    ? "bg-primary hover:bg-primary-dark text-white" 
+                    : "bg-white hover:bg-white/90 text-primary hover:shadow-md"
+                )}
+              >
+                <span className="flex items-center">
+                  Download Now 
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    className="ml-2 h-4 w-4"
+                  >
+                    <path d="M12 17V3" />
+                    <path d="m6 11 6 6 6-6" />
+                    <path d="M19 21H5" />
+                  </svg>
+                </span>
+              </Button>
+              
+              {/* Mobile Menu Button */}
+              <button 
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className={cn(
+                  "md:hidden ml-4 p-2 rounded-md transition-colors", 
+                  isScrolled 
+                    ? "text-foreground hover:bg-muted" 
+                    : "text-foreground/90 hover:bg-white/10"
+                )}
+              >
+                {mobileMenuOpen ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+                )}
+              </button>
+            </div>
+          </div>
+          
+          {/* Mobile Menu */}
+          <div className={cn(
+            "md:hidden overflow-hidden transition-all duration-300 ease-in-out",
+            mobileMenuOpen 
+              ? "max-h-[300px] opacity-100 mt-4" 
+              : "max-h-0 opacity-0"
+          )}>
+            <div className={cn(
+              "rounded-xl p-4 mb-2 transition-all duration-300",
+              isScrolled ? "bg-muted/50" : "bg-white/10 backdrop-blur-sm"
+            )}>
+              <ul className="flex flex-col space-y-3">
+                {['Features', 'Transfers', 'Security', 'Testimonials', 'FAQ'].map((item) => (
+                  <li key={item}>
+                    <a 
+                      href={`#${item.toLowerCase()}`} 
+                      className="text-base font-medium text-foreground hover:text-primary transition-colors block py-2"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item}
+                    </a>
+                  </li>
+                ))}
+                <li className="pt-2 border-t border-border/30">
+                  <Button className="w-full bg-primary hover:bg-primary-dark text-white">
+                    <span className="flex items-center justify-center">
+                      Download Now 
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        className="ml-2 h-4 w-4"
+                      >
+                        <path d="M12 17V3" />
+                        <path d="m6 11 6 6 6-6" />
+                        <path d="M19 21H5" />
+                      </svg>
+                    </span>
+                  </Button>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div className="absolute -bottom-1/3 left-0 w-full h-2/3 bg-background rounded-t-full_to_flat_bottom opacity-20" style={{ borderRadius: '50% 50% 0 0 / 100px 100px 0 0' }}></div>
-         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          <div className="absolute left-1/4 top-1/4 -translate-x-1/2 -translate-y-1/2 blur-3xl opacity-30 w-[400px] h-[400px] rounded-full bg-accent/30 animate-pulse-slow"></div>
-          <div className="absolute right-1/4 bottom-1/4 translate-x-1/2 translate-y-1/2 blur-3xl opacity-30 w-[350px] h-[350px] rounded-full bg-primary-foreground/30 animate-pulse-slower"></div>
+      </header>
+      
+      {/* Hero Section - Modern Redesign */}
+      <section className="relative pt-24 pb-28 md:pt-32 md:pb-40 overflow-hidden">
+        {/* Background with subtle gradient */}
+        <div className="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+        
+        {/* Abstract shapes for visual appeal */}
+        <div className="absolute top-20 right-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl opacity-10 animate-pulse-slow"></div>
+        <div className="absolute bottom-20 left-10 w-80 h-80 bg-primary/10 rounded-full blur-3xl opacity-10 animate-pulse-slower"></div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-16">
+            {/* Text Content */}
+            <div className="flex-1 text-center lg:text-left animate-slide-up pt-20">
+              <Badge variant="outline" className="mb-6 px-4 py-1.5 border-primary text-primary bg-primary/5 text-sm font-medium rounded-full">
+                Financial Freedom for Gen Z & Millennials
+              </Badge>
+              
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6">
+                Your Money, <span className="text-primary font-bold">Your Way.</span>
+              </h1>
+              
+              <p className="text-lg md:text-xl mb-8 text-muted-foreground max-w-2xl">
+                Manage your finances effortlessly with FoloMoney. Your secure digital wallet for instant payments, bill management, <span className="font-bold text-primary">ZERO-FEE</span> global transfers, and credit insights - all in one place.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+                <Button size="lg" className="bg-primary hover:bg-primary-dark text-white px-6 py-6 rounded-xl font-medium text-lg transition-all duration-300 hover:shadow-glow-primary hover:-translate-y-1">
+                  Get Started <ArrowUpRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5 px-6 py-6 rounded-xl font-medium text-lg transition-all">
+                  See How It Works
+                </Button>
+              </div>
+              
+              {/* Social Proof */}
+              <div className="flex items-center justify-center lg:justify-start mt-12 gap-6">
+                <div className="flex -space-x-3">
+                  <Avatar className="border-2 border-white h-10 w-10">
+                    <AvatarImage src="https://i.pravatar.cc/100?img=1" alt="User" />
+                    <AvatarFallback>JP</AvatarFallback>
+                  </Avatar>
+                  <Avatar className="border-2 border-white h-10 w-10">
+                    <AvatarImage src="https://i.pravatar.cc/100?img=2" alt="User" />
+                    <AvatarFallback>ML</AvatarFallback>
+                  </Avatar>
+                  <Avatar className="border-2 border-white h-10 w-10">
+                    <AvatarImage src="https://i.pravatar.cc/100?img=3" alt="User" />
+                    <AvatarFallback>SK</AvatarFallback>
+                  </Avatar>
+                </div>
+                <div className="text-sm">
+                  <p className="font-medium">Trusted by 25,000+ users</p>
+                  <div className="flex items-center text-primary">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                    <span className="text-muted-foreground ml-1">4.9/5</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Hero Image / Animation */}
+            <div className="flex-1 w-full max-w-xl">
+              <div className="relative">
+                {/* Stylized background card */}
+                <div className="absolute inset-0 bg-card rounded-3xl border border-border/30 shadow-xl transform rotate-3 scale-95 -z-10"></div>
+                
+                {/* Main card with app showcase */}
+                <Card className="relative overflow-hidden rounded-3xl border border-primary/20 shadow-2xl animate-float glass">
+                  <CardContent className="p-6">
+                    {/* Animated app showcase */}
+                    <div className="relative h-[400px] md:h-[450px] flex items-center justify-center">
+                      <AppShowcaseLottie className="w-full h-full scale-110 md:scale-125" />
+                      
+                      {/* Floating annotation bubbles */}
+                      <div className="absolute top-10 right-10 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl shadow-lg border border-primary/20 text-sm font-medium text-primary-dark animate-float">
+                        <Wallet className="inline h-4 w-4 mr-1" /> Instant Transfers
+                      </div>
+                      <div className="absolute bottom-20 left-10 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl shadow-lg border border-primary/20 text-sm font-medium text-primary-dark animate-float" style={{animationDelay: '1s'}}>
+                        <Globe className="inline h-4 w-4 mr-1" /> Zero-Fee Global
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                {/* Decorative elements */}
+                <div className="absolute top-1/2 -right-6 transform -translate-y-1/2 bg-primary text-white p-4 rounded-full shadow-glow-primary animate-subtle-pulse">
+                  <Sparkles className="h-6 w-6" />
+                </div>
+                <div className="absolute -bottom-6 left-1/3 transform translate-x-1/2 bg-white text-primary p-3 rounded-full shadow-xl border border-primary/20 animate-float">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Brands/Partners Section - Updated with modern logos */}
+          <div className="mt-24 pt-10 border-t border-border/50">
+            <p className="text-center text-sm font-medium text-muted-foreground mb-6">TRUSTED BY LEADING FINANCIAL INSTITUTIONS</p>
+            <div className="flex flex-wrap justify-center gap-8 items-center">
+              {/* DTB Bank Logo */}
+              <div className="h-12 transition-all duration-300 hover:opacity-80">
+                <div className="bg-white shadow-sm rounded-lg px-6 py-2 border border-border/20">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-primary rounded-md flex items-center justify-center text-white text-xs font-bold">D</div>
+                    <span className="font-semibold text-foreground">DTB Bank</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* VISA Logo */}
+              <div className="h-12 transition-all duration-300 hover:opacity-80">
+                <div className="bg-white shadow-sm rounded-lg px-6 py-2 border border-border/20">
+                  <div className="flex items-center">
+                    <span className="font-bold text-[#1434CB] tracking-wider text-xl">VISA</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Mastercard Logo */}
+              <div className="h-12 transition-all duration-300 hover:opacity-80">
+                <div className="bg-white shadow-sm rounded-lg px-6 py-2 border border-border/20">
+                  <div className="flex items-center gap-2">
+                    <div className="flex">
+                      <div className="w-5 h-5 bg-[#EB001B] rounded-full opacity-80"></div>
+                      <div className="w-5 h-5 bg-[#F79E1B] rounded-full opacity-80 -ml-2"></div>
+                    </div>
+                    <span className="font-semibold text-foreground">Mastercard</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* MPESA Logo */}
+              <div className="h-12 transition-all duration-300 hover:opacity-80">
+                <div className="bg-white shadow-sm rounded-lg px-6 py-2 border border-border/20">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-[#4CAF50] rounded-full flex items-center justify-center text-white text-xs font-bold">M</div>
+                    <span className="font-semibold text-foreground">MPESA</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Why Choose Us / Key Offerings Section */}
-      <section className="py-16 md:py-24" id="features">
+      <section className="py-20 md:py-28" id="features">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-12 md:mb-16">
-            <Badge variant="secondary" className="mb-3 text-sm px-4 py-1.5 rounded-full bg-secondary/10 text-secondary font-medium">Why FoloMoney?</Badge>
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="mb-4 text-sm px-4 py-1.5 rounded-full border-primary text-primary bg-primary/5 font-medium">Why FoloMoney?</Badge>
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Your All-In-One Financial Hub</h2>
-            <p className="text-muted-foreground md:text-lg max-w-xl mx-auto">Simplify your life. FoloMoney brings your essential financial tools together with transparency and <span className="font-semibold text-accent">ZERO transfer fees</span>.</p>
+            <p className="text-muted-foreground md:text-lg max-w-2xl mx-auto">Experience a complete financial solution designed for today's digital lifestyle. All with <span className="font-semibold text-primary">ZERO transfer fees</span> and ultimate security.</p>
           </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <FeatureCard icon={<Wallet className="h-7 w-7" />} title="Smart Digital Wallet" description="Securely store funds, top-up easily, and send money instantly to other users." dataAiHint="digital payment" />
-            <FeatureCard icon={<Receipt className="h-7 w-7" />} title="Effortless Bill Pay" description="Manage and pay bills from utilities to airtime in one place. Schedule payments & get reminders." dataAiHint="utility payment" />
-            <FeatureCard icon={<Globe className="h-7 w-7" />} title="Zero-Fee Global Reach" description="Send money worldwide with competitive rates and absolutely NO transfer fees." dataAiHint="international money" />
-            <FeatureCard icon={<Gauge className="h-7 w-7" />} title="Credit Score Insights" description="Monitor your score, understand key factors, and get tips to improve your financial health." dataAiHint="credit check" />
+            {/* Card 1: Digital Wallet - Fixed hover animation */}
+            <div className="group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl -z-10"></div>
+              <Card className="h-full border border-border/40 bg-white hover:border-primary/30 transition-all duration-300 hover:shadow-card-hover rounded-2xl overflow-hidden backdrop-blur-sm glass will-change-transform">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/0 via-primary to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <CardHeader className="pb-4">
+                  <div className="mb-4 w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
+                    <Wallet className="h-7 w-7 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold">Smart Digital Wallet</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-muted-foreground leading-relaxed">
+                    Send and receive money instantly. Top up from your bank account or mobile money. Track all your transactions in real-time with detailed analytics.
+                  </CardDescription>
+                </CardContent>
+                <CardFooter className="pt-0">
+                  <Button variant="ghost" className="p-0 h-auto text-primary font-medium hover:text-primary-dark hover:bg-transparent group">
+                    Learn more <ChevronRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+            
+            {/* Card 2: Bill Payments - Fixed hover animation */}
+            <div className="group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl -z-10"></div>
+              <Card className="h-full border border-border/40 bg-white hover:border-primary/30 transition-all duration-300 hover:shadow-card-hover rounded-2xl overflow-hidden backdrop-blur-sm glass will-change-transform">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/0 via-primary to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <CardHeader className="pb-4">
+                  <div className="mb-4 w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
+                    <Receipt className="h-7 w-7 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold">Effortless Bill Pay</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-muted-foreground leading-relaxed">
+                    Pay all your bills from one place - utilities, airtime, subscriptions and more. Set up recurring payments and never miss a due date again.
+                  </CardDescription>
+                </CardContent>
+                <CardFooter className="pt-0">
+                  <Button variant="ghost" className="p-0 h-auto text-primary font-medium hover:text-primary-dark hover:bg-transparent group">
+                    Learn more <ChevronRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+            
+            {/* Card 3: Zero-Fee Global Transfers - Fixed hover animation */}
+            <div className="group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl -z-10"></div>
+              <Card className="h-full border border-border/40 bg-white hover:border-primary/30 transition-all duration-300 hover:shadow-card-hover rounded-2xl overflow-hidden backdrop-blur-sm glass will-change-transform">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/0 via-primary to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <CardHeader className="pb-4">
+                  <div className="mb-4 w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
+                    <Globe className="h-7 w-7 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold">Zero-Fee Global Reach</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-muted-foreground leading-relaxed">
+                    Send money worldwide with competitive exchange rates and absolutely NO transfer fees. Fast, secure, and completely transparent.
+                  </CardDescription>
+                </CardContent>
+                <CardFooter className="pt-0">
+                  <Button variant="ghost" className="p-0 h-auto text-primary font-medium hover:text-primary-dark hover:bg-transparent group">
+                    Learn more <ChevronRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+            
+            {/* Card 4: Credit Score Insights - Fixed hover animation */}
+            <div className="group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl -z-10"></div>
+              <Card className="h-full border border-border/40 bg-white hover:border-primary/30 transition-all duration-300 hover:shadow-card-hover rounded-2xl overflow-hidden backdrop-blur-sm glass will-change-transform">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/0 via-primary to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <CardHeader className="pb-4">
+                  <div className="mb-4 w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
+                    <Gauge className="h-7 w-7 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold">Credit Score Insights</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-muted-foreground leading-relaxed">
+                    Monitor your credit score in real-time. Get personalized insights and actionable tips to improve your financial health and creditworthiness.
+                  </CardDescription>
+                </CardContent>
+                <CardFooter className="pt-0">
+                  <Button variant="ghost" className="p-0 h-auto text-primary font-medium hover:text-primary-dark hover:bg-transparent group">
+                    Learn more <ChevronRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Detailed Features Overview Section */}
-      <section className="py-16 md:py-24 bg-muted">
+      <section className="py-20 md:py-28 bg-muted/30">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <Badge variant="outline" className="mb-3 text-sm px-3 py-1 rounded-full border-primary text-primary bg-primary/10 font-medium">Core Features</Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">Manage Everything Seamlessly</h2>
-              <p className="text-muted-foreground md:text-lg mb-8">
-                FoloMoney integrates your financial life. Top up, transfer, pay bills, and track your credit – all with intuitive design and zero friction.
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="order-2 md:order-1">
+              <Badge variant="outline" className="mb-4 text-sm px-4 py-1.5 rounded-full border-primary text-primary bg-primary/5 font-medium">Core Features</Badge>
+              
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
+                Smart Money for <span className="text-primary">Smart People</span>
+              </h2>
+              
+              <p className="text-muted-foreground md:text-lg mb-10">
+                FoloMoney integrates your entire financial life. Designed for digital natives who want simple, transparent, and fee-free financial tools.
               </p>
-              <div className="space-y-5">
-                <div className="flex items-start gap-4">
-                  <div className="bg-primary text-primary-foreground p-2 rounded-full mt-1 flex-shrink-0"><Wallet className="h-5 w-5" /></div>
-                  <div>
-                    <h3 className="font-semibold text-lg text-foreground">Your Secure Wallet</h3>
-                    <p className="text-muted-foreground text-sm">Store funds safely. Top-up via DTB bank accounts or mobile money. Send instant P2P transfers to friends on FoloMoney. View detailed transaction history.</p>
+              
+              <div className="space-y-6">
+                {/* Feature 1 */}
+                <div className="group">
+                  <div className="flex items-start gap-5 p-4 rounded-xl border border-border/0 group-hover:border-primary/20 transition-all duration-300 group-hover:bg-white group-hover:shadow-lg">
+                    <div className="bg-primary/10 text-primary p-3 rounded-xl mt-1 flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                      <Wallet className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors duration-300">Your Secure Wallet</h3>
+                      <p className="text-muted-foreground mt-2">Top-up instantly via mobile money or bank transfer. Send money to anyone with a phone number or email - even if they don't have the app yet.</p>
+                      
+                      <div className="flex mt-3 gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary/10 scrollbar-track-transparent">
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Instant Transfers</Badge>
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Mobile Money</Badge>
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Bank Accounts</Badge>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                 <div className="flex items-start gap-4">
-                   <div className="bg-primary text-primary-foreground p-2 rounded-full mt-1 flex-shrink-0"><FileText className="h-5 w-5" /></div>
-                  <div>
-                    <h3 className="font-semibold text-lg text-foreground">Simplified Bill Payments</h3>
-                    <p className="text-muted-foreground text-sm">Pay utilities, airtime, and more from our growing list of billers. Schedule payments, get reminders, and track payment history easily.</p>
+                
+                {/* Feature 2 */}
+                <div className="group">
+                  <div className="flex items-start gap-5 p-4 rounded-xl border border-border/0 group-hover:border-primary/20 transition-all duration-300 group-hover:bg-white group-hover:shadow-lg">
+                    <div className="bg-primary/10 text-primary p-3 rounded-xl mt-1 flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                      <FileText className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors duration-300">Simplified Bill Payments</h3>
+                      <p className="text-muted-foreground mt-2">Pay utilities, airtime, and subscriptions from our growing list of billers. Schedule recurring payments and get timely reminders.</p>
+                      
+                      <div className="flex mt-3 gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary/10 scrollbar-track-transparent">
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Auto-Pay</Badge>
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Reminders</Badge>
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Payment History</Badge>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-start gap-4">
-                  <div className="bg-primary text-primary-foreground p-2 rounded-full mt-1 flex-shrink-0"><Send className="h-5 w-5" /></div>
-                  <div>
-                    <h3 className="font-semibold text-lg text-foreground">Truly Free Global Transfers</h3>
-                    <p className="text-muted-foreground text-sm">Send money internationally with competitive exchange rates and absolutely ZERO transfer fees. Fast, secure, and transparent.</p>
+                
+                {/* Feature 3 */}
+                <div className="group">
+                  <div className="flex items-start gap-5 p-4 rounded-xl border border-border/0 group-hover:border-primary/20 transition-all duration-300 group-hover:bg-white group-hover:shadow-lg">
+                    <div className="bg-primary/10 text-primary p-3 rounded-xl mt-1 flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                      <Globe className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors duration-300">Truly Free Global Transfers</h3>
+                      <p className="text-muted-foreground mt-2">Send money internationally with competitive exchange rates and absolutely ZERO transfer fees. Fast, secure, and transparent.</p>
+                      
+                      <div className="flex mt-3 gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary/10 scrollbar-track-transparent">
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Fee-Free</Badge>
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">40+ Countries</Badge>
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Competitive Rates</Badge>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <Button className="mt-10 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg px-7 py-3 transform hover:scale-105 transition-transform">
-                Explore FoloMoney <ArrowRight className="ml-2 h-5 w-5" />
+              
+              <Button className="mt-12 bg-primary hover:bg-primary-dark text-white rounded-xl px-7 py-6 text-base font-medium transition-all duration-300 hover:shadow-glow-primary hover:-translate-y-1">
+                Explore All Features <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
-            <div className="relative h-[400px] md:h-[500px] lg:h-[600px] rounded-3xl overflow-hidden flex items-center justify-center group">
-              {/* Animated background gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 animate-gradient-slow"></div>
-              
-              {/* Subtle pattern overlay */}
-              <div className="absolute inset-0 opacity-5 bg-grid-pattern"></div>
-              
-              {/* Glowing accent borders */}
-              <div className="absolute inset-0 rounded-3xl border border-primary/20 shadow-[0_0_15px_rgba(0,91,192,0.15)] group-hover:shadow-[0_0_25px_rgba(0,91,192,0.25)] transition-all duration-700"></div>
-              
-              {/* Floating animation wrapper */}
-              <div className="transform transition-transform duration-1000 ease-in-out animate-float">
-                <AppShowcaseLottie className="w-full h-full scale-110 md:scale-125" />
-              </div>
-              
-              {/* Interactive floating elements */}
-              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 rounded-full opacity-0 group-hover:opacity-100 group-hover:translate-y-[-20px] transition-all duration-500 shadow-lg text-sm font-medium">
-                Explore the app
+            
+            <div className="order-1 md:order-2 relative">
+              {/* Phone mockup with app UI */}
+              <div className="relative mx-auto w-full max-w-[400px]">
+                {/* Phone frame */}
+                <div className="relative z-10 overflow-hidden rounded-[2.5rem] border-8 border-[#1a1a1a] bg-[#1a1a1a] shadow-xl">
+                  {/* Phone screen */}
+                  <div className="aspect-[9/19] overflow-hidden rounded-[2rem] bg-white">
+                    {/* App UI */}
+                    <div className="relative h-full w-full bg-background">
+                      {/* App content */}
+                      <div className="h-full w-full">
+                        <AppShowcaseLottie className="w-full h-full object-cover" />
+                      </div>
+                      
+                      {/* Status bar */}
+                      <div className="absolute top-0 left-0 w-full bg-gradient-to-b from-black/40 to-transparent text-white p-2 flex justify-between items-center text-xs">
+                        <span>9:41</span>
+                        <div className="flex items-center gap-1">
+                          <div className="h-2 w-2 rounded-full bg-white"></div>
+                          <div className="h-2 w-2 rounded-full bg-white"></div>
+                          <div className="h-2 w-2 rounded-full bg-white"></div>
+                          <div className="h-2 w-2 rounded-full bg-white"></div>
+                        </div>
+                      </div>
+                      
+                      {/* Feature Highlights */}
+                      <div className="absolute top-1/4 right-4 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg px-3 py-2 border border-primary/20 animate-float">
+                        <div className="flex items-center gap-2">
+                          <div className="h-6 w-6 bg-primary rounded-full flex items-center justify-center text-white text-xs">+</div>
+                          <span className="text-xs font-medium text-primary-dark">Add Money</span>
+                        </div>
+                      </div>
+                      
+                      <div className="absolute bottom-1/4 left-4 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg px-3 py-2 border border-primary/20 animate-float" style={{animationDelay: '1s'}}>
+                        <div className="flex items-center gap-2">
+                          <div className="h-6 w-6 bg-primary-dark rounded-full flex items-center justify-center text-white text-xs">
+                            <Send className="h-3 w-3" />
+                          </div>
+                          <span className="text-xs font-medium text-primary-dark">Send Money</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Decorative elements */}
+                <div className="absolute top-0 right-0 -mr-6 mt-10 bg-primary text-white p-4 rounded-full shadow-lg animate-float">
+                  <Smartphone className="h-6 w-6" />
+                </div>
+                
+                <div className="absolute -bottom-2 -left-2 bg-primary-gradient p-4 rounded-2xl shadow-lg animate-subtle-pulse">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-6 w-6 text-white" />
+                    <span className="text-white font-medium">Secure & Fast</span>
+                  </div>
+                </div>
+                
+                {/* Background decoration */}
+                <div className="absolute -z-10 -top-6 -right-6 w-64 h-64 bg-primary/5 rounded-full blur-xl"></div>
+                <div className="absolute -z-10 -bottom-8 -left-8 w-72 h-72 bg-primary/5 rounded-full blur-xl"></div>
               </div>
             </div>
           </div>
@@ -290,213 +797,633 @@ export default function Home() {
       </section>
 
       {/* Credit Score Monitoring Section */}
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-           <div className="relative h-[350px] md:h-[450px] rounded-3xl overflow-hidden flex items-center justify-center group order-last md:order-first">
-            {/* Animated background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-primary/5 to-accent/5 animate-gradient-slow"></div>
-            
-            {/* Subtle pattern overlay */}
-            <div className="absolute inset-0 opacity-5 bg-grid-pattern"></div>
-            
-            {/* Glowing accent borders */}
-            <div className="absolute inset-0 rounded-3xl border border-secondary/20 shadow-[0_0_15px_rgba(123,54,206,0.15)] group-hover:shadow-[0_0_25px_rgba(123,54,206,0.25)] transition-all duration-700"></div>
-            
-            {/* Floating animation wrapper */}
-            <div className="transform transition-transform duration-1000 ease-in-out animate-float">
-              <CreditScoreLottie className="w-full h-full scale-110 md:scale-125" />
-            </div>
-          </div>
-          <div className="md:pl-8">
-            <Badge variant="outline" className="mb-3 text-sm px-3 py-1 rounded-full border-secondary text-secondary bg-secondary/10 font-medium">Boost Your Score</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">Unlock Your Credit Potential</h2>
-            <p className="text-muted-foreground md:text-lg mb-8">
-             Stay informed with regular credit score updates. Understand the factors impacting your score and get actionable tips to improve your financial standing with FoloMoney.
-            </p>
-            <Card className="shadow-xl rounded-xl bg-card border border-border/50">
-              <CardHeader>
-                <CardTitle className="flex items-center text-xl text-foreground">
-                  <TrendingUp className="mr-2 h-6 w-6 text-secondary" /> Your Credit Journey
-                </CardTitle>
-                <CardDescription>Monitor, understand, and improve.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Label className="text-sm text-muted-foreground">Your Current Score</Label>
-                <div className="text-5xl font-bold text-secondary mb-3">750</div> {/* Example Score */}
-                <Progress value={75} aria-label="Credit score progress indicator: 75%" className="mb-4 h-3 rounded-full [&>div]:bg-gradient-to-r [&>div]:from-secondary [&>div]:to-purple-400" />
-                <div className="flex justify-between text-xs text-muted-foreground mb-4">
-                  <span>Needs Work</span>
-                  <span>Fair</span>
-                  <span>Good</span>
-                  <span>Excellent</span>
+      <section className="py-20 md:py-28 relative overflow-hidden">
+        {/* Background decorations */}
+        <div className="absolute -left-10 top-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute -right-10 bottom-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            {/* Interactive Credit Score Visualization */}
+            <div className="relative order-2 md:order-1">
+              <div className="relative mx-auto w-full max-w-lg">
+                {/* Animated Card */}
+                <div className="group relative rounded-3xl p-1 bg-primary/50 animate-border-pulse">
+                  <div className="absolute inset-0 bg-primary/20 blur-xl opacity-40 rounded-3xl group-hover:opacity-60 transition-opacity duration-500"></div>
+                  
+                  <Card className="rounded-[calc(1.5rem-1px)] bg-white backdrop-blur-sm overflow-hidden border-0 relative">
+                    <CardHeader className="pb-0 pt-6">
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="flex items-center gap-2">
+                          <Gauge className="h-6 w-6 text-primary" />
+                          <CardTitle className="text-2xl font-bold text-primary">Credit Score</CardTitle>
+                        </div>
+                        <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 py-1">Updated Today</Badge>
+                      </div>
+                    </CardHeader>
+                    
+                    <CardContent className="pb-6">
+                      <div className="flex flex-col items-center">
+                        {/* Circular Progress */}
+                        <div className="relative mt-4 mb-6">
+                          <div className="w-48 h-48 rounded-full bg-muted/60 relative flex items-center justify-center">
+                            <svg className="w-full h-full" viewBox="0 0 100 100">
+                              <circle 
+                                cx="50" 
+                                cy="50" 
+                                r="45" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                strokeWidth="10" 
+                                className="text-muted/30" 
+                              />
+                              <circle 
+                                cx="50" 
+                                cy="50" 
+                                r="45" 
+                                fill="none" 
+                                stroke="url(#gradientScore)" 
+                                strokeWidth="10" 
+                                strokeDasharray="283" 
+                                strokeDashoffset="71" 
+                                className="rotate-90 origin-center transform transition-all duration-1000" 
+                              />
+                              <defs>
+                                <linearGradient id="gradientScore" x1="0%" y1="0%" x2="100%" y2="0%">
+                                  <stop offset="0%" stopColor="#0070EA" />
+                                  <stop offset="100%" stopColor="#0F61CE" />
+                                </linearGradient>
+                              </defs>
+                            </svg>
+                            <div className="absolute inset-0 flex flex-col items-center justify-center">
+                              <span className="text-5xl font-bold text-primary">750</span>
+                              <span className="text-sm text-muted-foreground mt-1">Good</span>
+                            </div>
+                          </div>
+                          
+                          {/* Info tooltips around the circle */}
+                          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white shadow-lg rounded-full p-2 animate-float">
+                            <TrendingUp className="h-5 w-5 text-primary" />
+                          </div>
+                          <div className="absolute bottom-4 right-0 bg-white shadow-lg rounded-full p-2 animate-float" style={{animationDelay: '0.5s'}}>
+                            <CheckCircle className="h-5 w-5 text-green-500" />
+                          </div>
+                        </div>
+                        
+                        {/* Score details */}
+                        <div className="w-full mt-2">
+                          <div className="flex justify-between text-xs text-muted-foreground mb-2">
+                            <span>300</span>
+                            <span>500</span>
+                            <span>700</span>
+                            <span>850</span>
+                          </div>
+                          <Progress value={75} aria-label="Credit score progress indicator: 75%" className="h-2 [&>div]:bg-gradient-to-r [&>div]:from-primary [&>div]:to-primary-dark" />
+                          <div className="flex justify-between text-xs font-medium mt-2">
+                            <span className="text-rose-500">Needs Work</span>
+                            <span className="text-amber-500">Fair</span>
+                            <span className="text-emerald-500">Good</span>
+                            <span className="text-blue-500">Excellent</span>
+                          </div>
+                        </div>
+                        
+                        {/* Quick insights */}
+                        <div className="grid grid-cols-3 gap-3 w-full mt-8">
+                          <div className="bg-primary/5 rounded-lg p-3 text-center hover:bg-primary/10 transition-colors">
+                            <div className="text-2xl font-bold text-primary">+15</div>
+                            <div className="text-xs text-muted-foreground mt-1">Points Up</div>
+                          </div>
+                          <div className="bg-primary/5 rounded-lg p-3 text-center hover:bg-primary/10 transition-colors">
+                            <div className="text-2xl font-bold text-primary">92%</div>
+                            <div className="text-xs text-muted-foreground mt-1">On-time</div>
+                          </div>
+                          <div className="bg-primary/5 rounded-lg p-3 text-center hover:bg-primary/10 transition-colors">
+                            <div className="text-2xl font-bold text-primary">23%</div>
+                            <div className="text-xs text-muted-foreground mt-1">Credit Used</div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-center text-muted-foreground"><CheckCircle className="h-4 w-4 mr-2 text-secondary flex-shrink-0" /> Regular score updates & alerts</li>
-                  <li className="flex items-center text-muted-foreground"><CheckCircle className="h-4 w-4 mr-2 text-secondary flex-shrink-0" /> Personalized improvement tips</li>
-                  <li className="flex items-center text-muted-foreground"><CheckCircle className="h-4 w-4 mr-2 text-secondary flex-shrink-0" /> Clear credit factor analysis</li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-lg transform hover:scale-105 transition-transform">Check Your Score Now</Button>
-              </CardFooter>
-            </Card>
+              </div>
+              
+              {/* Floating explanation bubbles */}
+              <div className="absolute top-0 right-0 bg-white shadow-lg rounded-xl p-3 text-sm border border-primary/20 animate-float">
+                <div className="flex items-center gap-2">
+                  <BarChart3 className="h-4 w-4 text-primary" />
+                  <span className="font-medium text-foreground">Updated monthly</span>
+                </div>
+              </div>
+              
+              <div className="absolute -bottom-4 left-0 bg-white shadow-lg rounded-xl p-3 text-sm border border-primary/20 animate-float" style={{animationDelay: '1.2s'}}>
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4 text-primary" />
+                  <span className="font-medium text-foreground">Secure insights</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Content */}
+            <div className="order-1 md:order-2">
+              <Badge variant="outline" className="mb-4 text-sm px-4 py-1.5 rounded-full border-primary text-primary bg-primary/5 font-medium">Boost Your Score</Badge>
+              
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
+                <span className="text-primary">Unlock</span> Your Credit Potential
+              </h2>
+              
+              <p className="text-muted-foreground md:text-lg mb-8">
+                Your credit score affects your financial future. FoloMoney helps you understand, monitor, and actively improve your score with personalized insights and recommendations.
+              </p>
+              
+              <div className="space-y-5">
+                <div className="flex gap-4 items-start p-4 rounded-xl bg-white border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 group">
+                  <div className="bg-primary text-white p-3 rounded-xl">
+                    <TrendingUp className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold group-hover:text-primary transition-colors">Real-Time Monitoring</h3>
+                    <p className="text-muted-foreground mt-1">Get regular score updates and alerts for significant changes. Know where you stand at all times.</p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-4 items-start p-4 rounded-xl bg-white border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 group">
+                  <div className="bg-primary text-white p-3 rounded-xl">
+                    <BarChart3 className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold group-hover:text-primary transition-colors">Factor Analysis</h3>
+                    <p className="text-muted-foreground mt-1">Understand exactly what's affecting your score with detailed breakdown of key credit factors.</p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-4 items-start p-4 rounded-xl bg-white border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 group">
+                  <div className="bg-primary text-white p-3 rounded-xl">
+                    <Sparkles className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold group-hover:text-primary transition-colors">Improvement Tips</h3>
+                    <p className="text-muted-foreground mt-1">Get personalized recommendations to boost your score based on your specific credit profile.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <Button className="mt-10 bg-primary hover:bg-primary-dark text-white rounded-xl px-7 py-6 text-base font-medium transition-all duration-300 hover:shadow-glow-primary hover:-translate-y-1 group">
+                Check Your Score <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
       {/* International Transfers Section */}
-      <section className="py-16 md:py-24 bg-muted" id="transfers">
-        <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-          <div>
-             <Badge variant="outline" className="mb-3 text-sm px-3 py-1 rounded-full border-accent text-accent bg-accent/10 font-medium">Go Global - Fee Free!</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">Send Money Worldwide, <span className="text-accent">Zero Fees</span></h2>
-            <p className="text-muted-foreground md:text-lg mb-8">
-              Why pay fees to send money abroad? FoloMoney offers fast, secure international transfers with competitive rates and <span className="font-semibold text-accent uppercase">absolutely no transfer fees!</span> Use our calculator to see how much you save.
-            </p>
-            <Card className="shadow-xl rounded-xl bg-card border border-border/50">
-              <CardHeader>
-                <CardTitle className="flex items-center text-xl text-foreground">
-                  <Globe className="mr-2 h-6 w-6 text-accent" /> Quick Transfer Calculator
-                </CardTitle>
-                <CardDescription>Estimate your transfer instantly.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-5">
-                <div>
-                  <Label htmlFor="amount" className="text-sm font-medium text-foreground">You Send</Label>
-                  <Input type="number" id="amount" value={amountToSend} onChange={(e) => setAmountToSend(e.target.value)} placeholder="e.g., 10000" className="mt-1 text-base" />
+      <section className="py-20 md:py-28 relative overflow-hidden bg-muted/30" id="transfers">
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="order-2 md:order-1">
+              <Badge variant="outline" className="mb-4 text-sm px-4 py-1.5 rounded-full border-primary text-primary bg-primary/5 font-medium">Go Global - Fee Free!</Badge>
+              
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
+                Send Money Worldwide, <span className="text-primary">Zero Fees</span>
+              </h2>
+              
+              <p className="text-muted-foreground md:text-lg mb-8">
+                Why pay fees to send money abroad? FoloMoney offers fast, secure international transfers with competitive rates and <span className="font-semibold text-primary">absolutely NO transfer fees!</span>
+              </p>
+              
+              {/* Interactive Currency Exchange Calculator */}
+              <div className="relative p-[1px] rounded-2xl bg-primary/30 animate-border-pulse shadow-lg">
+                <Card className="rounded-[calc(1rem-1px)] glass backdrop-blur-sm border-0">
+                  <CardHeader className="pb-2">
+                    <div className="flex items-center">
+                      <Globe className="mr-2 h-6 w-6 text-primary" /> 
+                      <CardTitle className="text-xl text-foreground">Quick Transfer Calculator</CardTitle>
+                    </div>
+                    <CardDescription>Calculate rates with 0% transfer fees</CardDescription>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-6">
+                    <div className="relative group">
+                      <Label htmlFor="amount" className="text-sm font-medium mb-1.5 block text-foreground">You Send</Label>
+                      <div className="relative">
+                        <Input 
+                          type="number" 
+                          id="amount" 
+                          value={amountToSend} 
+                          onChange={(e) => setAmountToSend(e.target.value)} 
+                          placeholder="e.g., 10000" 
+                          className="pr-20 h-14 text-lg rounded-xl border-primary/20 focus:border-primary focus:ring-primary/20 transition-all duration-300" 
+                        />
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                          <Select value={fromCurrency} onValueChange={setFromCurrency}>
+                            <SelectTrigger id="fromCurrency" className="border-0 bg-transparent w-16 h-8 p-0 text-base font-medium hover:text-primary focus:ring-0">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="KES"><span className="mr-2 text-lg" role="img" aria-label="Kenyan flag">🇰🇪</span> KES</SelectItem>
+                              <SelectItem value="USD"><span className="mr-2 text-lg" role="img" aria-label="United States flag">🇺🇸</span> USD</SelectItem>
+                              <SelectItem value="GBP"><span className="mr-2 text-lg" role="img" aria-label="United Kingdom flag">🇬🇧</span> GBP</SelectItem>
+                              <SelectItem value="UGX"><span className="mr-2 text-lg" role="img" aria-label="Ugandan flag">🇺🇬</span> UGX</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                      <div className="h-[2px] w-0 group-hover:w-full bg-primary transition-all duration-500 mt-0.5"></div>
+                    </div>
+                    
+                    {/* Currency swap button */}
+                    <div className="relative flex justify-center">
+                      <div className="absolute left-1/2 -translate-x-1/2 -mt-3 z-10">
+                        <button 
+                          className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white hover:bg-primary-dark transition-colors shadow-md" 
+                          onClick={() => {
+                            const temp = fromCurrency;
+                            setFromCurrency(toCurrency);
+                            setToCurrency(temp);
+                          }}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M7 10l5 5 5-5"/>
+                            <path d="M17 4l-5-5-5 5"/>
+                          </svg>
+                        </button>
+                      </div>
+                      <div className="w-full h-px bg-border/50"></div>
+                    </div>
+                    
+                    <div className="relative group">
+                      <Label htmlFor="toCurrency" className="text-sm font-medium mb-1.5 block text-foreground">Recipient Gets</Label>
+                      <div className="relative bg-muted/30 rounded-xl p-4">
+                        <div className="text-2xl font-bold text-primary">
+                          {calculatedAmount !== null ? calculatedAmount.toFixed(2) : '0.00'} {toCurrency}
+                        </div>
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                          <Select value={toCurrency} onValueChange={setToCurrency}>
+                            <SelectTrigger id="toCurrency" className="border-0 bg-transparent w-16 h-8 p-0 text-base font-medium hover:text-primary focus:ring-0">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="EUR"><span className="mr-2 text-lg" role="img" aria-label="European Union flag">🇪🇺</span> EUR</SelectItem>
+                              <SelectItem value="USD"><span className="mr-2 text-lg" role="img" aria-label="United States flag">🇺🇸</span> USD</SelectItem>
+                              <SelectItem value="CAD"><span className="mr-2 text-lg" role="img" aria-label="Canadian flag">🇨🇦</span> CAD</SelectItem>
+                              <SelectItem value="GBP"><span className="mr-2 text-lg" role="img" aria-label="United Kingdom flag">🇬🇧</span> GBP</SelectItem>
+                              <SelectItem value="KES"><span className="mr-2 text-lg" role="img" aria-label="Kenyan flag">🇰🇪</span> KES</SelectItem>
+                              <SelectItem value="UGX"><span className="mr-2 text-lg" role="img" aria-label="Ugandan flag">🇺🇬</span> UGX</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Exchange rate and fee information */}
+                    {exchangeRate !== null && (
+                      <div className="p-4 bg-primary/5 rounded-xl">
+                        <div className="flex justify-between items-center text-sm text-muted-foreground mb-2">
+                          <span>Exchange Rate</span>
+                          <span className="font-semibold text-foreground">1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}</span>
+                        </div>
+                        <div className="flex justify-between items-center text-sm text-muted-foreground mb-2">
+                          <span>Transfer Fee</span>
+                          <span className="font-semibold text-primary">FREE</span>
+                        </div>
+                        <div className="flex justify-between items-center text-sm text-muted-foreground">
+                          <span>Delivery Time</span>
+                          <span className="font-semibold text-foreground">1-2 Business Days</span>
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                  
+                  <CardFooter className="pt-2">
+                    <Button 
+                      disabled={!calculatedAmount} 
+                      className="w-full bg-primary hover:bg-primary-dark text-white rounded-xl h-14 text-base font-medium transition-all duration-300 hover:shadow-glow-primary hover:-translate-y-1 disabled:opacity-50 disabled:pointer-events-none group"
+                    >
+                      Initiate Transfer <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </div>
+            </div>
+            
+            {/* Right side - Illustration and animations */}
+            <div className="order-1 md:order-2 relative">
+              <div className="relative mx-auto">
+                {/* Main illustration/animation */}
+                <div className="relative aspect-square max-w-lg mx-auto">
+                  <div className="animate-float">
+                    <WorldTransferLottie className="w-full h-full scale-110" />
+                  </div>
+                  
+                  {/* Floating elements */}
+                  <div className="absolute -top-4 left-10 bg-white shadow-lg rounded-full p-3 animate-float">
+                    <DollarSign className="h-5 w-5 text-green-500" />
+                  </div>
+                  
+                  <div className="absolute top-1/4 right-0 bg-white shadow-lg rounded-xl p-3 text-sm border border-primary/20 animate-float" style={{animationDelay: '0.8s'}}>
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-4 w-4 text-primary" />
+                      <span className="font-medium text-foreground">40+ Countries</span>
+                    </div>
+                  </div>
+                  
+                  <div className="absolute left-1/4 bottom-10 bg-white shadow-lg rounded-xl p-3 text-sm border border-primary/20 animate-float" style={{animationDelay: '1.5s'}}>
+                    <div className="flex items-center gap-2">
+                      <Zap className="h-4 w-4 text-amber-500" />
+                      <span className="font-medium text-foreground">1-2 Days Delivery</span>
+                    </div>
+                  </div>
+                  
+                  {/* "0% Fee" badge */}
+                  <div className="absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-white p-6 rounded-full shadow-glow-primary animate-pulse-slow">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold">0%</div>
+                      <div className="text-xs font-medium">FEES</div>
+                    </div>
+                  </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="fromCurrency" className="text-sm font-medium text-foreground">From</Label>
-                    <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                      <SelectTrigger id="fromCurrency" className="mt-1 text-base"><SelectValue /></SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="KES"><span className="mr-2 text-lg" role="img" aria-label="Kenyan flag">🇰🇪</span> KES</SelectItem>
-                        <SelectItem value="USD"><span className="mr-2 text-lg" role="img" aria-label="United States flag">🇺🇸</span> USD</SelectItem>
-                        <SelectItem value="GBP"><span className="mr-2 text-lg" role="img" aria-label="United Kingdom flag">🇬🇧</span> GBP</SelectItem>
-                        <SelectItem value="UGX"><span className="mr-2 text-lg" role="img" aria-label="Ugandan flag">🇺🇬</span> UGX</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="toCurrency" className="text-sm font-medium text-foreground">To</Label>
-                    <Select value={toCurrency} onValueChange={setToCurrency}>
-                      <SelectTrigger id="toCurrency" className="mt-1 text-base"><SelectValue /></SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="EUR"><span className="mr-2 text-lg" role="img" aria-label="European Union flag">🇪🇺</span> EUR</SelectItem>
-                        <SelectItem value="USD"><span className="mr-2 text-lg" role="img" aria-label="United States flag">🇺🇸</span> USD</SelectItem>
-                        <SelectItem value="CAD"><span className="mr-2 text-lg" role="img" aria-label="Canadian flag">🇨🇦</span> CAD</SelectItem>
-                        <SelectItem value="GBP"><span className="mr-2 text-lg" role="img" aria-label="United Kingdom flag">🇬🇧</span> GBP</SelectItem>
-                        <SelectItem value="KES"><span className="mr-2 text-lg" role="img" aria-label="Kenyan flag">🇰🇪</span> KES</SelectItem>
-                        <SelectItem value="UGX"><span className="mr-2 text-lg" role="img" aria-label="Ugandan flag">🇺🇬</span> UGX</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                {exchangeRate !== null && (
-                  <div className="p-3 bg-muted/50 rounded-md text-sm text-muted-foreground">
-                    <p>Exchange Rate: <span className="font-semibold text-foreground">1 {fromCurrency} ≈ {exchangeRate.toFixed(4)} {toCurrency}</span></p>
-                    <p>Transfer Fee: <span className="font-semibold text-accent">KES 0.00 (FREE!)</span></p>
-                  </div>
-                )}
-                {calculatedAmount !== null && amountToSend && parseFloat(amountToSend) > 0 ? (
-                   <Alert variant="default" className="border-accent bg-accent/5">
-                    <DollarSign className="h-5 w-5 text-accent" />
-                    <AlertTitle className="font-semibold text-accent">Recipient Gets (Approx.)</AlertTitle>
-                    <AlertDescription className="text-xl font-bold text-accent-foreground">
-                      {calculatedAmount.toFixed(2)} {toCurrency}
-                    </AlertDescription>
-                  </Alert>
-                ) : amountToSend && parseFloat(amountToSend) <= 0 ? (
-                   <Alert variant="destructive" className="border-destructive/50 bg-destructive/5">
-                     <AlertDescription className="text-sm text-destructive">
-                      Please enter a positive amount to send.
-                    </AlertDescription>
-                   </Alert>
-                ) : null}
-              </CardContent>
-              <CardFooter>
-                 {/* Button is now primarily for display/interaction trigger, calculation happens onChange */}
-                <Button disabled={!calculatedAmount} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg py-3 transform hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed">
-                 {calculatedAmount ? 'Initiate Transfer' : 'Enter Amount to Calculate'}
-                </Button>
-              </CardFooter>
-            </Card>
+              </div>
+            </div>
           </div>
-           <div className="relative h-[350px] md:h-[450px] rounded-2xl overflow-hidden flex items-center justify-center">
-            <WorldTransferLottie className="w-full h-full"/>
+          
+          {/* Countries supported */}
+          <div className="mt-16 text-center">
+            <p className="text-sm font-medium text-muted-foreground mb-6">SUPPORTED COUNTRIES INCLUDE</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Badge variant="outline" className="rounded-full px-4 py-2 text-sm bg-white border-primary/20 hover:border-primary/40 transition-colors">
+                <span className="mr-2" role="img" aria-label="Kenya flag">🇰🇪</span> Kenya
+              </Badge>
+              <Badge variant="outline" className="rounded-full px-4 py-2 text-sm bg-white border-primary/20 hover:border-primary/40 transition-colors">
+                <span className="mr-2" role="img" aria-label="USA flag">🇺🇸</span> USA
+              </Badge>
+              <Badge variant="outline" className="rounded-full px-4 py-2 text-sm bg-white border-primary/20 hover:border-primary/40 transition-colors">
+                <span className="mr-2" role="img" aria-label="UK flag">🇬🇧</span> UK
+              </Badge>
+              <Badge variant="outline" className="rounded-full px-4 py-2 text-sm bg-white border-primary/20 hover:border-primary/40 transition-colors">
+                <span className="mr-2" role="img" aria-label="Uganda flag">🇺🇬</span> Uganda
+              </Badge>
+              <Badge variant="outline" className="rounded-full px-4 py-2 text-sm bg-white border-primary/20 hover:border-primary/40 transition-colors">
+                <span className="mr-2" role="img" aria-label="EU flag">🇪🇺</span> Europe
+              </Badge>
+              <Badge variant="outline" className="rounded-full px-4 py-2 text-sm bg-white border-primary/20 hover:border-primary/40 transition-colors">
+                <span className="mr-2" role="img" aria-label="Canada flag">🇨🇦</span> Canada
+              </Badge>
+              <Badge variant="outline" className="rounded-full px-4 py-2 text-sm bg-white border-primary/20 hover:border-primary/40 transition-colors">
+                <span className="mr-2" role="img" aria-label="Australia flag">🇦🇺</span> Australia
+              </Badge>
+              <Badge variant="outline" className="rounded-full px-4 py-2 text-sm bg-white border-primary/20 hover:border-primary/40 transition-colors">
+                <span className="mr-2" role="img" aria-label="More">+</span> 30+ more
+              </Badge>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Security Section */}
-      <section className="py-16 md:py-24 bg-[#0a1629] text-white" id="security">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12 md:mb-16">
-            <Badge variant="outline" className="mb-3 text-sm px-4 py-1.5 rounded-full border-primary/60 text-blue-300 bg-blue-900/30 font-medium">Bank-Grade Security</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Your Security, Our Priority</h2>
-            <p className="text-blue-100/80 md:text-lg max-w-xl mx-auto">We employ robust security measures, powered by our partnership with DTB Bank, to keep your funds and data safe.</p>
+      <section className="py-20 md:py-28 relative overflow-hidden" id="security">
+        <div className="absolute inset-0 bg-primary/5"></div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="mb-4 text-sm px-4 py-1.5 rounded-full border-primary text-primary bg-primary/5 font-medium">Bank-Grade Security</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+              Your Security, <span className="text-primary">Our Priority</span>
+            </h2>
+            <p className="text-muted-foreground md:text-lg max-w-2xl mx-auto">
+              We implement industry-leading security measures to protect your funds and personal data. Powered by our partnership with DTB Bank.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-lg border border-white/10 hover:shadow-xl hover:border-primary/40 transition-all duration-300">
-              <div className="bg-blue-100/10 text-blue-300 p-4 rounded-full mb-5">
-                <Lock className="h-8 w-8" />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {/* Card 1 */}
+            <div className="group relative">
+              <div className="h-full relative p-[1px] rounded-2xl bg-primary/5">
+                <div className="bg-white rounded-2xl glass p-8 h-full flex flex-col items-center text-center group-hover:shadow-lg transition-all duration-300 backdrop-blur-sm border border-border/50">
+                  <div className="bg-primary w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform duration-300">
+                    <Lock className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors duration-300">End-to-End Encryption</h3>
+                  <p className="text-muted-foreground">Your data is encrypted in transit and at rest. We use industry-standard protocols to protect your information from unauthorized access.</p>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-[#0a1629]">End-to-End Encryption</h3>
-              <p className="text-gray-600 text-sm">Your sensitive information is encrypted both in transit and at rest, protecting it from unauthorized access.</p>
             </div>
-            <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-lg border border-white/10 hover:shadow-xl hover:border-primary/40 transition-all duration-300">
-              <div className="bg-blue-100/10 text-blue-300 p-4 rounded-full mb-5">
-                <ShieldCheck className="h-8 w-8" />
+            
+            {/* Card 2 */}
+            <div className="group relative">
+              <div className="h-full relative p-[1px] rounded-2xl bg-primary/5">
+                <div className="bg-white rounded-2xl glass p-8 h-full flex flex-col items-center text-center group-hover:shadow-lg transition-all duration-300 backdrop-blur-sm border border-border/50">
+                  <div className="bg-primary w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform duration-300">
+                    <ShieldCheck className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors duration-300">Banking Standards</h3>
+                  <p className="text-muted-foreground">We adhere to strict banking security protocols and industry best practices to ensure the integrity of our platform.</p>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-[#0a1629]">Banking Standards</h3>
-              <p className="text-gray-600 text-sm">We adhere to strict banking security protocols and industry best practices to ensure the integrity of our platform.</p>
             </div>
-            <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-lg border border-white/10 hover:shadow-xl hover:border-primary/40 transition-all duration-300">
-              <div className="bg-blue-100/10 text-blue-300 p-4 rounded-full mb-5">
-                <Banknote className="h-8 w-8" />
+            
+            {/* Card 3 */}
+            <div className="group relative">
+              <div className="h-full relative p-[1px] rounded-2xl bg-primary/5">
+                <div className="bg-white rounded-2xl glass p-8 h-full flex flex-col items-center text-center group-hover:shadow-lg transition-all duration-300 backdrop-blur-sm border border-border/50">
+                  <div className="bg-primary w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform duration-300">
+                    <Banknote className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors duration-300">Powered by DTB Bank</h3>
+                  <p className="text-muted-foreground">Our infrastructure is built on the reliable and secure framework of DTB Bank, providing enterprise-level security for all users.</p>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-[#0a1629]">Powered by DTB Bank</h3>
-              <p className="text-gray-600 text-sm">Our core infrastructure benefits from the reliability and established security framework of DTB Bank.</p>
+            </div>
+          </div>
+          
+          {/* Extra security features */}
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="bg-white shadow-sm rounded-xl p-6 border border-border/40 flex items-start gap-4 hover:shadow-md hover:border-primary/20 transition-all duration-300">
+              <div className="bg-primary/10 text-primary p-3 rounded-xl">
+                <Smartphone className="h-6 w-6" />
+              </div>
+              <div>
+                <h4 className="text-lg font-semibold mb-2">Biometric Authentication</h4>
+                <p className="text-muted-foreground">Use face recognition or fingerprint scanning to access your account safely and quickly.</p>
+              </div>
+            </div>
+            
+            <div className="bg-white shadow-sm rounded-xl p-6 border border-border/40 flex items-start gap-4 hover:shadow-md hover:border-primary/20 transition-all duration-300">
+              <div className="bg-primary/10 text-primary p-3 rounded-xl">
+                <MessageSquare className="h-6 w-6" />
+              </div>
+              <div>
+                <h4 className="text-lg font-semibold mb-2">Transaction Alerts</h4>
+                <p className="text-muted-foreground">Receive instant notifications for all account activities so you're always in control.</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Security badge */}
+          <div className="mt-16 text-center">
+            <div className="inline-flex items-center gap-2 bg-white rounded-full py-3 px-6 shadow-lg border border-primary/20 animate-subtle-pulse">
+              <ShieldCheck className="h-5 w-5 text-primary" />
+              <span className="font-medium">PCI DSS Compliant</span>
             </div>
           </div>
         </div>
       </section>
 
-
       {/* Personalized Financial Tips Section */}
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto px-6 text-center">
-           <Badge variant="default" className="mb-3 text-sm bg-primary text-primary-foreground px-4 py-1.5 rounded-full font-medium">AI-Powered Insights</Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">Your Personal Finance Coach</h2>
-          <p className="text-muted-foreground md:text-lg max-w-xl mx-auto mb-10">
-           FoloMoney's AI analyzes your spending habits (securely and privately) to offer smart, actionable tips for saving money and reaching your financial goals faster.
-          </p>
-          {financialTips ? (
-            <Alert className="text-left max-w-2xl mx-auto shadow-lg rounded-xl p-6 bg-card border-primary/30">
-              <PiggyBank className="h-6 w-6 text-primary" />
-              <AlertTitle className="text-xl font-semibold text-primary mt-2">Smart Savings Tips For You:</AlertTitle>
-              <AlertDescription className="mt-3 text-muted-foreground leading-relaxed whitespace-pre-line">
-                Based on your spending this month, I've noticed a few opportunities:
-
-                ▸ Your Food & Drinks spending (KES 2,700) is about 23% of your monthly expenses. Try the Folo budget tracker to set a 20% target and save approximately KES 350/month.
-
-                ▸ Entertainment costs are trending upward (+15% from last month). Consider using Folo's "Goals" feature to set aside entertainment funds at the start of each month.
-
-                ▸ You could save ~KES 90 on airtime purchases by using Folo's discounted bill payment options instead of direct purchases.
-
-                ▸ Your consistent bill payments are helping build a positive credit profile. Keep it up! Check your improved credit score in the "Credit Insights" tab.
-              </AlertDescription>
-            </Alert>
-          ) : (
-            <Alert className="text-left max-w-2xl mx-auto shadow-lg rounded-xl p-6 bg-card border-primary/30">
-              <Zap className="h-6 w-6 text-primary animate-pulse" />
-              <AlertTitle className="text-xl font-semibold text-primary mt-2">Generating Insights...</AlertTitle>
-              <AlertDescription className="mt-3 text-muted-foreground">
-                Our AI is analyzing your recent activity to provide personalized tips. This usually takes just a moment. If you're new, start transacting to unlock insights!
-              </AlertDescription>
-            </Alert>
-          )}
+      <section className="py-20 md:py-28 relative overflow-hidden">
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+              <Badge variant="outline" className="mb-4 text-sm px-4 py-1.5 rounded-full border-primary text-primary bg-primary/5 font-medium">AI-Powered Insights</Badge>
+              
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
+                Your Personal <span className="text-primary">Finance Coach</span>
+              </h2>
+              
+              <p className="text-muted-foreground md:text-lg mb-8">
+                FoloMoney's AI analyzes your spending patterns to provide personalized recommendations. Save more, spend wisely, and reach your financial goals faster.
+              </p>
+              
+              {/* Key benefits */}
+              <div className="space-y-6 mb-12">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-primary/10 text-primary rounded-xl">
+                    <BarChart3 className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold mb-1">Spending Analysis</h3>
+                    <p className="text-muted-foreground">Get a clear breakdown of where your money goes and identify spending patterns.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-primary/10 text-primary rounded-xl">
+                    <PiggyBank className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold mb-1">Smart Saving Recommendations</h3>
+                    <p className="text-muted-foreground">Receive personalized tips on how to save money based on your unique spending habits.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-primary/10 text-primary rounded-xl">
+                    <TrendingUp className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold mb-1">Financial Goal Planning</h3>
+                    <p className="text-muted-foreground">Set and track your financial goals with AI-guided steps to achieve them faster.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <Button className="bg-primary hover:bg-primary-dark text-white rounded-xl px-8 py-6 text-base font-medium transition-all duration-300 hover:shadow-glow-primary hover:-translate-y-1 group">
+                Get Personalized Insights <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
+            
+            {/* AI Insights Visualization */}
+            <div className="relative">
+              {/* Card with mock AI insights - Using simplified styling */}
+              <div className="relative p-[1px] rounded-3xl bg-primary/30 shadow-xl">
+                <Card className="rounded-[calc(1.5rem-1px)] glass backdrop-blur-sm border-0 overflow-hidden relative">
+                  <div className="absolute top-0 left-0 w-full h-2 bg-primary"></div>
+                  
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-primary-gradient p-2 rounded-lg text-white">
+                        <Sparkles className="h-5 w-5" />
+                      </div>
+                      <CardTitle>Smart Insights</CardTitle>
+                    </div>
+                    <Badge className="bg-green-100 text-green-800 hover:bg-green-200">Updated Today</Badge>
+                  </CardHeader>
+                  
+                  <CardContent>
+                    <div className="space-y-8">
+                      {/* Spending breakdown */}
+                      <div>
+                        <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                          <span>This Month's Spending</span>
+                          <Badge variant="outline" className="ml-2">
+                            <TrendingUp className="h-3.5 w-3.5 mr-1 text-emerald-500" /> 
+                            <span className="text-xs">15% saved</span>
+                          </Badge>
+                        </h4>
+                        
+                        <div className="grid grid-cols-2 gap-4 mb-6">
+                          <div className="bg-white shadow-sm rounded-lg p-4 border border-border/30">
+                            <div className="flex justify-between items-center mb-2">
+                              <div className="flex items-center gap-2">
+                                <div className="w-3 h-3 rounded-full bg-primary"></div>
+                                <span className="text-sm font-medium">Food & Dining</span>
+                              </div>
+                              <span className="text-sm font-bold">KES 2,700</span>
+                            </div>
+                            <Progress value={32} className="h-1.5 [&>div]:bg-primary" />
+                            <p className="text-xs text-muted-foreground mt-2">32% of total</p>
+                          </div>
+                          
+                          <div className="bg-white shadow-sm rounded-lg p-4 border border-border/30">
+                            <div className="flex justify-between items-center mb-2">
+                              <div className="flex items-center gap-2">
+                                <div className="w-3 h-3 rounded-full bg-blue-400"></div>
+                                <span className="text-sm font-medium">Transport</span>
+                              </div>
+                              <span className="text-sm font-bold">KES 1,800</span>
+                            </div>
+                            <Progress value={21} className="h-1.5 [&>div]:bg-blue-400" />
+                            <p className="text-xs text-muted-foreground mt-2">21% of total</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* AI tips */}
+                      <div className="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                        <div className="flex items-start gap-3">
+                          <div className="bg-primary p-2 rounded-lg text-white flex-shrink-0 mt-1">
+                            <PiggyBank className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium text-primary mb-1">Money-Saving Opportunity</h3>
+                            <p className="text-sm text-gray-700 leading-relaxed">
+                              Based on your spending, switching to our discounted airtime bundle could save you ~KES 90 monthly. Your entertainment costs are up 15% from last month - consider using our "Goals" feature to budget this category.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Additional insight */}
+                      <div className="flex items-center justify-between bg-white rounded-lg p-4 border border-border/30">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                            <CheckCircle className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium">Your consistent bill payments are helping your credit score</p>
+                            <p className="text-xs text-muted-foreground">Check your improved score in the Credit Insights tab</p>
+                          </div>
+                        </div>
+                        <Button variant="ghost" size="sm" className="text-primary">View</Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+              
+              {/* Decorative elements */}
+              <div className="absolute -top-4 -right-4 bg-white shadow-lg rounded-full p-3 animate-float">
+                <div className="bg-primary-gradient p-1.5 rounded-full text-white">
+                  <Sparkles className="h-4 w-4" />
+                </div>
+              </div>
+              
+              <div className="absolute -bottom-4 -left-4 bg-white shadow-lg rounded-full p-3 animate-float" style={{animationDelay: '1s'}}>
+                <div className="bg-primary-gradient p-1.5 rounded-full text-white">
+                  <TrendingUp className="h-4 w-4" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -619,18 +1546,156 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Call to Action Section */}
-      <section className="py-20 md:py-32 bg-gradient-to-br from-accent via-accent/90 to-primary">
-        <div className="container mx-auto px-6 text-center text-accent-foreground">
-          <Smartphone className="h-16 w-16 mx-auto mb-6 opacity-80 drop-shadow-lg" />
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 drop-shadow-md">Ready to Simplify Your Finances?</h2>
-          <p className="text-lg md:text-xl mb-10 max-w-xl mx-auto opacity-90">
-            Download FoloMoney today and join the growing community managing their money the smart way – with zero transfer fees and powerful tools at their fingertips!
-          </p>
-          <Button size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold rounded-lg px-10 py-4 text-xl shadow-2xl hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-            Get Started - It's Free!
-          </Button>
-           <p className="mt-6 text-sm opacity-70">Available on iOS and Android.</p>
+      {/* Call to Action Section - Updated with light background */}
+      <section className="py-20 md:py-32 bg-white border-t border-border/20">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row gap-12 items-center">
+            <div className="flex-1">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-foreground">
+                Ready to Simplify<br/>Your Finances?
+              </h2>
+              <p className="text-lg mb-10 text-muted-foreground max-w-lg">
+                Download FoloMoney today and join the growing community managing their money the smart way – with zero transfer fees and powerful tools at their fingertips!
+              </p>
+              
+              <div className="grid grid-cols-2 gap-8 mb-10 max-w-md">
+                <div className="flex items-center gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      className="h-4 w-4 text-primary"
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="3"
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span className="text-sm md:text-base font-medium text-foreground">Zero-Fee Transfers</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      className="h-4 w-4 text-primary"
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="3"
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span className="text-sm md:text-base font-medium text-foreground">Credit Insights</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      className="h-4 w-4 text-primary"
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="3"
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span className="text-sm md:text-base font-medium text-foreground">Smart Wallet</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      className="h-4 w-4 text-primary"
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="3"
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span className="text-sm md:text-base font-medium text-foreground">Bill Payments</span>
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <a href="#" className="inline-block no-underline">
+                  <img 
+                    src="/badge-app-store.svg" 
+                    alt="Download on the App Store" 
+                    className="h-12 w-auto"
+                  />
+                </a>
+                <a href="#" className="inline-block no-underline">
+                  <img 
+                    src="/badge-google-play.svg" 
+                    alt="Get it on Google Play" 
+                    className="h-12 w-auto"
+                  />
+                </a>
+              </div>
+              
+              <p className="text-sm text-muted-foreground">
+                Available on iOS and Android.
+              </p>
+            </div>
+            
+            {/* Phone mockup - now with darker phone for contrast */}
+            <div className="flex-1 flex justify-end">
+              <div className="relative w-72 md:w-80 lg:w-96 mx-auto md:mx-0">
+                {/* Phone frame */}
+                <div className="relative z-10 overflow-hidden rounded-[2.5rem] border-[14px] border-[#121212] bg-[#121212] shadow-xl">
+                  {/* Phone screen */}
+                  <div className="aspect-[9/19] overflow-hidden rounded-[2rem] bg-white">
+                    {/* App UI - Security shield mockup */}
+                    <div className="relative h-full w-full bg-gradient-to-b from-white to-primary/5 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-primary/10 opacity-80"></div>
+                      <div className="relative z-10 flex flex-col items-center justify-center p-6">
+                        <div className="w-28 h-28 rounded-full bg-primary/10 flex items-center justify-center mb-6 shadow-lg">
+                          <FoloLogo size="default" />
+                        </div>
+                        <div className="w-full bg-white rounded-lg p-4 shadow-lg mb-6">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                              <Banknote className="h-4 w-4 text-white" />
+                            </div>
+                            <span className="font-medium text-foreground">Folo Wallet</span>
+                          </div>
+                          <div className="h-2 bg-primary/20 rounded-full w-3/4 mb-2"></div>
+                          <div className="h-2 bg-primary/20 rounded-full w-1/2"></div>
+                        </div>
+                        <div className="w-full bg-white shadow-lg rounded-xl p-3 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Send className="h-5 w-5 text-primary" />
+                            <span className="text-sm font-medium">Send Money</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <ShieldCheck className="h-4 w-4 text-green-500" />
+                            <span className="text-xs text-green-600">Secure</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Decorative elements */}
+                <div className="absolute top-1/4 -left-6 w-12 h-12 bg-primary rounded-full shadow-lg"></div>
+                <div className="absolute bottom-1/3 -right-4 w-20 h-20 bg-primary rounded-full shadow-lg opacity-80"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

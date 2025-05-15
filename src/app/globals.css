@@ -13,30 +13,33 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 208 100% 38%; /* Vibrant Green - #005BC0 */
+    --primary: 214 100% 46%; /* #0070EA */
     --primary-foreground: 0 0% 98%; /* Almost White */
 
-    --secondary: 269 61% 51%; /* Deep Purple/Violet (from #7B36CE, described as deep teal) */
+    --primary-dark: 215 86% 43%; /* #0F61CE */
+    --primary-darker: 222 75% 29%; /* #142B82 */
+
+    --secondary: 269 61% 51%; /* Deep Purple/Violet */
     --secondary-foreground: 0 0% 98%; /* Almost White */
 
     --muted: 240 4.8% 95.9%; /* Light Gray */
     --muted-foreground: 240 3.8% 46.1%; /* Medium Gray */
 
-    --accent: 36 100% 50%; /* Bright Orange - #FF9800 */
-    --accent-foreground: 240 10% 3.9%; /* Dark Gray for contrast on orange */
+    --accent: 214 100% 46%; /* Changed from yellow to primary blue */
+    --accent-foreground: 0 0% 98%; /* White text for blue background */
 
     --destructive: 0 72.2% 50.6%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 208 100% 38%; /* Ring matches primary (Vibrant Green) */
+    --ring: 214 100% 46%; /* Ring matches primary */
 
-    --chart-1: 208 100% 38%; /* Primary */
-    --chart-2: 269 61% 51%; /* Secondary */
-    --chart-3: 36 100% 50%; /* Accent */
-    --chart-4: 40 90% 60%; /* Sunny Yellow */
-    --chart-5: 210 80% 55%; /* Sky Blue */
+    --chart-1: 214 100% 46%; /* Primary */
+    --chart-2: 215 86% 43%; /* Primary Dark */
+    --chart-3: 222 75% 29%; /* Primary Darker */
+    --chart-4: 210 85% 55%; /* Sky Blue */
+    --chart-5: 214 100% 66%; /* Light Blue */
 
     --radius: 0.75rem; /* Slightly more rounded */
 
@@ -47,7 +50,7 @@
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 208 100% 38%; /* Matches primary */
+    --sidebar-ring: 214 100% 46%; /* Matches primary */
   }
 
   .dark {
@@ -60,8 +63,11 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 208 100% 48%; /* Lighter Vibrant Green */
+    --primary: 214 100% 56%; /* Lighter #0070EA */
     --primary-foreground: 0 0% 98%;
+
+    --primary-dark: 215 86% 53%; /* Lighter #0F61CE */
+    --primary-darker: 222 75% 39%; /* Lighter #142B82 */
 
     --secondary: 269 61% 61%; /* Lighter Deep Purple/Violet */
     --secondary-foreground: 0 0% 98%;
@@ -69,30 +75,30 @@
     --muted: 240 3.7% 15.9%; /* Darker Gray */
     --muted-foreground: 240 5% 64.9%; /* Lighter Medium Gray */
 
-    --accent: 36 100% 60%; /* Lighter Bright Orange */
-    --accent-foreground: 240 10% 3.9%; /* Dark Gray for contrast */
+    --accent: 214 100% 56%; /* Changed from yellow to primary blue */
+    --accent-foreground: 0 0% 98%; /* White text for blue background */
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 208 100% 48%; /* Ring matches primary */
+    --ring: 214 100% 56%; /* Ring matches primary */
 
-    --chart-1: 208 100% 48%;
-    --chart-2: 269 61% 61%;
-    --chart-3: 36 100% 60%;
-    --chart-4: 40 90% 70%;
-    --chart-5: 210 80% 65%;
+    --chart-1: 214 100% 56%;
+    --chart-2: 215 86% 53%;
+    --chart-3: 222 75% 39%;
+    --chart-4: 210 85% 65%;
+    --chart-5: 214 100% 76%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 208 100% 48%; /* Matches primary */
+    --sidebar-primary: 214 100% 56%; /* Matches primary */
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 208 100% 48%; /* Matches primary */
+    --sidebar-ring: 214 100% 56%; /* Matches primary */
   }
 }
 
@@ -103,4 +109,164 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Custom animations for modern UI effects */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes subtle-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes border-pulse {
+  0%, 100% {
+    border-color: rgba(0, 112, 234, 0.3);
+  }
+  50% {
+    border-color: rgba(0, 112, 234, 0.6);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Glass morphism styles */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Modern gradient backgrounds */
+.bg-primary-gradient {
+  background: linear-gradient(135deg, #0070EA 0%, #0F61CE 50%, #142B82 100%);
+}
+
+.bg-card-gradient {
+  background: linear-gradient(120deg, #ffffff 0%, #f5f8ff 100%);
+}
+
+/* Text gradient */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Animations for elements */
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+.animate-subtle-pulse {
+  animation: subtle-pulse 3s ease-in-out infinite;
+}
+
+.animate-border-pulse {
+  animation: border-pulse 3s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out forwards;
+}
+
+/* Transitions for smooth interactions */
+.transition-all-300 {
+  transition: all 0.3s ease;
+}
+
+/* Performance optimizations for animations */
+.will-change-transform {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Shadow for card hover effect - better performance than dynamic shadow changes */
+.hover\:shadow-card-hover:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 112, 234, 0.1), 0 8px 10px -6px rgba(0, 112, 234, 0.1);
+}
+
+/* Scroll for fixed header */
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-down {
+  animation: fade-in-down 0.3s ease-out forwards;
+}
+
+/* Animations specifically for logo transitions */
+@keyframes logo-transform {
+  from {
+    transform: scale(1.5) translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1) translateY(-20px);
+    opacity: 0;
+  }
+}
+
+.animate-logo-transition {
+  animation: logo-transform 0.5s ease-out forwards;
+}
+
+/* Animation for pulse with hardware acceleration */
+@keyframes pulse-hw {
+  0%, 100% {
+    transform: translateZ(0) scale(1);
+  }
+  50% {
+    transform: translateZ(0) scale(1.05);
+  }
+}
+
+.animate-pulse-hw {
+  animation: pulse-hw 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: transform;
+}
+
+/* Custom animation speeds */
+.animate-pulse-slow {
+  animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-pulse-slower {
+  animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

@@ -1,6 +1,6 @@
 import type {Metadata} from 'next';
 import './globals.css';
-import Header from '@/components/layout/header';
+// import Header from '@/components/layout/header';
 import { Toaster } from "@/components/ui/toaster";
 import { Inter as GeistSans } from 'next/font/google';
 import { Roboto_Mono as GeistMono } from 'next/font/google';
@@ -58,7 +58,7 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <Header />
+          {/* <Header /> */}
           <main>{children}</main>
           <Toaster />
           <Analytics />
