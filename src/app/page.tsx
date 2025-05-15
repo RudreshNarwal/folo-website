@@ -835,42 +835,30 @@ export default function Home() {
                     <div className="absolute top-1/2 left-1/2 w-[150px] h-1.5 -translate-y-1/2 bg-gradient-to-r from-slate-500 to-transparent -rotate-90" style={{transformOrigin: 'left center'}}></div>
                     
                     {/* Enhanced animated elements */}
-                    <div className="absolute top-1/2 left-1/2 w-32 h-32 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-slate-200 animate-spin-slow opacity-60" style={{animationDuration: '20s'}}></div>
+                    <div className="absolute top-1/2 left-1/2 w-32 h-32 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-slate-200 opacity-60"></div>
                     
                     {/* Data flow dots */}
-                    <div className="absolute top-[25%] left-[65%] w-2 h-2 rounded-full bg-blue-500 animate-pulse" style={{animationDuration: '3s'}}></div>
-                    <div className="absolute top-[50%] right-[25%] w-2 h-2 rounded-full bg-indigo-500 animate-pulse" style={{animationDuration: '2.2s'}}></div>
-                    <div className="absolute bottom-[35%] right-[55%] w-2 h-2 rounded-full bg-teal-500 animate-pulse" style={{animationDuration: '2.8s'}}></div>
-                    <div className="absolute bottom-[50%] left-[25%] w-2 h-2 rounded-full bg-slate-500 animate-pulse" style={{animationDuration: '2.5s'}}></div>
+                    <div className="absolute top-[25%] left-[65%] w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                    <div className="absolute top-[50%] right-[25%] w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></div>
+                    <div className="absolute bottom-[35%] right-[55%] w-2 h-2 rounded-full bg-teal-500 animate-pulse"></div>
+                    <div className="absolute bottom-[50%] left-[25%] w-2 h-2 rounded-full bg-slate-500 animate-pulse"></div>
                     
                     {/* Moving dots from center to features */}
-                    <div className="absolute top-1/2 left-1/2 animate-ping">
-                      <div className="w-2 h-2 -translate-x-1/2 -translate-y-1/2 bg-blue-500 rounded-full opacity-75" 
-                          style={{animationDuration: '3s'}}></div>
-                    </div>
-                    <div className="absolute top-1/2 left-1/2 animate-ping">
-                      <div className="w-2 h-2 -translate-x-1/2 -translate-y-1/2 bg-indigo-500 rounded-full opacity-75" 
-                          style={{animationDuration: '4s', animationDelay: '1s'}}></div>
-                    </div>
-                    <div className="absolute top-1/2 left-1/2 animate-ping">
-                      <div className="w-2 h-2 -translate-x-1/2 -translate-y-1/2 bg-teal-500 rounded-full opacity-75" 
-                          style={{animationDuration: '3.5s', animationDelay: '0.5s'}}></div>
-                    </div>
-                    <div className="absolute top-1/2 left-1/2 animate-ping">
-                      <div className="w-2 h-2 -translate-x-1/2 -translate-y-1/2 bg-slate-500 rounded-full opacity-75" 
-                          style={{animationDuration: '2.5s', animationDelay: '1.5s'}}></div>
-                    </div>
+                    <div className="absolute top-1/2 left-1/2 w-2 h-2 -translate-x-1/2 -translate-y-1/2 bg-blue-500 rounded-full opacity-75 animate-ping"></div>
+                    <div className="absolute top-1/2 left-1/2 w-2 h-2 -translate-x-1/2 -translate-y-1/2 bg-indigo-500 rounded-full opacity-75 animate-ping"></div>
+                    <div className="absolute top-1/2 left-1/2 w-2 h-2 -translate-x-1/2 -translate-y-1/2 bg-teal-500 rounded-full opacity-75 animate-ping"></div>
+                    <div className="absolute top-1/2 left-1/2 w-2 h-2 -translate-x-1/2 -translate-y-1/2 bg-slate-500 rounded-full opacity-75 animate-ping"></div>
                   </div>
                   
                   {/* Info badges */}
-                  <div className="absolute top-0 right-0 bg-white border border-gray-200 p-3 rounded-xl shadow-md animate-bounce" style={{animationDuration: '3s'}}>
+                  <div className="absolute top-0 right-0 bg-white border border-gray-200 p-3 rounded-xl shadow-md animate-pulse">
                     <div className="flex items-center gap-2">
                       <Sparkles className="h-5 w-5 text-blue-500" />
                       <span className="text-sm font-medium text-slate-800">AI Powered</span>
                     </div>
                   </div>
                   
-                  <div className="absolute bottom-0 left-0 bg-white border border-gray-200 p-3 rounded-xl shadow-md animate-bounce" style={{animationDuration: '3s', animationDelay: '1.5s'}}>
+                  <div className="absolute bottom-0 left-0 bg-white border border-gray-200 p-3 rounded-xl shadow-md animate-pulse">
                     <div className="flex items-center gap-2">
                       <ShieldCheck className="h-5 w-5 text-teal-500" />
                       <span className="text-sm font-medium text-slate-800">100% Secure</span>
