@@ -475,225 +475,112 @@ export default function Home() {
                 {/* Stylized background card */}
                 <div className="absolute inset-0 bg-card rounded-3xl border border-border/30 shadow-xl transform rotate-3 scale-95 -z-10"></div>
                 
-                {/* Main card with futuristic SVG */}
+                {/* Main card with modern financial UI */}
                 <Card className="relative overflow-hidden rounded-3xl border border-primary/20 shadow-2xl animate-float glass">
                   <CardContent className="p-8 flex items-center justify-center">
-                    {/* Modern Abstract Financial App SVG */}
-                    <svg
-                      width="100%"
-                      height="420"
-                      viewBox="0 0 800 600"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-full h-auto"
-                    >
-                      {/* Background Layers */}
-                      <rect width="800" height="600" fill="url(#bgGradient)" opacity="0.1" />
-                      <circle cx="400" cy="300" r="280" fill="url(#glowRadial)" opacity="0.15" />
-                      <path d="M200,450 Q400,150 600,450" stroke="url(#lineGradient)" strokeWidth="1" opacity="0.2" strokeDasharray="4 4" />
+                    {/* Modern Code-Based Financial UI */}
+                    <div className="relative w-full h-[420px] overflow-hidden">
+                      {/* Background Elements */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 opacity-30"></div>
+                      <div className="absolute top-10 left-10 w-60 h-60 rounded-full bg-gradient-to-r from-primary/10 to-primary/5 blur-3xl animate-pulse-slow"></div>
+                      <div className="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-gradient-to-r from-primary/10 to-primary/5 blur-3xl animate-pulse-slower"></div>
                       
-                      {/* Abstract 3D Card Elements */}
-                      <g filter="url(#cardBlur)">
-                        {/* Blue Card - Left */}
-                        <rect x="140" y="240" width="200" height="120" rx="16" fill="url(#blueCardGradient)" opacity="0.95" />
-                        <rect x="150" y="250" width="180" height="100" rx="12" fill="#FFFFFF" fillOpacity="0.15" />
-                        <circle cx="170" cy="270" r="10" fill="#FFFFFF" opacity="0.5" />
-                        <g filter="url(#textGlow)">
-                          <text x="190" y="275" fill="#FFFFFF" fontSize="15" fontWeight="bold">ZERO FEES</text>
-                        </g>
-                        <text x="190" y="300" fill="#FFFFFF" fontSize="12" opacity="0.8">Global transfers without</text>
-                        <text x="190" y="320" fill="#FFFFFF" fontSize="12" opacity="0.8">any hidden charges</text>
-                      </g>
+                      {/* Dynamic Grid Background */}
+                      <div className="absolute inset-0 grid grid-cols-8 grid-rows-6 gap-4 p-4">
+                        {Array.from({ length: 48 }).map((_, i) => (
+                          <div 
+                            key={i}
+                            className="relative overflow-hidden"
+                            style={{ 
+                              opacity: Math.random() * 0.07 + 0.03,
+                              animationDelay: `${Math.random() * 5}s`,
+                              animationDuration: `${Math.random() * 3 + 4}s`
+                            }}
+                          >
+                            <div className="absolute inset-0 bg-primary rounded-md animate-pulse-slow"></div>
+                          </div>
+                        ))}
+                      </div>
                       
-                      {/* White Card - Center */}
-                      <g filter="url(#cardShadow)">
-                        <rect x="250" y="170" width="300" height="200" rx="24" fill="url(#whiteCardGradient)" opacity="0.95" />
-                        <rect x="265" y="190" width="270" height="60" rx="10" fill="#007AFF" fillOpacity="0.08" />
-                        <text x="280" y="225" fill="#007AFF" fontSize="14" fontWeight="medium">Available Balance</text>
-                        <text x="280" y="265" fill="#007AFF" fontSize="32" fontWeight="bold">KES 14,235</text>
-                        <text x="420" y="265" fill="#007AFF" fontSize="20" fontWeight="bold">.34</text>
+                      {/* Main Content */}
+                      <div className="relative h-full flex flex-col justify-center p-6">
+                        {/* Main Balance Card */}
+                        <div className="w-full max-w-[300px] mx-auto bg-white rounded-2xl shadow-lg p-6 mb-6 relative">
+                          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/0 via-primary to-primary/0"></div>
+                          <div className="text-sm text-muted-foreground mb-2">Available Balance</div>
+                          <div className="flex items-baseline mb-6">
+                            <span className="text-3xl font-bold text-foreground">KES 14,235</span>
+                            <span className="text-xl font-medium text-muted-foreground ml-1">.34</span>
+                          </div>
+                          <div className="flex flex-wrap gap-2 justify-between">
+                            {[
+                              { icon: <PiggyBank className="h-4 w-4" />, color: "bg-primary/10 text-primary" },
+                              { icon: <Send className="h-4 w-4" />, color: "bg-green-500/10 text-green-500" },
+                              { icon: <CreditCard className="h-4 w-4" />, color: "bg-orange-500/10 text-orange-500" },
+                              { icon: <TrendingUp className="h-4 w-4" />, color: "bg-purple-500/10 text-purple-500" }
+                            ].map((item, i) => (
+                              <div 
+                                key={i} 
+                                className={`w-[65px] h-[65px] rounded-xl ${item.color} flex items-center justify-center cursor-pointer transition-transform hover:scale-105`}
+                              >
+                                {item.icon}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                         
-                        {/* Abstract Money Flow Indicators */}
-                        <path d="M280,295 L480,295" stroke="#E1E8F0" strokeWidth="1.5" />
-                        <g className="animate-pulse-slow">
-                          <circle cx="320" cy="295" r="5" fill="#4CAF50" />
-                          <circle cx="370" cy="295" r="5" fill="#FFC107" />
-                          <circle cx="420" cy="295" r="5" fill="#007AFF" />
-                        </g>
+                        {/* Feature Cards */}
+                        <div className="grid grid-cols-2 gap-4 mb-4">
+                          {[
+                            { title: "ZERO FEES", desc: "Global transfers", icon: <Send className="h-3.5 w-3.5 text-foreground/70 group-hover:text-primary transition-colors" />, color: "bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200" },
+                            { title: "SECURE", desc: "Bank-grade protection", icon: <ShieldCheck className="h-3.5 w-3.5 text-foreground/70 group-hover:text-primary transition-colors" />, color: "bg-gradient-to-br from-purple-50 to-indigo-100 border-indigo-200" },
+                            { title: "INSTANT", desc: "Real-time transfers", icon: <Zap className="h-3.5 w-3.5 text-foreground/70 group-hover:text-primary transition-colors" />, color: "bg-gradient-to-br from-green-50 to-emerald-100 border-emerald-200" },
+                            { title: "GLOBAL", desc: "40+ countries", icon: <Globe className="h-3.5 w-3.5 text-foreground/70 group-hover:text-primary transition-colors" />, color: "bg-gradient-to-br from-amber-50 to-orange-100 border-orange-200" }
+                          ].map((item, i) => (
+                            <div 
+                              key={i} 
+                              className={`${item.color} p-4 rounded-xl border shadow-sm backdrop-blur-sm glass transform transition-all duration-300 hover:scale-105 hover:shadow-md group`}
+                            >
+                              <div className="flex items-center gap-2 mb-2">
+                                <div className="p-1.5 rounded-full bg-white/80 shadow-inner">
+                                  {item.icon}
+                                </div>
+                                <div className="font-bold text-xs tracking-wider text-foreground/90 group-hover:text-primary transition-colors">{item.title}</div>
+                              </div>
+                              <div className="text-xs text-foreground/70 font-medium pl-1">{item.desc}</div>
+                            </div>
+                          ))}
+                        </div>
                         
-                        {/* Quick Action Buttons */}
-                        <g transform="translate(280, 320)">
-                          <circle cx="20" cy="20" r="18" fill="#007AFF" fillOpacity="0.1" />
-                          <path d="M13 20H27M20 13V27" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" />
-                        </g>
-                        
-                        <g transform="translate(350, 320)">
-                          <circle cx="20" cy="20" r="18" fill="#007AFF" fillOpacity="0.1" />
-                          <path d="M13 20H27" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" />
-                        </g>
-                        
-                        <g transform="translate(420, 320)">
-                          <circle cx="20" cy="20" r="18" fill="#007AFF" fillOpacity="0.1" />
-                          <path d="M20 13L20 27M13 20H27" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" />
-                        </g>
-                        
-                        <g transform="translate(490, 320)">
-                          <circle cx="20" cy="20" r="18" fill="#007AFF" fillOpacity="0.1" />
-                          <path d="M15 18L20 23L25 18" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </g>
-                      </g>
+                        {/* Activity Animation */}
+                        <div className="relative h-[60px] bg-white bg-opacity-50 rounded-xl p-4 flex items-center overflow-hidden">
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+                          <div className="mr-3">
+                            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                              <TrendingUp className="h-4 w-4 text-primary" />
+                            </div>
+                          </div>
+                          <div className="flex-1">
+                            <div className="text-sm font-medium">Activity Feed</div>
+                            <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                              <div className="h-full bg-primary rounded-full animate-pulse-slow" style={{ width: '65%' }}></div>
+                            </div>
+                          </div>
+                          <div className="ml-3 text-xs text-primary font-medium">
+                            Live
+                          </div>
+                        </div>
+                      </div>
                       
-                      {/* Small Card - Top Right */}
-                      <g filter="url(#cardBlur)">
-                        <rect x="500" y="150" width="160" height="100" rx="16" fill="url(#purpleCardGradient)" opacity="0.95" />
-                        <rect x="510" y="160" width="140" height="80" rx="12" fill="#FFFFFF" fillOpacity="0.15" />
-                        <circle cx="530" cy="180" r="10" fill="#FFFFFF" opacity="0.5" />
-                        <g filter="url(#textGlow)">
-                          <text x="550" y="185" fill="#FFFFFF" fontSize="15" fontWeight="bold">SECURE</text>
-                        </g>
-                        <text x="550" y="210" fill="#FFFFFF" fontSize="12" opacity="0.8">Bank-grade encryption</text>
-                        <text x="550" y="230" fill="#FFFFFF" fontSize="12" opacity="0.8">& protection</text>
-                      </g>
+                      {/* Floating Elements */}
+                      <div className="absolute top-20 -right-6 w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center text-white shadow-glow-primary transform rotate-12 animate-float">
+                        <DollarSign className="h-8 w-8" />
+                      </div>
                       
-                      {/* Small Card - Bottom Right */}
-                      <g filter="url(#cardBlur)">
-                        <rect x="460" y="350" width="160" height="100" rx="16" fill="url(#greenCardGradient)" opacity="0.95" />
-                        <rect x="470" y="360" width="140" height="80" rx="12" fill="#FFFFFF" fillOpacity="0.15" />
-                        <circle cx="490" cy="380" r="10" fill="#FFFFFF" opacity="0.5" />
-                        <g filter="url(#textGlow)">
-                          <text x="510" y="385" fill="#FFFFFF" fontSize="15" fontWeight="bold">INSTANT</text>
-                        </g>
-                        <text x="510" y="410" fill="#FFFFFF" fontSize="12" opacity="0.8">Real-time transfers</text>
-                        <text x="510" y="430" fill="#FFFFFF" fontSize="12" opacity="0.8">& payments</text>
-                      </g>
-                      
-                      {/* Small Card - Bottom Left */}
-                      <g filter="url(#cardBlur)">
-                        <rect x="180" y="370" width="160" height="100" rx="16" fill="url(#orangeCardGradient)" opacity="0.95" />
-                        <rect x="190" y="380" width="140" height="80" rx="12" fill="#FFFFFF" fillOpacity="0.15" />
-                        <circle cx="210" cy="400" r="10" fill="#FFFFFF" opacity="0.5" />
-                        <g filter="url(#textGlow)">
-                          <text x="230" y="405" fill="#FFFFFF" fontSize="15" fontWeight="bold">GLOBAL</text>
-                        </g>
-                        <text x="230" y="430" fill="#FFFFFF" fontSize="12" opacity="0.8">40+ countries worldwide</text>
-                      </g>
-                      
-                      {/* Floating 3D Elements */}
-                      <g className="animate-float" filter="url(#floatingElementShadow)">
-                        {/* Credit Card */}
-                        <g transform="translate(200, 200) rotate(-15)">
-                          <rect width="80" height="50" rx="6" fill="url(#creditCardGradient)" />
-                          <rect x="10" y="30" width="30" height="5" rx="2" fill="#FFFFFF" opacity="0.5" />
-                          <rect x="10" y="10" width="15" height="15" rx="2" fill="#FFFFFF" opacity="0.2" />
-                        </g>
-                        
-                        {/* Money Icon */}
-                        <g transform="translate(550, 280) rotate(10)">
-                          <rect width="50" height="50" rx="25" fill="url(#moneyGradient)" />
-                          <text x="25" y="32" fill="#FFFFFF" fontSize="18" fontWeight="bold" textAnchor="middle">$</text>
-                        </g>
-                        
-                        {/* Globe Icon */}
-                        <g transform="translate(120, 320) rotate(-5)">
-                          <circle cx="25" cy="25" r="25" fill="url(#globeGradient)" />
-                          <circle cx="25" cy="25" r="15" stroke="#FFFFFF" strokeWidth="1.5" strokeOpacity="0.5" fill="none" />
-                          <path d="M10,25 Q25,10 40,25 Q25,40 10,25" stroke="#FFFFFF" strokeWidth="1.5" strokeOpacity="0.5" fill="none" />
-                          <path d="M25,10 L25,40" stroke="#FFFFFF" strokeWidth="1.5" strokeOpacity="0.5" />
-                        </g>
-                      </g>
-                      
-                      {/* Connection Lines - Animated */}
-                      <g className="animate-pulse-slow">
-                        <path d="M250,270 C300,230 350,230 400,270" stroke="url(#lineGradient)" strokeWidth="1" />
-                        <path d="M400,270 C450,310 500,310 550,270" stroke="url(#lineGradient)" strokeWidth="1" />
-                        <path d="M320,370 C350,330 400,330 430,370" stroke="url(#lineGradient)" strokeWidth="1" />
-                        
-                        {/* Data flow particles */}
-                        <circle cx="280" cy="255" r="3" fill="#007AFF" />
-                        <circle cx="350" cy="245" r="3" fill="#007AFF" />
-                        <circle cx="420" cy="255" r="3" fill="#007AFF" />
-                        <circle cx="490" cy="245" r="3" fill="#007AFF" />
-                        <circle cx="330" cy="350" r="3" fill="#007AFF" />
-                        <circle cx="400" cy="340" r="3" fill="#007AFF" />
-                      </g>
-                      
-                      {/* Gradients and Filters */}
-                      <defs>
-                        <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#007AFF" />
-                          <stop offset="100%" stopColor="#00C6FF" />
-                        </linearGradient>
-                        
-                        <radialGradient id="glowRadial" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                          <stop offset="0%" stopColor="#007AFF" stopOpacity="0.5" />
-                          <stop offset="100%" stopColor="#007AFF" stopOpacity="0" />
-                        </radialGradient>
-                        
-                        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#007AFF" stopOpacity="0.1" />
-                          <stop offset="50%" stopColor="#007AFF" stopOpacity="0.6" />
-                          <stop offset="100%" stopColor="#007AFF" stopOpacity="0.1" />
-                        </linearGradient>
-                        
-                        <linearGradient id="whiteCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#FFFFFF" />
-                          <stop offset="100%" stopColor="#F5F7FA" />
-                        </linearGradient>
-                        
-                        <linearGradient id="blueCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#006AE3" />
-                          <stop offset="100%" stopColor="#0091FF" />
-                        </linearGradient>
-                        
-                        <linearGradient id="purpleCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#5D3BE7" />
-                          <stop offset="100%" stopColor="#7B5FFF" />
-                        </linearGradient>
-                        
-                        <linearGradient id="greenCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#00845C" />
-                          <stop offset="100%" stopColor="#00BD81" />
-                        </linearGradient>
-                        
-                        <linearGradient id="orangeCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#D95000" />
-                          <stop offset="100%" stopColor="#FF7E29" />
-                        </linearGradient>
-                        
-                        <linearGradient id="creditCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#434343" />
-                          <stop offset="100%" stopColor="#000000" />
-                        </linearGradient>
-                        
-                        <linearGradient id="moneyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#2E7D32" />
-                          <stop offset="100%" stopColor="#4CAF50" />
-                        </linearGradient>
-                        
-                        <linearGradient id="globeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#1565C0" />
-                          <stop offset="100%" stopColor="#42A5F5" />
-                        </linearGradient>
-                        
-                        <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="130%" filterUnits="userSpaceOnUse">
-                          <feDropShadow dx="0" dy="10" stdDeviation="15" floodOpacity="0.2" />
-                        </filter>
-                        
-                        <filter id="cardBlur" x="-10%" y="-10%" width="120%" height="130%" filterUnits="userSpaceOnUse">
-                          <feGaussianBlur stdDeviation="2" />
-                          <feDropShadow dx="0" dy="8" stdDeviation="8" floodOpacity="0.15" />
-                        </filter>
-                        
-                        <filter id="textGlow" x="-10%" y="-10%" width="120%" height="130%" filterUnits="userSpaceOnUse">
-                          <feGaussianBlur stdDeviation="1" result="blur" />
-                          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                        </filter>
-                        
-                        <filter id="floatingElementShadow" x="-10%" y="-10%" width="120%" height="130%" filterUnits="userSpaceOnUse">
-                          <feDropShadow dx="0" dy="6" stdDeviation="6" floodOpacity="0.1" />
-                        </filter>
-                      </defs>
-                    </svg>
+                      <div className="absolute bottom-20 -left-4 w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white shadow-lg transform -rotate-12 animate-float" style={{ animationDelay: '2s' }}>
+                        <ShieldCheck className="h-6 w-6" />
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
                 
@@ -819,7 +706,7 @@ export default function Home() {
       {/* Detailed Features Overview Section */}
       <section className="py-20 md:py-28 bg-muted/30">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
             <div className="order-2 md:order-1">
               <Badge variant="outline" className="mb-4 text-sm px-4 py-1.5 rounded-full border-primary text-primary bg-primary/5 font-medium">Core Features</Badge>
             
@@ -831,21 +718,21 @@ export default function Home() {
                 FoloMoney integrates your entire financial life. Designed for digital natives who want simple, transparent, and fee-free financial tools.
             </p>
               
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {/* Feature 1 */}
                 <div className="group">
-                  <div className="flex items-start gap-5 p-4 rounded-xl border border-border/0 group-hover:border-primary/20 transition-all duration-300 group-hover:bg-white group-hover:shadow-lg">
-                    <div className="bg-primary/10 text-primary p-3 rounded-xl mt-1 flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                  <div className="flex flex-col sm:flex-row items-start gap-4 p-5 rounded-xl border border-border/20 bg-white/70 backdrop-blur-sm hover:border-primary/20 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
+                    <div className="w-12 h-12 bg-primary/10 text-primary p-3 rounded-xl flex-shrink-0 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
                       <Wallet className="h-6 w-6" />
           </div>
                     <div>
                       <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors duration-300">Your Secure Wallet</h3>
-                      <p className="text-muted-foreground mt-2">Top-up instantly via mobile money or bank transfer. Send money to anyone with a phone number or email - even if they don't have the app yet.</p>
+                      <p className="text-muted-foreground mt-2">Top-up instantly via mobile money or bank transfer. Send money to anyone with a phone number or email.</p>
                       
-                      <div className="flex mt-3 gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary/10 scrollbar-track-transparent">
-                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Instant Transfers</Badge>
-                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Mobile Money</Badge>
-                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Bank Accounts</Badge>
+                      <div className="flex flex-wrap mt-3 gap-2">
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1">Instant Transfers</Badge>
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1">Mobile Money</Badge>
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1">Bank Accounts</Badge>
                       </div>
                     </div>
                   </div>
@@ -853,18 +740,18 @@ export default function Home() {
             
                 {/* Feature 2 */}
                 <div className="group">
-                  <div className="flex items-start gap-5 p-4 rounded-xl border border-border/0 group-hover:border-primary/20 transition-all duration-300 group-hover:bg-white group-hover:shadow-lg">
-                    <div className="bg-primary/10 text-primary p-3 rounded-xl mt-1 flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                  <div className="flex flex-col sm:flex-row items-start gap-4 p-5 rounded-xl border border-border/20 bg-white/70 backdrop-blur-sm hover:border-primary/20 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
+                    <div className="w-12 h-12 bg-primary/10 text-primary p-3 rounded-xl flex-shrink-0 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
                       <FileText className="h-6 w-6" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors duration-300">Simplified Bill Payments</h3>
-                      <p className="text-muted-foreground mt-2">Pay utilities, airtime, and subscriptions from our growing list of billers. Schedule recurring payments and get timely reminders.</p>
+                      <p className="text-muted-foreground mt-2">Pay utilities, airtime, and subscriptions from our growing list of billers. Schedule recurring payments.</p>
                       
-                      <div className="flex mt-3 gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary/10 scrollbar-track-transparent">
-                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Auto-Pay</Badge>
-                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Reminders</Badge>
-                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Payment History</Badge>
+                      <div className="flex flex-wrap mt-3 gap-2">
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1">Auto-Pay</Badge>
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1">Reminders</Badge>
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1">Payment History</Badge>
                       </div>
                     </div>
                   </div>
@@ -872,89 +759,134 @@ export default function Home() {
           
                 {/* Feature 3 */}
                 <div className="group">
-                  <div className="flex items-start gap-5 p-4 rounded-xl border border-border/0 group-hover:border-primary/20 transition-all duration-300 group-hover:bg-white group-hover:shadow-lg">
-                    <div className="bg-primary/10 text-primary p-3 rounded-xl mt-1 flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                  <div className="flex flex-col sm:flex-row items-start gap-4 p-5 rounded-xl border border-border/20 bg-white/70 backdrop-blur-sm hover:border-primary/20 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
+                    <div className="w-12 h-12 bg-primary/10 text-primary p-3 rounded-xl flex-shrink-0 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
                       <Globe className="h-6 w-6" />
               </div>
                 <div>
                       <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors duration-300">Truly Free Global Transfers</h3>
-                      <p className="text-muted-foreground mt-2">Send money internationally with competitive exchange rates and absolutely ZERO transfer fees. Fast, secure, and transparent.</p>
+                      <p className="text-muted-foreground mt-2">Send money internationally with competitive exchange rates and absolutely ZERO transfer fees.</p>
                   
-                      <div className="flex mt-3 gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary/10 scrollbar-track-transparent">
-                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Fee-Free</Badge>
-                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">40+ Countries</Badge>
-                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Competitive Rates</Badge>
+                      <div className="flex flex-wrap mt-3 gap-2">
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1">Fee-Free</Badge>
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1">40+ Countries</Badge>
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1">Competitive Rates</Badge>
                       </div>
                     </div>
                       </div>
                     </div>
                       </div>
               
-              <Button className="mt-12 bg-primary hover:bg-primary-dark text-white rounded-xl px-7 py-6 text-base font-medium transition-all duration-300 hover:shadow-glow-primary hover:-translate-y-1">
+              <Button className="mt-10 bg-primary hover:bg-primary-dark text-white rounded-xl px-7 py-6 text-base font-medium transition-all duration-300 hover:shadow-glow-primary hover:-translate-y-1">
                 Explore All Features <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
                     </div>
             
-            <div className="order-1 md:order-2 relative">
-              {/* Phone mockup with app UI */}
-              <div className="relative mx-auto w-full max-w-[400px]">
-                {/* Phone frame */}
-                <div className="relative z-10 overflow-hidden rounded-[2.5rem] border-8 border-[#1a1a1a] bg-[#1a1a1a] shadow-xl">
-                  {/* Phone screen */}
-                  <div className="aspect-[9/19] overflow-hidden rounded-[2rem] bg-white">
-                    {/* App UI */}
-                    <div className="relative h-full w-full bg-background">
-                      {/* App content */}
-                      <div className="h-full w-full">
-                        <AppShowcaseLottie className="w-full h-full object-cover" />
-                  </div>
-                  
-                      {/* Status bar */}
-                      <div className="absolute top-0 left-0 w-full bg-gradient-to-b from-black/40 to-transparent text-white p-2 flex justify-between items-center text-xs">
-                        <span>9:41</span>
-                        <div className="flex items-center gap-1">
-                          <div className="h-2 w-2 rounded-full bg-white"></div>
-                          <div className="h-2 w-2 rounded-full bg-white"></div>
-                          <div className="h-2 w-2 rounded-full bg-white"></div>
-                          <div className="h-2 w-2 rounded-full bg-white"></div>
+            <div className="order-1 md:order-2 relative mb-12 md:mb-0">
+              {/* Interactive features visualization */}
+              <div className="relative max-w-[500px] mx-auto">
+                {/* Central hub element */}
+                <div className="relative z-20 w-28 h-28 mx-auto mb-8 rounded-full bg-gradient-to-br from-primary to-primary-dark shadow-xl flex items-center justify-center animate-subtle-pulse">
+                  <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center">
+                    <FoloLogo size="small" />
                         </div>
                 </div>
                 
-                      {/* Feature Highlights */}
-                      <div className="absolute top-1/4 right-4 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg px-3 py-2 border border-primary/20 animate-float">
-                        <div className="flex items-center gap-2">
-                          <div className="h-6 w-6 bg-primary rounded-full flex items-center justify-center text-white text-xs">+</div>
-                          <span className="text-xs font-medium text-primary-dark">Add Money</span>
+                {/* Connected features */}
+                <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[
+                    {
+                      icon: <Wallet className="h-6 w-6" />,
+                      title: "Smart Wallet",
+                      desc: "All your finances in one place",
+                      color: "bg-blue-50 border-blue-200",
+                      iconBg: "bg-blue-100",
+                      position: "sm:translate-x-8 sm:translate-y-3"
+                    },
+                    {
+                      icon: <Globe className="h-6 w-6" />,
+                      title: "Global Transfers",
+                      desc: "Send money worldwide with 0% fees",
+                      color: "bg-purple-50 border-purple-200",
+                      iconBg: "bg-purple-100",
+                      position: "sm:-translate-x-8 sm:translate-y-3"
+                    },
+                    {
+                      icon: <Receipt className="h-6 w-6" />,
+                      title: "Bill Payments",
+                      desc: "Manage all your bills automatically",
+                      color: "bg-green-50 border-green-200",
+                      iconBg: "bg-green-100",
+                      position: "sm:translate-x-8 sm:-translate-y-3"
+                    },
+                    {
+                      icon: <Gauge className="h-6 w-6" />,
+                      title: "Credit Insights",
+                      desc: "Monitor and improve your credit score",
+                      color: "bg-amber-50 border-amber-200",
+                      iconBg: "bg-amber-100",
+                      position: "sm:-translate-x-8 sm:-translate-y-3"
+                    }
+                  ].map((item, index) => (
+                    <div
+                      key={index}
+                      className={`p-5 rounded-2xl border shadow-md backdrop-blur-sm ${item.color} ${item.position} transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group animate-fade-in-up`}
+                      style={{ animationDelay: `${index * 0.15}s` }}
+                    >
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className={`w-12 h-12 rounded-xl ${item.iconBg} flex items-center justify-center text-primary`}>
+                          {item.icon}
                     </div>
+                        <h4 className="font-bold text-lg">{item.title}</h4>
                   </div>
+                      <p className="text-foreground/70 text-sm">{item.desc}</p>
                       
-                      <div className="absolute bottom-1/4 left-4 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg px-3 py-2 border border-primary/20 animate-float" style={{animationDelay: '1s'}}>
-                        <div className="flex items-center gap-2">
-                          <div className="h-6 w-6 bg-primary-dark rounded-full flex items-center justify-center text-white text-xs">
-                            <Send className="h-3 w-3" />
+                      {/* Interactive indicator */}
+                      <div className="mt-4 h-1.5 w-full bg-white/50 rounded-full overflow-hidden">
+                        <div className="h-full bg-primary/30 rounded-full animate-pulse-slow" style={{ width: `${60 + index * 10}%` }}></div>
                   </div>
-                          <span className="text-xs font-medium text-primary-dark">Send Money</span>
                   </div>
+                  ))}
                 </div>
+                
+                {/* Connection lines */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-[450px] max-h-[450px] -z-10">
+                  {/* Animated pulse rings */}
+                  <div className="absolute inset-0 rounded-full border-4 border-primary/5 animate-pulse-slow"></div>
+                  <div className="absolute inset-[15%] rounded-full border-4 border-primary/10 animate-pulse-slower"></div>
+                  
+                  {/* Connection nodes */}
+                  <div className="absolute top-1/2 left-0 w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
+                  <div className="absolute top-1/2 right-0 w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
+                  <div className="absolute top-0 left-1/2 w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
+                  <div className="absolute bottom-0 left-1/2 w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
+                  
+                  {/* Diagonal connections */}
+                  <div className="absolute top-[15%] left-[15%] w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
+                  <div className="absolute top-[15%] right-[15%] w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
+                  <div className="absolute bottom-[15%] left-[15%] w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
+                  <div className="absolute bottom-[15%] right-[15%] w-2 h-2 rounded-full bg-primary animate-pulse-slow"></div>
               </div>
+                
+                {/* Additional floating elements */}
+                <div className="absolute top-0 right-0 bg-white p-3 rounded-xl shadow-md animate-float z-30">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-amber-500" />
+                    <span className="text-sm font-medium">AI Powered</span>
             </div>
           </div>
           
-                {/* Decorative elements */}
-                <div className="absolute top-0 right-0 -mr-6 mt-10 bg-primary text-white p-4 rounded-full shadow-lg animate-float">
-                  <Smartphone className="h-6 w-6" />
-                </div>
-                
-                <div className="absolute -bottom-2 -left-2 bg-primary-gradient p-4 rounded-2xl shadow-lg animate-subtle-pulse">
+                <div className="absolute -bottom-2 left-0 bg-white p-3 rounded-xl shadow-md animate-float z-30" style={{animationDelay: '1s'}}>
                   <div className="flex items-center gap-2">
-                    <Sparkles className="h-6 w-6 text-white" />
-                    <span className="text-white font-medium">Secure & Fast</span>
+                    <ShieldCheck className="h-5 w-5 text-green-500" />
+                    <span className="text-sm font-medium">Secure & Protected</span>
                   </div>
                 </div>
                 
                 {/* Background decoration */}
-                <div className="absolute -z-10 -top-6 -right-6 w-64 h-64 bg-primary/5 rounded-full blur-xl"></div>
-                <div className="absolute -z-10 -bottom-8 -left-8 w-72 h-72 bg-primary/5 rounded-full blur-xl"></div>
+                <div className="absolute -z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px]">
+                  <div className="absolute inset-0 bg-primary/5 rounded-full blur-3xl"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -1489,7 +1421,7 @@ export default function Home() {
             {/* AI Insights Visualization */}
             <div className="relative">
               {/* Card with mock AI insights - Using simplified styling */}
-              <div className="relative p-[1px] rounded-3xl bg-primary/30 shadow-xl">
+              <div className="relative p-[1px] rounded-3xl bg-primary/30 shadow-xl hidden md:block">
                 <Card className="rounded-[calc(1.5rem-1px)] glass backdrop-blur-sm border-0 overflow-hidden relative">
                   <div className="absolute top-0 left-0 w-full h-2 bg-primary"></div>
                   
