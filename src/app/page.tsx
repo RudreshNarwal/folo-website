@@ -47,6 +47,7 @@ import AppShowcaseLottie from '@/components/animations/AppShowcaseLottie';
 import CreditScoreLottie from '@/components/animations/CreditScoreLottie';
 import WorldTransferLottie from '@/components/animations/WorldTransferLottie';
 import Link from 'next/link';
+import { FeatureCardModern } from '@/components/FeatureCardModern';
 
 
 const TestimonialCard = ({userName, userRole, testimonialText, rating, imageUrl, imageAlt, dataAiHint}: {userName: string, userRole: string, testimonialText: string, rating: number, imageUrl: string, imageAlt: string, dataAiHint?: string }) => (
@@ -278,7 +279,10 @@ export default function Home() {
             </div>
             
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center">
+            <nav className={cn(
+              "hidden md:flex items-center",
+              !isScrolled && "opacity-0 pointer-events-none"
+            )}>
               <ul className="flex space-x-10">
                 {['Features', 'Transfers', 'Security', 'Testimonials', 'FAQ'].map((item) => (
                   <li key={item}>
@@ -286,9 +290,7 @@ export default function Home() {
                       href={`#${item.toLowerCase()}`} 
                       className={cn(
                         "text-sm font-medium transition-colors relative px-1 py-2",
-                        isScrolled 
-                          ? "text-foreground hover:text-primary" 
-                          : "text-foreground/90 hover:text-primary",
+                        "text-foreground hover:text-primary",
                         "after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
                       )}
                     >
@@ -352,7 +354,8 @@ export default function Home() {
             "md:hidden overflow-hidden transition-all duration-300 ease-in-out",
             mobileMenuOpen 
               ? "max-h-[300px] opacity-100 mt-4" 
-              : "max-h-0 opacity-0"
+              : "max-h-0 opacity-0",
+            !isScrolled && "hidden"
           )}>
             <div className={cn(
               "rounded-xl p-4 mb-2 transition-all duration-300",
@@ -398,7 +401,7 @@ export default function Home() {
       </header>
       
       {/* Hero Section - Modern Redesign */}
-      <section className="relative pt-24 pb-28 md:pt-32 md:pb-40 overflow-hidden">
+      <section className="relative pt-24 pb-28 md:pt-32 md:pb-36 overflow-hidden">
         {/* Background with subtle gradient */}
         <div className="absolute inset-0 bg-primary/5 pointer-events-none"></div>
         
@@ -408,19 +411,37 @@ export default function Home() {
         
         <div className="container mx-auto px-6 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-16">
-            {/* Text Content */}
-            <div className="flex-1 text-center lg:text-left animate-slide-up pt-20">
-              <Badge variant="outline" className="mb-6 px-4 py-1.5 border-primary text-primary bg-primary/5 text-sm font-medium rounded-full">
-                Financial Freedom for Gen Z & Millennials
-              </Badge>
-              
+            {/* Text Content - Optimized */}
+            <div className="flex-1 text-center lg:text-left animate-slide-up pt-10 lg:pt-0">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6">
                 Your Money, <span className="text-primary font-bold">Your Way.</span>
               </h1>
               
-              <p className="text-lg md:text-xl mb-8 text-muted-foreground max-w-2xl">
-                Manage your finances effortlessly with FoloMoney. Your secure digital wallet for instant payments, bill management, <span className="font-bold text-primary">ZERO-FEE</span> global transfers, and credit insights - all in one place.
+              <p className="text-lg md:text-xl mb-8 text-muted-foreground max-w-xl">
+                Download FoloMoney today and join thousands managing their money the smart way – with zero fees and powerful tools.
               </p>
+              
+              <div className="grid grid-cols-2 gap-6 mb-8 max-w-md">
+                {['Zero-Fee Transfers', 'Credit Insights', 'Smart Wallet', 'Bill Payments'].map((feature, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        className="h-4 w-4 text-primary"
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="3"
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </div>
+                    <span className="text-sm md:text-base font-medium text-foreground">{feature}</span>
+                  </div>
+                ))}
+              </div>
               
               <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
                 <Button size="lg" className="bg-primary hover:bg-primary-dark text-white px-6 py-6 rounded-xl font-medium text-lg transition-all duration-300 hover:shadow-glow-primary hover:-translate-y-1">
@@ -431,110 +452,254 @@ export default function Home() {
                 </Button>
               </div>
               
-              {/* Social Proof */}
-              <div className="flex items-center justify-center lg:justify-start mt-12 gap-6">
-                <div className="flex -space-x-3">
-                  <Avatar className="border-2 border-white h-10 w-10">
-                    <AvatarImage src="https://i.pravatar.cc/100?img=1" alt="User" />
-                    <AvatarFallback>JP</AvatarFallback>
-                  </Avatar>
-                  <Avatar className="border-2 border-white h-10 w-10">
-                    <AvatarImage src="https://i.pravatar.cc/100?img=2" alt="User" />
-                    <AvatarFallback>ML</AvatarFallback>
-                  </Avatar>
-                  <Avatar className="border-2 border-white h-10 w-10">
-                    <AvatarImage src="https://i.pravatar.cc/100?img=3" alt="User" />
-                    <AvatarFallback>SK</AvatarFallback>
-                  </Avatar>
+              {/* Social Proof - Streamlined */}
+              <div className="flex items-center mt-8 gap-4 justify-center lg:justify-start">
+                <div className="flex -space-x-2">
+                  {[1, 2, 3].map(img => (
+                    <Avatar key={img} className="border-2 border-white h-8 w-8">
+                      <AvatarImage src={`https://i.pravatar.cc/100?img=${img}`} alt="User" />
+                      <AvatarFallback>{img}</AvatarFallback>
+                    </Avatar>
+                  ))}
                 </div>
-                <div className="text-sm">
-                  <p className="font-medium">Trusted by 25,000+ users</p>
-                  <div className="flex items-center text-primary">
-                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                    <span className="text-muted-foreground ml-1">4.9/5</span>
-                  </div>
+                <div className="text-xs">
+                  <p className="font-medium">25,000+ users</p>
+                  <div className="flex text-primary text-[10px]">★★★★★ <span className="text-muted-foreground ml-1">4.9</span></div>
                 </div>
               </div>
             </div>
             
-            {/* Hero Image / Animation */}
-            <div className="flex-1 w-full max-w-xl">
+            {/* Hero Image - Futuristic SVG */}
+            <div className="flex-1 w-full max-w-lg">
               <div className="relative">
                 {/* Stylized background card */}
                 <div className="absolute inset-0 bg-card rounded-3xl border border-border/30 shadow-xl transform rotate-3 scale-95 -z-10"></div>
                 
-                {/* Main card with app showcase */}
+                {/* Main card with futuristic SVG */}
                 <Card className="relative overflow-hidden rounded-3xl border border-primary/20 shadow-2xl animate-float glass">
-                  <CardContent className="p-6">
-                    {/* Animated app showcase */}
-                    <div className="relative h-[400px] md:h-[450px] flex items-center justify-center">
-                      <AppShowcaseLottie className="w-full h-full scale-110 md:scale-125" />
+                  <CardContent className="p-8 flex items-center justify-center">
+                    {/* Modern Abstract Financial App SVG */}
+                    <svg
+                      width="100%"
+                      height="420"
+                      viewBox="0 0 800 600"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-full h-auto"
+                    >
+                      {/* Background Layers */}
+                      <rect width="800" height="600" fill="url(#bgGradient)" opacity="0.1" />
+                      <circle cx="400" cy="300" r="280" fill="url(#glowRadial)" opacity="0.15" />
+                      <path d="M200,450 Q400,150 600,450" stroke="url(#lineGradient)" strokeWidth="1" opacity="0.2" strokeDasharray="4 4" />
                       
-                      {/* Floating annotation bubbles */}
-                      <div className="absolute top-10 right-10 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl shadow-lg border border-primary/20 text-sm font-medium text-primary-dark animate-float">
-                        <Wallet className="inline h-4 w-4 mr-1" /> Instant Transfers
-                      </div>
-                      <div className="absolute bottom-20 left-10 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl shadow-lg border border-primary/20 text-sm font-medium text-primary-dark animate-float" style={{animationDelay: '1s'}}>
-                        <Globe className="inline h-4 w-4 mr-1" /> Zero-Fee Global
-                      </div>
-                    </div>
+                      {/* Abstract 3D Card Elements */}
+                      <g filter="url(#cardBlur)">
+                        {/* Blue Card - Left */}
+                        <rect x="140" y="240" width="200" height="120" rx="16" fill="url(#blueCardGradient)" opacity="0.95" />
+                        <rect x="150" y="250" width="180" height="100" rx="12" fill="#FFFFFF" fillOpacity="0.15" />
+                        <circle cx="170" cy="270" r="10" fill="#FFFFFF" opacity="0.5" />
+                        <g filter="url(#textGlow)">
+                          <text x="190" y="275" fill="#FFFFFF" fontSize="15" fontWeight="bold">ZERO FEES</text>
+                        </g>
+                        <text x="190" y="300" fill="#FFFFFF" fontSize="12" opacity="0.8">Global transfers without</text>
+                        <text x="190" y="320" fill="#FFFFFF" fontSize="12" opacity="0.8">any hidden charges</text>
+                      </g>
+                      
+                      {/* White Card - Center */}
+                      <g filter="url(#cardShadow)">
+                        <rect x="250" y="170" width="300" height="200" rx="24" fill="url(#whiteCardGradient)" opacity="0.95" />
+                        <rect x="265" y="190" width="270" height="60" rx="10" fill="#007AFF" fillOpacity="0.08" />
+                        <text x="280" y="225" fill="#007AFF" fontSize="14" fontWeight="medium">Available Balance</text>
+                        <text x="280" y="265" fill="#007AFF" fontSize="32" fontWeight="bold">KES 14,235</text>
+                        <text x="420" y="265" fill="#007AFF" fontSize="20" fontWeight="bold">.34</text>
+                        
+                        {/* Abstract Money Flow Indicators */}
+                        <path d="M280,295 L480,295" stroke="#E1E8F0" strokeWidth="1.5" />
+                        <g className="animate-pulse-slow">
+                          <circle cx="320" cy="295" r="5" fill="#4CAF50" />
+                          <circle cx="370" cy="295" r="5" fill="#FFC107" />
+                          <circle cx="420" cy="295" r="5" fill="#007AFF" />
+                        </g>
+                        
+                        {/* Quick Action Buttons */}
+                        <g transform="translate(280, 320)">
+                          <circle cx="20" cy="20" r="18" fill="#007AFF" fillOpacity="0.1" />
+                          <path d="M13 20H27M20 13V27" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" />
+                        </g>
+                        
+                        <g transform="translate(350, 320)">
+                          <circle cx="20" cy="20" r="18" fill="#007AFF" fillOpacity="0.1" />
+                          <path d="M13 20H27" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" />
+                        </g>
+                        
+                        <g transform="translate(420, 320)">
+                          <circle cx="20" cy="20" r="18" fill="#007AFF" fillOpacity="0.1" />
+                          <path d="M20 13L20 27M13 20H27" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" />
+                        </g>
+                        
+                        <g transform="translate(490, 320)">
+                          <circle cx="20" cy="20" r="18" fill="#007AFF" fillOpacity="0.1" />
+                          <path d="M15 18L20 23L25 18" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </g>
+                      </g>
+                      
+                      {/* Small Card - Top Right */}
+                      <g filter="url(#cardBlur)">
+                        <rect x="500" y="150" width="160" height="100" rx="16" fill="url(#purpleCardGradient)" opacity="0.95" />
+                        <rect x="510" y="160" width="140" height="80" rx="12" fill="#FFFFFF" fillOpacity="0.15" />
+                        <circle cx="530" cy="180" r="10" fill="#FFFFFF" opacity="0.5" />
+                        <g filter="url(#textGlow)">
+                          <text x="550" y="185" fill="#FFFFFF" fontSize="15" fontWeight="bold">SECURE</text>
+                        </g>
+                        <text x="550" y="210" fill="#FFFFFF" fontSize="12" opacity="0.8">Bank-grade encryption</text>
+                        <text x="550" y="230" fill="#FFFFFF" fontSize="12" opacity="0.8">& protection</text>
+                      </g>
+                      
+                      {/* Small Card - Bottom Right */}
+                      <g filter="url(#cardBlur)">
+                        <rect x="460" y="350" width="160" height="100" rx="16" fill="url(#greenCardGradient)" opacity="0.95" />
+                        <rect x="470" y="360" width="140" height="80" rx="12" fill="#FFFFFF" fillOpacity="0.15" />
+                        <circle cx="490" cy="380" r="10" fill="#FFFFFF" opacity="0.5" />
+                        <g filter="url(#textGlow)">
+                          <text x="510" y="385" fill="#FFFFFF" fontSize="15" fontWeight="bold">INSTANT</text>
+                        </g>
+                        <text x="510" y="410" fill="#FFFFFF" fontSize="12" opacity="0.8">Real-time transfers</text>
+                        <text x="510" y="430" fill="#FFFFFF" fontSize="12" opacity="0.8">& payments</text>
+                      </g>
+                      
+                      {/* Small Card - Bottom Left */}
+                      <g filter="url(#cardBlur)">
+                        <rect x="180" y="370" width="160" height="100" rx="16" fill="url(#orangeCardGradient)" opacity="0.95" />
+                        <rect x="190" y="380" width="140" height="80" rx="12" fill="#FFFFFF" fillOpacity="0.15" />
+                        <circle cx="210" cy="400" r="10" fill="#FFFFFF" opacity="0.5" />
+                        <g filter="url(#textGlow)">
+                          <text x="230" y="405" fill="#FFFFFF" fontSize="15" fontWeight="bold">GLOBAL</text>
+                        </g>
+                        <text x="230" y="430" fill="#FFFFFF" fontSize="12" opacity="0.8">40+ countries worldwide</text>
+                      </g>
+                      
+                      {/* Floating 3D Elements */}
+                      <g className="animate-float" filter="url(#floatingElementShadow)">
+                        {/* Credit Card */}
+                        <g transform="translate(200, 200) rotate(-15)">
+                          <rect width="80" height="50" rx="6" fill="url(#creditCardGradient)" />
+                          <rect x="10" y="30" width="30" height="5" rx="2" fill="#FFFFFF" opacity="0.5" />
+                          <rect x="10" y="10" width="15" height="15" rx="2" fill="#FFFFFF" opacity="0.2" />
+                        </g>
+                        
+                        {/* Money Icon */}
+                        <g transform="translate(550, 280) rotate(10)">
+                          <rect width="50" height="50" rx="25" fill="url(#moneyGradient)" />
+                          <text x="25" y="32" fill="#FFFFFF" fontSize="18" fontWeight="bold" textAnchor="middle">$</text>
+                        </g>
+                        
+                        {/* Globe Icon */}
+                        <g transform="translate(120, 320) rotate(-5)">
+                          <circle cx="25" cy="25" r="25" fill="url(#globeGradient)" />
+                          <circle cx="25" cy="25" r="15" stroke="#FFFFFF" strokeWidth="1.5" strokeOpacity="0.5" fill="none" />
+                          <path d="M10,25 Q25,10 40,25 Q25,40 10,25" stroke="#FFFFFF" strokeWidth="1.5" strokeOpacity="0.5" fill="none" />
+                          <path d="M25,10 L25,40" stroke="#FFFFFF" strokeWidth="1.5" strokeOpacity="0.5" />
+                        </g>
+                      </g>
+                      
+                      {/* Connection Lines - Animated */}
+                      <g className="animate-pulse-slow">
+                        <path d="M250,270 C300,230 350,230 400,270" stroke="url(#lineGradient)" strokeWidth="1" />
+                        <path d="M400,270 C450,310 500,310 550,270" stroke="url(#lineGradient)" strokeWidth="1" />
+                        <path d="M320,370 C350,330 400,330 430,370" stroke="url(#lineGradient)" strokeWidth="1" />
+                        
+                        {/* Data flow particles */}
+                        <circle cx="280" cy="255" r="3" fill="#007AFF" />
+                        <circle cx="350" cy="245" r="3" fill="#007AFF" />
+                        <circle cx="420" cy="255" r="3" fill="#007AFF" />
+                        <circle cx="490" cy="245" r="3" fill="#007AFF" />
+                        <circle cx="330" cy="350" r="3" fill="#007AFF" />
+                        <circle cx="400" cy="340" r="3" fill="#007AFF" />
+                      </g>
+                      
+                      {/* Gradients and Filters */}
+                      <defs>
+                        <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#007AFF" />
+                          <stop offset="100%" stopColor="#00C6FF" />
+                        </linearGradient>
+                        
+                        <radialGradient id="glowRadial" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                          <stop offset="0%" stopColor="#007AFF" stopOpacity="0.5" />
+                          <stop offset="100%" stopColor="#007AFF" stopOpacity="0" />
+                        </radialGradient>
+                        
+                        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#007AFF" stopOpacity="0.1" />
+                          <stop offset="50%" stopColor="#007AFF" stopOpacity="0.6" />
+                          <stop offset="100%" stopColor="#007AFF" stopOpacity="0.1" />
+                        </linearGradient>
+                        
+                        <linearGradient id="whiteCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#FFFFFF" />
+                          <stop offset="100%" stopColor="#F5F7FA" />
+                        </linearGradient>
+                        
+                        <linearGradient id="blueCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#006AE3" />
+                          <stop offset="100%" stopColor="#0091FF" />
+                        </linearGradient>
+                        
+                        <linearGradient id="purpleCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#5D3BE7" />
+                          <stop offset="100%" stopColor="#7B5FFF" />
+                        </linearGradient>
+                        
+                        <linearGradient id="greenCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#00845C" />
+                          <stop offset="100%" stopColor="#00BD81" />
+                        </linearGradient>
+                        
+                        <linearGradient id="orangeCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#D95000" />
+                          <stop offset="100%" stopColor="#FF7E29" />
+                        </linearGradient>
+                        
+                        <linearGradient id="creditCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#434343" />
+                          <stop offset="100%" stopColor="#000000" />
+                        </linearGradient>
+                        
+                        <linearGradient id="moneyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#2E7D32" />
+                          <stop offset="100%" stopColor="#4CAF50" />
+                        </linearGradient>
+                        
+                        <linearGradient id="globeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#1565C0" />
+                          <stop offset="100%" stopColor="#42A5F5" />
+                        </linearGradient>
+                        
+                        <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="130%" filterUnits="userSpaceOnUse">
+                          <feDropShadow dx="0" dy="10" stdDeviation="15" floodOpacity="0.2" />
+                        </filter>
+                        
+                        <filter id="cardBlur" x="-10%" y="-10%" width="120%" height="130%" filterUnits="userSpaceOnUse">
+                          <feGaussianBlur stdDeviation="2" />
+                          <feDropShadow dx="0" dy="8" stdDeviation="8" floodOpacity="0.15" />
+                        </filter>
+                        
+                        <filter id="textGlow" x="-10%" y="-10%" width="120%" height="130%" filterUnits="userSpaceOnUse">
+                          <feGaussianBlur stdDeviation="1" result="blur" />
+                          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                        </filter>
+                        
+                        <filter id="floatingElementShadow" x="-10%" y="-10%" width="120%" height="130%" filterUnits="userSpaceOnUse">
+                          <feDropShadow dx="0" dy="6" stdDeviation="6" floodOpacity="0.1" />
+                        </filter>
+                      </defs>
+                    </svg>
                   </CardContent>
                 </Card>
                 
-                {/* Decorative elements */}
+                {/* Decorative Accent */}
                 <div className="absolute top-1/2 -right-6 transform -translate-y-1/2 bg-primary text-white p-4 rounded-full shadow-glow-primary animate-subtle-pulse">
                   <Sparkles className="h-6 w-6" />
-                </div>
-                <div className="absolute -bottom-6 left-1/3 transform translate-x-1/2 bg-white text-primary p-3 rounded-full shadow-xl border border-primary/20 animate-float">
-                  <ShieldCheck className="h-5 w-5" />
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Brands/Partners Section - Updated with modern logos */}
-          <div className="mt-24 pt-10 border-t border-border/50">
-            <p className="text-center text-sm font-medium text-muted-foreground mb-6">TRUSTED BY LEADING FINANCIAL INSTITUTIONS</p>
-            <div className="flex flex-wrap justify-center gap-8 items-center">
-              {/* DTB Bank Logo */}
-              <div className="h-12 transition-all duration-300 hover:opacity-80">
-                <div className="bg-white shadow-sm rounded-lg px-6 py-2 border border-border/20">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-primary rounded-md flex items-center justify-center text-white text-xs font-bold">D</div>
-                    <span className="font-semibold text-foreground">DTB Bank</span>
-                  </div>
-                </div>
-              </div>
-              
-              {/* VISA Logo */}
-              <div className="h-12 transition-all duration-300 hover:opacity-80">
-                <div className="bg-white shadow-sm rounded-lg px-6 py-2 border border-border/20">
-                  <div className="flex items-center">
-                    <span className="font-bold text-[#1434CB] tracking-wider text-xl">VISA</span>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Mastercard Logo */}
-              <div className="h-12 transition-all duration-300 hover:opacity-80">
-                <div className="bg-white shadow-sm rounded-lg px-6 py-2 border border-border/20">
-                  <div className="flex items-center gap-2">
-                    <div className="flex">
-                      <div className="w-5 h-5 bg-[#EB001B] rounded-full opacity-80"></div>
-                      <div className="w-5 h-5 bg-[#F79E1B] rounded-full opacity-80 -ml-2"></div>
-                    </div>
-                    <span className="font-semibold text-foreground">Mastercard</span>
-                  </div>
-                </div>
-              </div>
-              
-              {/* MPESA Logo */}
-              <div className="h-12 transition-all duration-300 hover:opacity-80">
-                <div className="bg-white shadow-sm rounded-lg px-6 py-2 border border-border/20">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-[#4CAF50] rounded-full flex items-center justify-center text-white text-xs font-bold">M</div>
-                    <span className="font-semibold text-foreground">MPESA</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -657,14 +822,14 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div className="order-2 md:order-1">
               <Badge variant="outline" className="mb-4 text-sm px-4 py-1.5 rounded-full border-primary text-primary bg-primary/5 font-medium">Core Features</Badge>
-              
+            
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
                 Smart Money for <span className="text-primary">Smart People</span>
-              </h2>
-              
+            </h2>
+            
               <p className="text-muted-foreground md:text-lg mb-10">
                 FoloMoney integrates your entire financial life. Designed for digital natives who want simple, transparent, and fee-free financial tools.
-              </p>
+            </p>
               
               <div className="space-y-6">
                 {/* Feature 1 */}
@@ -672,7 +837,7 @@ export default function Home() {
                   <div className="flex items-start gap-5 p-4 rounded-xl border border-border/0 group-hover:border-primary/20 transition-all duration-300 group-hover:bg-white group-hover:shadow-lg">
                     <div className="bg-primary/10 text-primary p-3 rounded-xl mt-1 flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
                       <Wallet className="h-6 w-6" />
-                    </div>
+          </div>
                     <div>
                       <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors duration-300">Your Secure Wallet</h3>
                       <p className="text-muted-foreground mt-2">Top-up instantly via mobile money or bank transfer. Send money to anyone with a phone number or email - even if they don't have the app yet.</p>
@@ -685,7 +850,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                
+            
                 {/* Feature 2 */}
                 <div className="group">
                   <div className="flex items-start gap-5 p-4 rounded-xl border border-border/0 group-hover:border-primary/20 transition-all duration-300 group-hover:bg-white group-hover:shadow-lg">
@@ -703,32 +868,32 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                </div>
-                
+          </div>
+          
                 {/* Feature 3 */}
                 <div className="group">
                   <div className="flex items-start gap-5 p-4 rounded-xl border border-border/0 group-hover:border-primary/20 transition-all duration-300 group-hover:bg-white group-hover:shadow-lg">
                     <div className="bg-primary/10 text-primary p-3 rounded-xl mt-1 flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
                       <Globe className="h-6 w-6" />
-                    </div>
-                    <div>
+              </div>
+                <div>
                       <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors duration-300">Truly Free Global Transfers</h3>
                       <p className="text-muted-foreground mt-2">Send money internationally with competitive exchange rates and absolutely ZERO transfer fees. Fast, secure, and transparent.</p>
-                      
+                  
                       <div className="flex mt-3 gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary/10 scrollbar-track-transparent">
                         <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Fee-Free</Badge>
                         <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">40+ Countries</Badge>
                         <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 py-1.5">Competitive Rates</Badge>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
+                      </div>
+                    </div>
+                      </div>
               
               <Button className="mt-12 bg-primary hover:bg-primary-dark text-white rounded-xl px-7 py-6 text-base font-medium transition-all duration-300 hover:shadow-glow-primary hover:-translate-y-1">
                 Explore All Features <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-            </div>
+                    </div>
             
             <div className="order-1 md:order-2 relative">
               {/* Phone mockup with app UI */}
@@ -742,8 +907,8 @@ export default function Home() {
                       {/* App content */}
                       <div className="h-full w-full">
                         <AppShowcaseLottie className="w-full h-full object-cover" />
-                      </div>
-                      
+                  </div>
+                  
                       {/* Status bar */}
                       <div className="absolute top-0 left-0 w-full bg-gradient-to-b from-black/40 to-transparent text-white p-2 flex justify-between items-center text-xs">
                         <span>9:41</span>
@@ -753,28 +918,28 @@ export default function Home() {
                           <div className="h-2 w-2 rounded-full bg-white"></div>
                           <div className="h-2 w-2 rounded-full bg-white"></div>
                         </div>
-                      </div>
-                      
+                </div>
+                
                       {/* Feature Highlights */}
                       <div className="absolute top-1/4 right-4 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg px-3 py-2 border border-primary/20 animate-float">
                         <div className="flex items-center gap-2">
                           <div className="h-6 w-6 bg-primary rounded-full flex items-center justify-center text-white text-xs">+</div>
                           <span className="text-xs font-medium text-primary-dark">Add Money</span>
-                        </div>
-                      </div>
+                    </div>
+                  </div>
                       
                       <div className="absolute bottom-1/4 left-4 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg px-3 py-2 border border-primary/20 animate-float" style={{animationDelay: '1s'}}>
                         <div className="flex items-center gap-2">
                           <div className="h-6 w-6 bg-primary-dark rounded-full flex items-center justify-center text-white text-xs">
                             <Send className="h-3 w-3" />
-                          </div>
+                  </div>
                           <span className="text-xs font-medium text-primary-dark">Send Money</span>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
-                
+              </div>
+            </div>
+          </div>
+          
                 {/* Decorative elements */}
                 <div className="absolute top-0 right-0 -mr-6 mt-10 bg-primary text-white p-4 rounded-full shadow-lg animate-float">
                   <Smartphone className="h-6 w-6" />
@@ -1088,7 +1253,7 @@ export default function Home() {
                         </div>
                         <div className="flex justify-between items-center text-sm text-muted-foreground">
                           <span>Delivery Time</span>
-                          <span className="font-semibold text-foreground">1-2 Business Days</span>
+                          <span className="font-semibold text-foreground">Instant Transfers</span>
                         </div>
                       </div>
                     )}
@@ -1130,7 +1295,7 @@ export default function Home() {
                   <div className="absolute left-1/4 bottom-10 bg-white shadow-lg rounded-xl p-3 text-sm border border-primary/20 animate-float" style={{animationDelay: '1.5s'}}>
                     <div className="flex items-center gap-2">
                       <Zap className="h-4 w-4 text-amber-500" />
-                      <span className="font-medium text-foreground">1-2 Days Delivery</span>
+                      <span className="font-medium text-foreground">Instant Transfers</span>
                     </div>
                   </div>
                   
