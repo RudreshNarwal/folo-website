@@ -1812,7 +1812,7 @@ export default function Home() {
               <h5 className="font-semibold text-background/90 mb-3">Legal</h5>
               <ul className="space-y-2 text-sm">
                 <li><a href="#" className="hover:text-primary transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>
+                <li><a href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</a></li>
                 <li><a href="#" className="hover:text-primary transition-colors">Cookie Policy</a></li>
               </ul>
             </div>
