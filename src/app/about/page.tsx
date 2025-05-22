@@ -214,6 +214,27 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Contact Us Section */}
+      <section className="py-16 md:py-24 bg-muted">
+        <div className="container mx-auto px-6">
+          <div className="text-center max-w-2xl mx-auto">
+            <Badge variant="outline" className="mb-3 border-primary text-primary bg-primary/5">Get in Touch</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Contact Us</h2>
+            <p className="text-muted-foreground md:text-lg mb-8">
+              Have questions or need assistance? Our team is here to help. Reach out to us via email or phone/WhatsApp.
+            </p>
+            <div className="space-y-4">
+              <p className="text-lg">
+                <strong>Email:</strong> <a href="mailto:care@folomoney.com" className="text-primary hover:underline">care@folomoney.com</a>
+              </p>
+              <p className="text-lg">
+                <strong>Phone/WhatsApp:</strong> <a href="tel:+254725763465" className="text-primary hover:underline">+254725763465</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Call to Action */}
       <section className="py-16 md:py-20 bg-gradient-to-br from-accent via-accent/90 to-primary">
         <div className="container mx-auto px-6 text-center text-accent-foreground">

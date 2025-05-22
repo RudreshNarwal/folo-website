@@ -1665,9 +1665,18 @@ export default function Home() {
             />
 
           </Accordion>
-          <div className="mt-12 text-center">
-            <Button variant="outline" size="lg" className="rounded-lg border-primary text-primary hover:bg-primary/10 transform hover:scale-105 transition-transform">
-              <MessageSquare className="mr-2 h-5 w-5" /> Need More Help? Contact Support
+          <div className="mt-12 text-center space-y-4 md:space-y-0 md:space-x-4">
+            <Button variant="outline" size="lg" className="rounded-lg border-primary text-primary hover:bg-primary/10 transform hover:scale-105 transition-transform w-full md:w-auto" onClick={() => window.location.href='mailto:care@folomoney.com'}>
+              <MessageSquare className="mr-2 h-5 w-5" /> Email Support
+            </Button>
+            <Button variant="outline" size="lg" className="rounded-lg border-green-500 text-green-500 hover:bg-green-500/10 transform hover:scale-105 transition-transform w-full md:w-auto" onClick={() => window.open('https://wa.me/254725763465', '_blank')}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 lucide lucide-message-circle">
+                 <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+                 <path d="M8 12h.01"/>
+                 <path d="M12 12h.01"/>
+                 <path d="M16 12h.01"/>
+              </svg>
+               WhatsApp Support
             </Button>
           </div>
         </div>

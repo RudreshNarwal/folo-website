@@ -190,7 +190,7 @@ export default function PrivacyPolicyPage() {
             <li>you otherwise have a question or complaint about the manner in which we or our service providers treat your Personal Information.</li>
           </ul>
 
-          <p>You may contact our Privacy Officer by email:&nbsp;<a href="mailto:care@folomoney.com" className="text-primary hover:underline">care@folomoney.com</a></p>
+          <p>You may contact our Privacy Officer by email:&nbsp;<a href="mailto:care@folomoney.com" className="text-primary hover:underline">care@folomoney.com</a> or by phone/WhatsApp at <a href="tel:+254725763465" className="text-primary hover:underline">+254725763465</a>.</p>
 
         </article>
       </main>
