@@ -49,6 +49,28 @@ import WorldTransferLottie from '@/components/animations/WorldTransferLottie';
 import Link from 'next/link';
 import { FeatureCardModern } from '@/components/FeatureCardModern';
 
+// Define a new component for individual grid items
+const DynamicGridItem = ({ itemKey }: { itemKey: number }) => {
+  const [itemStyle, setItemStyle] = useState<React.CSSProperties | null>(null);
+
+  useEffect(() => {
+    setItemStyle({
+      opacity: Math.random() * 0.07 + 0.03,
+      animationDelay: `${Math.random() * 5}s`,
+      animationDuration: `${Math.random() * 3 + 4}s`,
+    });
+  }, []); // Empty dependency array ensures this runs only once on mount
+
+  return (
+    <div
+      key={itemKey} // React needs a key for list items
+      className="relative overflow-hidden"
+      style={itemStyle || { opacity: 0.03 }} // Fallback style
+    >
+      <div className="absolute inset-0 bg-primary rounded-md animate-pulse-slow"></div>
+    </div>
+  );
+};
 
 const TestimonialCard = ({userName, userRole, testimonialText, rating, imageUrl, imageAlt, dataAiHint}: {userName: string, userRole: string, testimonialText: string, rating: number, imageUrl: string, imageAlt: string, dataAiHint?: string }) => (
   <Card className="w-full md:w-[380px] p-6 rounded-xl shadow-xl bg-card flex-shrink-0">
@@ -444,10 +466,10 @@ export default function Home() {
               </div>
               
               <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-                <Button size="lg" className="bg-primary hover:bg-primary-dark text-white px-6 py-6 rounded-xl font-medium text-lg transition-all duration-300 hover:shadow-glow-primary hover:-translate-y-1">
+                <Button size="lg" className="bg-primary hover:bg-primary-dark text-white px-6 py-6 rounded-xl font-medium text-lg transition-all duration-300 hover:shadow-glow-primary hover:-translate-y-1" onClick={() => window.location.href = '#download'}>
                   Get Started <ArrowUpRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5 px-6 py-6 rounded-xl font-medium text-lg transition-all">
+                <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5 px-6 py-6 rounded-xl font-medium text-lg transition-all" onClick={() => window.location.href = '#smart-money'}>
                   See How It Works
                 </Button>
               </div>
@@ -488,17 +510,7 @@ export default function Home() {
                       {/* Dynamic Grid Background */}
                       <div className="absolute inset-0 grid grid-cols-8 grid-rows-6 gap-4 p-4">
                         {Array.from({ length: 48 }).map((_, i) => (
-                          <div 
-                            key={i}
-                            className="relative overflow-hidden"
-                            style={{ 
-                              opacity: Math.random() * 0.07 + 0.03,
-                              animationDelay: `${Math.random() * 5}s`,
-                              animationDuration: `${Math.random() * 3 + 4}s`
-                            }}
-                          >
-                            <div className="absolute inset-0 bg-primary rounded-md animate-pulse-slow"></div>
-                          </div>
+                          <DynamicGridItem key={i} itemKey={i} />
                         ))}
                       </div>
                       
@@ -588,6 +600,41 @@ export default function Home() {
                 <div className="absolute top-1/2 -right-6 transform -translate-y-1/2 bg-primary text-white p-4 rounded-full shadow-glow-primary animate-subtle-pulse">
                   <Sparkles className="h-6 w-6" />
                 </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Trusted By Section */}
+          <div className="mt-12 flex flex-wrap justify-center items-center gap-6 md:gap-8">
+            <h3 className="w-full text-center text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider">Trusted by leading financial institutions</h3>
+            {/* Standardized chips with equal sizes and consistent padding */}
+            <div className="h-14 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
+              <div className="flex items-center">
+                <span className="text-red-600 font-bold text-lg mr-1">DTB</span> 
+                <span className="font-medium text-gray-800 text-base">Bank</span>
+              </div>
+            </div>
+            <div className="h-14 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
+              <span className="text-[#1434CB] font-bold text-xl tracking-wider">VISA</span>
+            </div>
+            <div className="h-14 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
+              <div className="relative flex items-center">
+                <div className="w-7 h-7 rounded-full bg-[#EB001B] absolute left-0"></div>
+                <div className="w-7 h-7 rounded-full bg-[#F79E1B] absolute left-3.5 mix-blend-multiply"></div>
+                <span className="font-medium text-[#000000] text-lg ml-12">Mastercard</span>
+              </div>
+            </div>
+            <div className="h-14 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
+              <div className="bg-[#43B02A]/10 p-2 rounded-lg">
+                <span className="text-[#43B02A] font-bold text-lg">M-PESA</span>
+              </div>
+            </div>
+            <div className="h-14 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
+              <div className="flex items-center">
+                <div className="w-5 h-5 rounded-full bg-[#0066B3] mr-1.5 flex items-center justify-center">
+                  <span className="text-white font-bold text-[10px]">TU</span>
+                </div>
+                <span className="text-[#0066B3] font-bold text-base">TransUnion</span>
               </div>
             </div>
           </div>
@@ -710,7 +757,7 @@ export default function Home() {
             <div className="order-2 md:order-1">
               <Badge variant="outline" className="mb-4 text-sm px-4 py-1.5 rounded-full border-primary text-primary bg-primary/5 font-medium">Core Features</Badge>
             
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground" id="smart-money">
                 Smart Money for <span className="text-primary">Smart People</span>
             </h2>
             
@@ -1627,7 +1674,7 @@ export default function Home() {
       </section>
 
       {/* Call to Action Section - Updated with light background */}
-      <section className="py-20 md:py-32 bg-white border-t border-border/20">
+      <section className="py-20 md:py-32 bg-white border-t border-border/20" id="download">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row gap-12 items-center">
             <div className="flex-1">
