@@ -608,28 +608,28 @@ export default function Home() {
           <div className="mt-12 flex flex-wrap justify-center items-center gap-6 md:gap-8">
             <h3 className="w-full text-center text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider">Trusted by leading financial institutions</h3>
             {/* Standardized chips with equal sizes and consistent padding */}
-            <div className="h-14 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
+            <div className="h-12 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
               <div className="flex items-center">
                 <span className="text-red-600 font-bold text-lg mr-1">DTB</span> 
                 <span className="font-medium text-gray-800 text-base">Bank</span>
               </div>
             </div>
-            <div className="h-14 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
+            <div className="h-12 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
               <span className="text-[#1434CB] font-bold text-xl tracking-wider">VISA</span>
             </div>
-            <div className="h-14 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
+            <div className="h-12 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
               <div className="relative flex items-center">
                 <div className="w-7 h-7 rounded-full bg-[#EB001B] absolute left-0"></div>
                 <div className="w-7 h-7 rounded-full bg-[#F79E1B] absolute left-3.5 mix-blend-multiply"></div>
                 <span className="font-medium text-[#000000] text-lg ml-12">Mastercard</span>
               </div>
             </div>
-            <div className="h-14 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
+            <div className="h-12 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
               <div className="bg-[#43B02A]/10 p-2 rounded-lg">
                 <span className="text-[#43B02A] font-bold text-lg">M-PESA</span>
               </div>
             </div>
-            <div className="h-14 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
+            <div className="h-12 w-36 bg-white shadow-sm rounded-xl hover:shadow-md transition-shadow duration-300 flex items-center justify-center">
               <div className="flex items-center">
                 <div className="w-5 h-5 rounded-full bg-[#0066B3] mr-1.5 flex items-center justify-center">
                   <span className="text-white font-bold text-[10px]">TU</span>
